@@ -8,19 +8,26 @@ logger = get_logger()
 
 
 def read_workbook_fields(file_path: str, fields: list[FieldModel]) -> dict[str, dict]:
-    """Read raw values from an Excel workbook for the given fields.
+    """Read values from an Excel workbook for the given fields.
 
-    Uses data_only=False so formula cells return the formula string.
+    Each field's raw_cell_value flag controls whether to read raw (formulas as
+    text) or calculated values.  The workbook is opened in both modes only when
+    needed.
     """
-    wb = openpyxl.load_workbook(file_path, data_only=False)
+    active_fields = [f for f in fields if f.active]
+    needs_raw = any(f.raw_cell_value for f in active_fields)
+    needs_calc = any(not f.raw_cell_value for f in active_fields)
+
+    wb_raw = openpyxl.load_workbook(file_path, data_only=False) if needs_raw else None
+    wb_calc = openpyxl.load_workbook(file_path, data_only=True) if needs_calc else None
     logger.info("Workbook opened successfully")
+
     results: dict[str, dict] = {}
 
-    for field in fields:
-        if not field.active:
-            continue
+    for field in active_fields:
         sheet_name = field.sheet
         cell_addr = field.cell
+        wb = wb_raw if field.raw_cell_value else wb_calc
 
         if sheet_name not in wb.sheetnames:
             results[field.field_code] = {
@@ -37,10 +44,10 @@ def read_workbook_fields(file_path: str, fields: list[FieldModel]) -> dict[str, 
         try:
             cell = ws[cell_addr]
             value = cell.value
-            # Merged cells: openpyxl returns value from the top-left cell
             results[field.field_code] = {"value": value, "error": None}
             logger.info(
-                f"Read field: field_code={field.field_code}, sheet={sheet_name}, cell={cell_addr}"
+                f"Read field: field_code={field.field_code}, sheet={sheet_name}, "
+                f"cell={cell_addr}, raw={field.raw_cell_value}"
             )
         except Exception as exc:
             results[field.field_code] = {"value": None, "error": str(exc)}
@@ -49,7 +56,10 @@ def read_workbook_fields(file_path: str, fields: list[FieldModel]) -> dict[str, 
                 f"cell={cell_addr} — error: {exc}"
             )
 
-    wb.close()
+    if wb_raw:
+        wb_raw.close()
+    if wb_calc:
+        wb_calc.close()
     return results
 
 

@@ -7,3 +7,29 @@
 2026-04-02 16:48:50 INFO Template updated: Pricing_1.0
 2026-04-02 16:54:50 INFO Template updated: Pricing_1.0
 2026-04-02 22:56:15 INFO Template updated: Pricing_1.0
+2026-04-02 23:16:18 INFO Template updated: Pricing_1.0
+2026-04-02 23:16:36 INFO Upload started: source=Trading 212 копія.xlsx
+2026-04-02 23:16:36 INFO Upload completed: source=Trading 212 копія.xlsx
+2026-04-02 23:16:50 INFO Template selected: template_code=Pricing, template_version=1.0
+2026-04-02 23:16:50 INFO Processing started: source=Trading 212 копія.xlsx
+2026-04-02 23:16:51 INFO Workbook opened successfully
+2026-04-02 23:16:51 INFO Read field: field_code=ClientName, sheet=Intro, cell=C3
+2026-04-02 23:16:51 INFO Read field: field_code=OpportunityID, sheet=Intro, cell=E2
+2026-04-02 23:16:51 INFO Read field: field_code=qtrBeginning, sheet=Intro, cell=D21
+2026-04-02 23:16:51 INFO Read field: field_code=qtrEnding, sheet=Intro, cell=D22
+2026-04-02 23:16:51 INFO Read field: field_code=DealTerm, sheet=Intro, cell=D18
+2026-04-02 23:16:51 WARNING Validation failed: field_code=qtrEnding, rule=date/allow_empty=False, value='=IFERROR(EOMONTH(D21-1,\'P&L\'!C15*12),"")'
+2026-04-02 23:17:07 INFO Manual correction: field_code=qtrEnding, original_value='=IFERROR(EOMONTH(D21-1,\'P&L\'!C15*12),"")', corrected_value='', corrected_at=2026-04-02T20:17:07.146616
+2026-04-02 23:17:07 WARNING Validation failed: field_code=qtrEnding, rule=date/allow_empty=False, value=''
+2026-04-02 23:22:23 INFO Upload started: source=Trading 212 копія.xlsx
+2026-04-02 23:22:23 INFO Upload completed: source=Trading 212 копія.xlsx
+2026-04-02 23:22:29 INFO Template selected: template_code=Pricing, template_version=1.0
+2026-04-02 23:22:29 INFO Processing started: source=Trading 212 копія.xlsx
+2026-04-02 23:22:29 INFO Workbook opened successfully
+2026-04-02 23:22:29 INFO Read field: field_code=ClientName, sheet=Intro, cell=C3, raw=False
+2026-04-02 23:22:29 INFO Read field: field_code=OpportunityID, sheet=Intro, cell=E2, raw=False
+2026-04-02 23:22:29 INFO Read field: field_code=qtrBeginning, sheet=Intro, cell=D21, raw=False
+2026-04-02 23:22:29 INFO Read field: field_code=qtrEnding, sheet=Intro, cell=D22, raw=False
+2026-04-02 23:22:29 INFO Read field: field_code=DealTerm, sheet=Intro, cell=D18, raw=False
+2026-04-02 23:22:29 INFO Output created: outputs/Trading 212 копія.json
+2026-04-02 23:22:29 INFO Processing completed: status=success

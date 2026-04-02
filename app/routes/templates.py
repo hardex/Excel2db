@@ -56,6 +56,7 @@ def _parse_fields_from_form(form: dict) -> list[FieldModel]:
                 value_type=str(form.get(f"value_type_{index}", "string")).strip(),
                 allow_empty=form.get(f"allow_empty_{index}") in ("on", "true", "1", True),
                 active=form.get(f"active_{index}") in ("on", "true", "1", True),
+                raw_cell_value=form.get(f"raw_cell_value_{index}") in ("on", "true", "1", True),
                 description=str(form.get(f"description_{index}", "")).strip(),
             )
         )
