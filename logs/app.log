@@ -33,3 +33,66 @@
 2026-04-02 23:22:29 INFO Read field: field_code=DealTerm, sheet=Intro, cell=D18, raw=False
 2026-04-02 23:22:29 INFO Output created: outputs/Trading 212 копія.json
 2026-04-02 23:22:29 INFO Processing completed: status=success
+2026-04-02 23:31:50 INFO Upload started: source=Trading 212 копія.xlsx
+2026-04-02 23:31:50 INFO Upload completed: source=Trading 212 копія.xlsx
+2026-04-02 23:31:50 INFO Template selected: template_code=Pricing, template_version=1.0
+2026-04-02 23:31:50 INFO Processing started: source=Trading 212 копія.xlsx
+2026-04-02 23:31:50 INFO Workbook opened successfully
+2026-04-02 23:31:50 INFO Read field: field_code=ClientName, sheet=Intro, cell=C3, raw=False
+2026-04-02 23:31:50 INFO Read field: field_code=OpportunityID, sheet=Intro, cell=E2, raw=False
+2026-04-02 23:31:50 INFO Read field: field_code=qtrBeginning, sheet=Intro, cell=D21, raw=False
+2026-04-02 23:31:50 INFO Read field: field_code=qtrEnding, sheet=Intro, cell=D22, raw=False
+2026-04-02 23:31:50 INFO Read field: field_code=DealTerm, sheet=Intro, cell=D18, raw=False
+2026-04-02 23:32:42 INFO Upload started: source=Trading 212 копія.xlsx
+2026-04-02 23:32:42 INFO Upload completed: source=Trading 212 копія.xlsx
+2026-04-02 23:32:42 INFO Template selected: template_code=Pricing, template_version=1.0
+2026-04-02 23:32:42 INFO Processing started: source=Trading 212 копія.xlsx
+2026-04-02 23:32:42 INFO Workbook opened successfully
+2026-04-02 23:32:42 INFO Read field: field_code=ClientName, sheet=Intro, cell=C3, raw=False
+2026-04-02 23:32:42 INFO Read field: field_code=OpportunityID, sheet=Intro, cell=E2, raw=False
+2026-04-02 23:32:42 INFO Read field: field_code=qtrBeginning, sheet=Intro, cell=D21, raw=False
+2026-04-02 23:32:42 INFO Read field: field_code=qtrEnding, sheet=Intro, cell=D22, raw=False
+2026-04-02 23:32:42 INFO Read field: field_code=DealTerm, sheet=Intro, cell=D18, raw=False
+2026-04-02 23:32:51 INFO Workbook opened successfully
+2026-04-02 23:32:51 INFO Read field: field_code=ClientName, sheet=Intro, cell=C3, raw=False
+2026-04-02 23:32:51 INFO Read field: field_code=OpportunityID, sheet=Intro, cell=E2, raw=False
+2026-04-02 23:32:51 INFO Read field: field_code=qtrBeginning, sheet=Intro, cell=D21, raw=False
+2026-04-02 23:32:51 INFO Read field: field_code=qtrEnding, sheet=Intro, cell=D22, raw=False
+2026-04-02 23:32:51 INFO Read field: field_code=DealTerm, sheet=Intro, cell=D18, raw=False
+2026-04-02 23:32:51 INFO Output created: outputs/Trading 212 копія.json
+2026-04-02 23:33:16 INFO Upload started: source=Trading 212 копія.xlsx
+2026-04-02 23:33:16 INFO Upload completed: source=Trading 212 копія.xlsx
+2026-04-02 23:33:16 INFO Template selected: template_code=Pricing, template_version=1.0
+2026-04-02 23:33:16 INFO Processing started: source=Trading 212 копія.xlsx
+2026-04-02 23:33:17 INFO Workbook opened successfully
+2026-04-02 23:33:17 INFO Read field: field_code=ClientName, sheet=Intro, cell=C3, raw=False
+2026-04-02 23:33:17 INFO Read field: field_code=OpportunityID, sheet=Intro, cell=E2, raw=False
+2026-04-02 23:33:17 INFO Read field: field_code=qtrBeginning, sheet=Intro, cell=D21, raw=False
+2026-04-02 23:33:17 INFO Read field: field_code=qtrEnding, sheet=Intro, cell=D22, raw=False
+2026-04-02 23:33:17 INFO Read field: field_code=DealTerm, sheet=Intro, cell=D18, raw=False
+2026-04-02 23:33:17 INFO Output created: outputs/Trading 212 копія.json
+2026-04-02 23:33:17 INFO Processing completed: status=success
+2026-04-02 23:33:41 INFO Upload started: source=Trading 212 копія.xlsx
+2026-04-02 23:33:41 INFO Upload completed: source=Trading 212 копія.xlsx
+2026-04-02 23:33:41 INFO Template selected: template_code=Pricing, template_version=1.0
+2026-04-02 23:33:41 INFO Processing started: source=Trading 212 копія.xlsx
+2026-04-02 23:33:42 INFO Workbook opened successfully
+2026-04-02 23:33:42 INFO Read field: field_code=ClientName, sheet=Intro, cell=C3, raw=False
+2026-04-02 23:33:42 INFO Read field: field_code=OpportunityID, sheet=Intro, cell=E2, raw=False
+2026-04-02 23:33:42 INFO Read field: field_code=qtrBeginning, sheet=Intro, cell=D21, raw=False
+2026-04-02 23:33:42 INFO Read field: field_code=qtrEnding, sheet=Intro, cell=D22, raw=False
+2026-04-02 23:33:42 INFO Read field: field_code=DealTerm, sheet=Intro, cell=D18, raw=False
+2026-04-02 23:33:42 INFO Output created: outputs/Trading 212 копія.json
+2026-04-02 23:33:42 INFO Processing completed: status=success
+2026-04-02 23:37:26 INFO Upload started: source=Trading 212 копія.xlsx
+2026-04-02 23:37:26 INFO Upload completed: source=Trading 212 копія.xlsx
+2026-04-02 23:37:26 INFO Template selected: template_code=Pricing, template_version=1.0
+2026-04-02 23:37:26 INFO Processing started: source=Trading 212 копія.xlsx
+2026-04-02 23:37:26 INFO Workbook opened successfully
+2026-04-02 23:37:26 INFO Read field: field_code=ClientName, sheet=Intro, cell=C3, raw=False
+2026-04-02 23:37:26 INFO Read field: field_code=OpportunityID, sheet=Intro, cell=E2, raw=False
+2026-04-02 23:37:26 INFO Read field: field_code=qtrBeginning, sheet=Intro, cell=D21, raw=False
+2026-04-02 23:37:26 INFO Read field: field_code=qtrEnding, sheet=Intro, cell=D22, raw=False
+2026-04-02 23:37:26 INFO Read field: field_code=DealTerm, sheet=Intro, cell=D18, raw=False
+2026-04-02 23:37:26 INFO Output created: outputs/Trading 212 копія.json
+2026-04-02 23:37:26 INFO Processing completed: status=success

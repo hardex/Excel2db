@@ -207,6 +207,12 @@ textarea {
   color: #1a1a2e;
   transition: border-color 0.15s;
   width: 100%;
+  box-sizing: border-box;
+  min-height: 2.35rem;
+}
+
+select {
+  height: 2.35rem;
 }
 
 input[type="text"]:focus,
@@ -427,6 +433,11 @@ input[readonly] {
   overflow-x: auto;
   white-space: pre;
   line-height: 1.55;
+}
+.json-preview code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
 }
 
 /* ─── Log View ───────────────────────────────────────────────────────────── */
