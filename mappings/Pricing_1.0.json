@@ -1,0 +1,52 @@
+{
+  "template_code": "Pricing",
+  "template_version": "1.0",
+  "description": "test",
+  "is_default": true,
+  "fields": [
+    {
+      "field_code": "ClientName",
+      "field_name": "Client Name",
+      "sheet": "Intro",
+      "cell": "C3",
+      "value_type": "string",
+      "allow_empty": false,
+      "active": true,
+      "default_value": "",
+      "description": ""
+    },
+    {
+      "field_code": "OpportunityID",
+      "field_name": "Opportunity ID",
+      "sheet": "Intro",
+      "cell": "E2",
+      "value_type": "string",
+      "allow_empty": false,
+      "active": true,
+      "default_value": "",
+      "description": "\"Opportunity ID (OPP-000XXXXXX)\""
+    },
+    {
+      "field_code": "qtrBeginning",
+      "field_name": "Start Date for the new deal (qtr beginning)",
+      "sheet": "Intro",
+      "cell": "D21",
+      "value_type": "date",
+      "allow_empty": false,
+      "active": true,
+      "default_value": "",
+      "description": ""
+    },
+    {
+      "field_code": "qtrEnding",
+      "field_name": "End Date for the new deal (qtr ending)",
+      "sheet": "Intro",
+      "cell": "D22",
+      "value_type": "date",
+      "allow_empty": false,
+      "active": true,
+      "default_value": "",
+      "description": ""
+    }
+  ]
+}

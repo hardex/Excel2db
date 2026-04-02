@@ -270,3 +270,63 @@ async def test_cell(
         display = str(val) if val is not None else "(empty)"
         val_enc = urllib.parse.quote(display)
         return RedirectResponse(url=f"{base}?test_result={val_enc}", status_code=303)
+
+
+@router.post("/check-cell")
+async def check_cell(
+    file: UploadFile = File(...),
+    sheet: str = Form(...),
+    cell: str = Form(...),
+    value_type: str = Form("string"),
+    allow_empty: str = Form("false"),
+    raw: str = Form("true"),
+):
+    """AJAX endpoint: read a single cell, validate, and return JSON result."""
+    import uuid
+    from fastapi.responses import JSONResponse
+    from app.services.validation_service import _validate_field
+    from app.models.schemas import FieldModel
+
+    try:
+        if not file.filename or not file.filename.endswith(".xlsx"):
+            return JSONResponse({"ok": False, "error": "Only .xlsx files are accepted"})
+
+        # Use a safe temp filename to avoid issues with special characters
+        temp_path = UPLOADS_DIR / f"_check_{uuid.uuid4().hex}.xlsx"
+        with open(temp_path, "wb") as f_out:
+            content = await file.read()
+            f_out.write(content)
+
+        is_raw = raw in ("true", "on", "1")
+        result = read_single_cell(str(temp_path), sheet.strip(), cell.strip().upper(), raw=is_raw)
+
+        try:
+            temp_path.unlink()
+        except Exception:
+            pass
+
+        if result["error"]:
+            return JSONResponse({"ok": False, "error": str(result["error"])})
+
+        val = result["value"]
+        display = str(val) if val is not None else "(empty)"
+
+        # Validate against field type rules
+        field = FieldModel(
+            field_code="_check",
+            field_name="_check",
+            sheet=sheet.strip(),
+            cell=cell.strip().upper(),
+            value_type=value_type.strip(),
+            allow_empty=allow_empty in ("true", "on", "1"),
+        )
+        validation_error = _validate_field(field, val)
+
+        return JSONResponse({
+            "ok": True,
+            "value": display,
+            "validation_error": validation_error,
+        })
+    except Exception as exc:
+        logger.error(f"Check cell failed: {exc}")
+        return JSONResponse({"ok": False, "error": str(exc)})

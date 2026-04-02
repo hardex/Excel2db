@@ -53,10 +53,14 @@ def read_workbook_fields(file_path: str, fields: list[FieldModel]) -> dict[str, 
     return results
 
 
-def read_single_cell(file_path: str, sheet_name: str, cell_addr: str) -> dict:
-    """Read a single cell value from a workbook (used by Test Cell feature)."""
+def read_single_cell(file_path: str, sheet_name: str, cell_addr: str, raw: bool = True) -> dict:
+    """Read a single cell value from a workbook (used by Test Cell feature).
+
+    Args:
+        raw: If True, read raw values (formulas as text). If False, read calculated values.
+    """
     try:
-        wb = openpyxl.load_workbook(file_path, data_only=False)
+        wb = openpyxl.load_workbook(file_path, data_only=not raw)
     except Exception as exc:
         return {"value": None, "error": f"Cannot open workbook: {exc}"}
 
