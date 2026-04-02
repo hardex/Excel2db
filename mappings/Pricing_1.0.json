@@ -12,7 +12,7 @@
       "value_type": "string",
       "allow_empty": false,
       "active": true,
-      "default_value": "",
+      "raw_cell_value": false,
       "description": ""
     },
     {
@@ -23,7 +23,7 @@
       "value_type": "string",
       "allow_empty": false,
       "active": true,
-      "default_value": "",
+      "raw_cell_value": false,
       "description": "\"Opportunity ID (OPP-000XXXXXX)\""
     },
     {
@@ -34,7 +34,7 @@
       "value_type": "date",
       "allow_empty": false,
       "active": true,
-      "default_value": "",
+      "raw_cell_value": false,
       "description": ""
     },
     {
@@ -45,7 +45,18 @@
       "value_type": "date",
       "allow_empty": false,
       "active": true,
-      "default_value": "",
+      "raw_cell_value": false,
+      "description": ""
+    },
+    {
+      "field_code": "DealTerm",
+      "field_name": "Deal Term",
+      "sheet": "Intro",
+      "cell": "D18",
+      "value_type": "number",
+      "allow_empty": false,
+      "active": true,
+      "raw_cell_value": false,
       "description": ""
     }
   ]

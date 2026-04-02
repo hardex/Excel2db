@@ -10,6 +10,7 @@ class FieldModel(BaseModel):
     value_type: str  # "string", "number", "date"
     allow_empty: bool = False
     active: bool = True
+    raw_cell_value: bool = False
     description: str = ""
 
 

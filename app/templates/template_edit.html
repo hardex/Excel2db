@@ -71,6 +71,7 @@
           <th>Type</th>
           <th>Allow Empty</th>
           <th>Active</th>
+          <th>Raw</th>
           <th>Description</th>
           <th></th>
         </tr>
@@ -101,15 +102,15 @@
         <label for="af_cell">Cell <span class="required">*</span></label>
         <input type="text" id="af_cell" placeholder="e.g. C7" />
       </div>
-      <div class="form-group">
-        <label for="af_value_type">Value Type</label>
-        <select id="af_value_type">
-          <option value="string">String</option>
-          <option value="number">Number</option>
-          <option value="date">Date</option>
-        </select>
-      </div>
-      <div class="form-group" style="align-self: flex-end; display: flex; gap: 1.5rem; flex-wrap: wrap;">
+      <div class="form-group--full" style="display: flex; flex-direction: row; gap: 1.5rem; align-items: flex-end; flex-wrap: wrap;">
+        <div>
+          <label for="af_value_type">Value Type</label>
+          <select id="af_value_type">
+            <option value="string">String</option>
+            <option value="number">Number</option>
+            <option value="date">Date</option>
+          </select>
+        </div>
         <label class="checkbox-label">
           <input type="checkbox" id="af_allow_empty" />
           Allow Empty
@@ -117,6 +118,10 @@
         <label class="checkbox-label">
           <input type="checkbox" id="af_active" checked />
           Active
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="af_raw" />
+          Raw cell value
         </label>
       </div>
       <div class="form-group form-group--full">
@@ -129,11 +134,7 @@
         <label for="af_test_file">Test File (.xlsx)</label>
         <input type="file" id="af_test_file" accept=".xlsx" />
       </div>
-      <div class="form-group" style="align-self: flex-end; display: flex; gap: 1rem; align-items: center;">
-        <label class="checkbox-label">
-          <input type="checkbox" id="af_raw" />
-          Raw cell value
-        </label>
+      <div class="form-group" style="align-self: flex-end;">
         <button type="button" class="btn btn--secondary" onclick="checkCell()">Check</button>
       </div>
       <div class="form-group form-group--full">
@@ -233,6 +234,7 @@ function renderTable() {
       <td>${esc(f.value_type)}</td>
       <td>${f.allow_empty ? '✓' : '-'}</td>
       <td>${f.active ? '✓' : '-'}</td>
+      <td>${f.raw_cell_value ? '✓' : '-'}</td>
       <td class="desc-cell">${esc(f.description)}</td>
       <td><button type="button" class="btn btn--danger btn--sm" onclick="event.stopPropagation(); removeField(${i})">Remove</button></td>
     `;
@@ -247,7 +249,7 @@ function renderTable() {
       inp.value = f[k] ?? '';
       hiddenCont.appendChild(inp);
     });
-    ['allow_empty','active'].forEach(k => {
+    ['allow_empty','active','raw_cell_value'].forEach(k => {
       if (f[k]) {
         const inp = document.createElement('input');
         inp.type = 'hidden';
@@ -269,6 +271,7 @@ function startEditField(index) {
   document.getElementById('af_value_type').value    = f.value_type;
   document.getElementById('af_allow_empty').checked = f.allow_empty;
   document.getElementById('af_active').checked      = f.active;
+  document.getElementById('af_raw').checked         = f.raw_cell_value;
   document.getElementById('af_description').value   = f.description;
   // Clear check result when switching to edit
   document.getElementById('af_check_result').value  = '';
@@ -293,8 +296,9 @@ function submitFieldForm() {
   const cell        = document.getElementById('af_cell').value.trim();
   const value_type  = document.getElementById('af_value_type').value;
   const allow_empty = document.getElementById('af_allow_empty').checked;
-  const active        = document.getElementById('af_active').checked;
-  const description = document.getElementById('af_description').value.trim();
+  const active         = document.getElementById('af_active').checked;
+  const raw_cell_value = document.getElementById('af_raw').checked;
+  const description    = document.getElementById('af_description').value.trim();
 
   if (!field_code) { showAddError('Field Code is required.'); return; }
   if (!field_name) { showAddError('Field Name is required.'); return; }
@@ -309,7 +313,7 @@ function submitFieldForm() {
   }
 
   showAddError('');
-  const fieldObj = { field_code, field_name, sheet, cell, value_type, allow_empty, active, description };
+  const fieldObj = { field_code, field_name, sheet, cell, value_type, allow_empty, active, raw_cell_value, description };
 
   if (editingIndex !== null) {
     // ── Edit mode: update in place ──
