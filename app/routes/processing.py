@@ -86,10 +86,6 @@ async def process_page(request: Request):
     default_tmpl = get_default_template()
     msg = request.query_params.get("msg", "")
     msg_type = request.query_params.get("msg_type", "success")
-    session = _get_session(request)
-    uploaded_file = session.get("source_filename") if session else None
-    selected_code = session.get("template_code") if session else None
-    selected_version = session.get("template_version") if session else None
     return templates_engine.TemplateResponse(
         request,
         "process.html",
@@ -98,55 +94,31 @@ async def process_page(request: Request):
             "default_template": default_tmpl,
             "msg": msg,
             "msg_type": msg_type,
-            "uploaded_file": uploaded_file,
-            "selected_code": selected_code,
-            "selected_version": selected_version,
         },
     )
-
-
-@router.post("/upload")
-async def upload_file(
-    request: Request,
-    file: UploadFile = File(...),
-):
-    if not file.filename or not file.filename.endswith(".xlsx"):
-        return _redirect("/process", "Only .xlsx files are accepted", "error")
-
-    filename = file.filename
-    logger.info(f"Upload started: source={filename}")
-
-    dest = UPLOADS_DIR / filename
-    content = await file.read()
-    with open(dest, "wb") as f_out:
-        f_out.write(content)
-
-    logger.info(f"Upload completed: source={filename}")
-
-    # Create / update session with file info
-    session = _get_session(request) or {}
-    session["source_filename"] = filename
-    # Clear any previous processing state when a new file is uploaded
-    for key in ("extracted", "validation_errors", "corrections", "output_path"):
-        session.pop(key, None)
-
-    resp = _redirect("/process", f"File '{filename}' uploaded successfully")
-    _set_session(resp, session)
-    return resp
 
 
 @router.post("/start")
 async def start_processing(
     request: Request,
+    file: UploadFile = File(...),
     template_code: str = Form(...),
     template_version: str = Form(...),
 ):
-    session = _get_session(request)
-    if not session or not session.get("source_filename"):
-        return _redirect("/process", "Please upload a file first", "error")
+    # Validate and save file
+    if not file.filename or not file.filename.endswith(".xlsx"):
+        return _redirect("/process", "Only .xlsx files are accepted", "error")
 
-    source_filename = session["source_filename"]
-    file_path = str(UPLOADS_DIR / source_filename)
+    source_filename = file.filename
+    logger.info(f"Upload started: source={source_filename}")
+
+    dest = UPLOADS_DIR / source_filename
+    content = await file.read()
+    with open(dest, "wb") as f_out:
+        f_out.write(content)
+
+    logger.info(f"Upload completed: source={source_filename}")
+    file_path = str(dest)
 
     tmpl = get_template(template_code, template_version)
     if not tmpl:
@@ -166,6 +138,7 @@ async def start_processing(
     # Validate
     errors = validate_fields(active_fields, extracted)
 
+    session = {"source_filename": source_filename}
     session["template_code"] = template_code
     session["template_version"] = template_version
     session["extracted"] = extracted
