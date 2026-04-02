@@ -1,0 +1,278 @@
+{% extends "base.html" %}
+{% block title %}{% if is_new %}New Template{% else %}Edit {{ template.template_code }} {{ template.template_version }}{% endif %} — Excel2DB{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>{% if is_new %}New Template{% else %}Edit Template{% endif %}</h1>
+  <a href="/templates" class="btn btn--secondary">← Back to Templates</a>
+</div>
+
+{% if test_result %}
+<div class="flash flash--success">
+  Test cell value: <strong>{{ test_result }}</strong>
+</div>
+{% endif %}
+{% if test_error %}
+<div class="flash flash--error">
+  Test cell error: <strong>{{ test_error }}</strong>
+</div>
+{% endif %}
+
+<form method="post"
+      action="{% if is_new %}/templates/new{% else %}/templates/{{ template.template_code }}/{{ template.template_version }}/edit{% endif %}"
+      id="templateForm">
+
+  <section class="form-section">
+    <h2>Template Info</h2>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="template_code">Template Code <span class="required">*</span></label>
+        <input type="text" id="template_code" name="template_code"
+               value="{{ template.template_code if template else '' }}"
+               {% if not is_new %}readonly{% endif %}
+               required placeholder="e.g. customer_form" />
+      </div>
+      <div class="form-group">
+        <label for="template_version">Version <span class="required">*</span></label>
+        <input type="text" id="template_version" name="template_version"
+               value="{{ template.template_version if template else '' }}"
+               {% if not is_new %}readonly{% endif %}
+               required placeholder="e.g. v1" />
+      </div>
+      <div class="form-group form-group--full">
+        <label for="description">Description</label>
+        <input type="text" id="description" name="description"
+               value="{{ template.description if template else '' }}"
+               placeholder="Optional description" />
+      </div>
+      <div class="form-group">
+        <label class="checkbox-label">
+          <input type="checkbox" name="is_default"
+                 {% if template and template.is_default %}checked{% endif %} />
+          Set as default template
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <section class="form-section">
+    <div class="section-header">
+      <h2>Fields</h2>
+      <button type="button" class="btn btn--secondary btn--sm" onclick="addField()">+ Add Field</button>
+    </div>
+
+    <div id="fields-container">
+      <!-- Fields are rendered by JavaScript below using the existingFields data -->
+    </div>
+
+    <p id="no-fields-msg" {% if template and template.fields %}style="display:none"{% endif %} class="hint">
+      No fields yet. Click "+ Add Field" to add one.
+    </p>
+  </section>
+
+  <div class="form-actions">
+    <button type="submit" class="btn btn--primary">Save Template</button>
+    <a href="/templates" class="btn btn--secondary">Cancel</a>
+  </div>
+</form>
+
+<!-- Test Cell Section -->
+<section class="form-section" style="margin-top: 2rem;">
+  <h2>Test Cell Reader</h2>
+  <p class="hint">Upload an .xlsx file and specify a sheet + cell to preview its raw value.</p>
+
+  <form method="post" action="/templates/test-cell" enctype="multipart/form-data" class="test-cell-form">
+    <input type="hidden" name="template_code" value="{{ template.template_code if template else '' }}" />
+    <input type="hidden" name="template_version" value="{{ template.template_version if template else '' }}" />
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="test_file">Excel File (.xlsx)</label>
+        <input type="file" id="test_file" name="file" accept=".xlsx" required />
+      </div>
+      <div class="form-group">
+        <label for="test_sheet">Sheet Name</label>
+        <input type="text" id="test_sheet" name="sheet" placeholder="e.g. Sheet1" required />
+      </div>
+      <div class="form-group">
+        <label for="test_cell">Cell Address</label>
+        <input type="text" id="test_cell" name="cell" placeholder="e.g. C7" required />
+      </div>
+      <div class="form-group" style="align-self: flex-end;">
+        <button type="submit" class="btn btn--secondary">Read Cell</button>
+      </div>
+    </div>
+  </form>
+</section>
+
+<!-- Field row template (hidden, cloned by JS) -->
+<template id="field-row-template">
+  <div class="field-row" data-index="__INDEX__">
+    __CONTENT__
+  </div>
+</template>
+
+<script>
+// Inline field rendering helper so we don't need a separate AJAX call.
+// fieldIndex is replaced by JS.
+function fieldRowHTML(index) {
+  return `
+  <div class="field-card">
+    <div class="field-card-header">
+      <span class="field-card-title">Field #<span class="field-num">${index + 1}</span></span>
+      <button type="button" class="btn btn--danger btn--sm" onclick="removeField(this)">Remove</button>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Field Code <span class="required">*</span></label>
+        <input type="text" name="field_code_${index}" required placeholder="e.g. customer_name" />
+      </div>
+      <div class="form-group">
+        <label>Field Name <span class="required">*</span></label>
+        <input type="text" name="field_name_${index}" required placeholder="e.g. Customer Name" />
+      </div>
+      <div class="form-group">
+        <label>Sheet <span class="required">*</span></label>
+        <input type="text" name="sheet_${index}" required placeholder="e.g. Sheet1" />
+      </div>
+      <div class="form-group">
+        <label>Cell <span class="required">*</span></label>
+        <input type="text" name="cell_${index}" required placeholder="e.g. C7" />
+      </div>
+      <div class="form-group">
+        <label>Value Type</label>
+        <select name="value_type_${index}">
+          <option value="string">String</option>
+          <option value="number">Number</option>
+          <option value="date">Date</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="checkbox-label">
+          <input type="checkbox" name="allow_empty_${index}" />
+          Allow Empty
+        </label>
+      </div>
+      <div class="form-group">
+        <label class="checkbox-label">
+          <input type="checkbox" name="active_${index}" checked />
+          Active
+        </label>
+      </div>
+      <div class="form-group form-group--full">
+        <label>Description</label>
+        <input type="text" name="description_${index}" placeholder="Optional" />
+      </div>
+    </div>
+  </div>
+  `;
+}
+
+// Build HTML for an existing field (passed from server via inline script below)
+function existingFieldHTML(index, field) {
+  const vtypes = ['string', 'number', 'date'];
+  const vtypeOptions = vtypes.map(v =>
+    `<option value="${v}" ${field.value_type === v ? 'selected' : ''}>${v.charAt(0).toUpperCase() + v.slice(1)}</option>`
+  ).join('');
+
+  return `
+  <div class="field-card">
+    <div class="field-card-header">
+      <span class="field-card-title">Field #<span class="field-num">${index + 1}</span></span>
+      <button type="button" class="btn btn--danger btn--sm" onclick="removeField(this)">Remove</button>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Field Code <span class="required">*</span></label>
+        <input type="text" name="field_code_${index}" required value="${escHtml(field.field_code)}" />
+      </div>
+      <div class="form-group">
+        <label>Field Name <span class="required">*</span></label>
+        <input type="text" name="field_name_${index}" required value="${escHtml(field.field_name)}" />
+      </div>
+      <div class="form-group">
+        <label>Sheet <span class="required">*</span></label>
+        <input type="text" name="sheet_${index}" required value="${escHtml(field.sheet)}" />
+      </div>
+      <div class="form-group">
+        <label>Cell <span class="required">*</span></label>
+        <input type="text" name="cell_${index}" required value="${escHtml(field.cell)}" />
+      </div>
+      <div class="form-group">
+        <label>Value Type</label>
+        <select name="value_type_${index}">${vtypeOptions}</select>
+      </div>
+      <div class="form-group">
+        <label class="checkbox-label">
+          <input type="checkbox" name="allow_empty_${index}" ${field.allow_empty ? 'checked' : ''} />
+          Allow Empty
+        </label>
+      </div>
+      <div class="form-group">
+        <label class="checkbox-label">
+          <input type="checkbox" name="active_${index}" ${field.active ? 'checked' : ''} />
+          Active
+        </label>
+      </div>
+      <div class="form-group form-group--full">
+        <label>Description</label>
+        <input type="text" name="description_${index}" value="${escHtml(field.description)}" placeholder="Optional" />
+      </div>
+    </div>
+  </div>
+  `;
+}
+
+function escHtml(str) {
+  return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+let fieldCount = 0;
+const container = document.getElementById('fields-container');
+const noFieldsMsg = document.getElementById('no-fields-msg');
+
+// Render existing fields via JS for consistent index management
+const existingFields = {{ template_fields_json | tojson }};
+existingFields.forEach((field, idx) => {
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = existingFieldHTML(idx, field);
+  container.appendChild(wrapper.firstElementChild);
+  fieldCount = idx + 1;
+});
+
+function updateNoFieldsMsg() {
+  noFieldsMsg.style.display = container.children.length === 0 ? '' : 'none';
+}
+
+function addField() {
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = fieldRowHTML(fieldCount);
+  container.appendChild(wrapper.firstElementChild);
+  fieldCount++;
+  updateNoFieldsMsg();
+}
+
+function removeField(btn) {
+  const card = btn.closest('.field-card');
+  card.remove();
+  reindexFields();
+  updateNoFieldsMsg();
+}
+
+function reindexFields() {
+  const cards = container.querySelectorAll('.field-card');
+  cards.forEach((card, idx) => {
+    // Update all input/select name attributes
+    card.querySelectorAll('[name]').forEach(el => {
+      el.name = el.name.replace(/_\d+$/, `_${idx}`);
+    });
+    // Update visual number
+    const num = card.querySelector('.field-num');
+    if (num) num.textContent = idx + 1;
+  });
+  fieldCount = cards.length;
+}
+
+updateNoFieldsMsg();
+</script>
+{% endblock %}

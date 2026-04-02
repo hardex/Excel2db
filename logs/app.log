@@ -1,0 +1,31 @@
+2026-04-02 09:22:42 WARNING Validation failed: field_code=name, rule=string/allow_empty=False, value=None
+2026-04-02 09:22:42 WARNING Validation failed: field_code=amount, rule=number/allow_empty=False, value='1.234,56'
+2026-04-02 09:22:42 WARNING Validation failed: field_code=date, rule=date/allow_empty=True, value='31-13-2024'
+2026-04-02 09:26:10 INFO Template created: test_tmpl_v1
+2026-04-02 09:27:33 INFO Template updated: test_tmpl_v1
+2026-04-02 09:27:33 INFO Default template set: test_tmpl_v1
+2026-04-02 09:27:33 INFO Template deleted: test_tmpl_v1
+2026-04-02 09:28:41 INFO Upload started: source=test_e2e.xlsx
+2026-04-02 09:28:41 INFO Upload completed: source=test_e2e.xlsx
+2026-04-02 09:28:41 INFO Template selected: template_code=e2e_test, template_version=v1
+2026-04-02 09:28:41 INFO Processing started: source=test_e2e.xlsx
+2026-04-02 09:28:41 INFO Workbook opened successfully
+2026-04-02 09:28:41 INFO Read field: field_code=customer_name, sheet=Sheet1, cell=C7
+2026-04-02 09:28:41 INFO Read field: field_code=amount, sheet=Sheet1, cell=D5
+2026-04-02 09:28:41 INFO Read field: field_code=date, sheet=Sheet1, cell=E3
+2026-04-02 09:28:41 INFO Read field: field_code=optional_field, sheet=Sheet1, cell=F9
+2026-04-02 09:28:41 INFO Output created: outputs/test_e2e.json
+2026-04-02 09:28:41 INFO Processing completed: status=success
+2026-04-02 09:30:45 INFO Upload started: source=bad_data.xlsx
+2026-04-02 09:30:45 INFO Upload completed: source=bad_data.xlsx
+2026-04-02 09:30:45 INFO Template selected: template_code=correction_test, template_version=v1
+2026-04-02 09:30:45 INFO Processing started: source=bad_data.xlsx
+2026-04-02 09:30:45 INFO Workbook opened successfully
+2026-04-02 09:30:45 INFO Read field: field_code=name, sheet=Sheet1, cell=A1
+2026-04-02 09:30:45 INFO Read field: field_code=amount, sheet=Sheet1, cell=B1
+2026-04-02 09:30:45 WARNING Validation failed: field_code=name, rule=string/allow_empty=False, value=None
+2026-04-02 09:30:45 WARNING Validation failed: field_code=amount, rule=number/allow_empty=False, value='1.234,56'
+2026-04-02 09:30:45 INFO Manual correction: field_code=name, original_value=None, corrected_value='Fixed Name', corrected_at=2026-04-02T06:30:45.597018
+2026-04-02 09:30:45 INFO Manual correction: field_code=amount, original_value='1.234,56', corrected_value='999.99', corrected_at=2026-04-02T06:30:45.597018
+2026-04-02 09:30:45 INFO Output created: outputs/bad_data.json
+2026-04-02 09:30:45 INFO Processing completed: status=success

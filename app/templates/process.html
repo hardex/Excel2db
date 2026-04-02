@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Process File — Excel2DB{% endblock %}
+
+{% block content %}
+<h1>Process Excel File</h1>
+
+<div class="process-steps">
+
+  <!-- Step 1: Upload -->
+  <section class="form-section">
+    <h2>Step 1 — Upload File</h2>
+    <form method="post" action="/process/upload" enctype="multipart/form-data">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="file">Excel File (.xlsx)</label>
+          <input type="file" id="file" name="file" accept=".xlsx" required />
+        </div>
+        <div class="form-group" style="align-self: flex-end;">
+          <button type="submit" class="btn btn--primary">Upload</button>
+        </div>
+      </div>
+    </form>
+
+    {% if uploaded_file %}
+    <div class="status-box status-box--success">
+      <strong>Uploaded:</strong> {{ uploaded_file }}
+    </div>
+    {% endif %}
+  </section>
+
+  <!-- Step 2: Start Processing -->
+  <section class="form-section">
+    <h2>Step 2 — Select Template &amp; Process</h2>
+
+    {% if not uploaded_file %}
+    <p class="hint">Please upload a file first.</p>
+    {% else %}
+    <form method="post" action="/process/start">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="template_select">Template</label>
+          {% if all_templates %}
+          <select id="template_select" name="template_code" onchange="syncVersion(this)"
+                  {% if not uploaded_file %}disabled{% endif %}>
+            {% for tmpl in all_templates %}
+            <option value="{{ tmpl.template_code }}"
+                    data-version="{{ tmpl.template_version }}"
+                    {% if selected_code == tmpl.template_code and selected_version == tmpl.template_version %}selected
+                    {% elif not selected_code and default_template and tmpl.template_code == default_template.template_code and tmpl.template_version == default_template.template_version %}selected
+                    {% endif %}>
+              {{ tmpl.template_code }} {{ tmpl.template_version }}
+              {% if tmpl.is_default %}(default){% endif %}
+            </option>
+            {% endfor %}
+          </select>
+          <input type="hidden" id="template_version_hidden" name="template_version"
+                 value="{{ selected_version or (default_template.template_version if default_template else '') }}" />
+          {% else %}
+          <p class="hint">No templates available. <a href="/templates/new">Create one first</a>.</p>
+          {% endif %}
+        </div>
+        <div class="form-group" style="align-self: flex-end;">
+          {% if all_templates %}
+          <button type="submit" class="btn btn--primary"
+                  {% if not uploaded_file %}disabled{% endif %}>
+            Start Processing
+          </button>
+          {% endif %}
+        </div>
+      </div>
+    </form>
+    {% endif %}
+  </section>
+
+</div>
+
+<script>
+function syncVersion(select) {
+  const opt = select.options[select.selectedIndex];
+  document.getElementById('template_version_hidden').value = opt.dataset.version || '';
+}
+</script>
+{% endblock %}

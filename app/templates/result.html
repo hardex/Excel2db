@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Processing Result — Excel2DB{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Processing Complete</h1>
+</div>
+
+<div class="flash flash--success">
+  All fields validated successfully. Output JSON has been generated.
+</div>
+
+<div class="result-info">
+  <p><strong>Source file:</strong> {{ source_filename }}</p>
+  <p><strong>Output:</strong> <code>{{ output_path }}</code></p>
+</div>
+
+<div class="form-actions">
+  <a href="/process/download" class="btn btn--primary">Download JSON</a>
+  <a href="/process" class="btn btn--secondary">Process Another File</a>
+</div>
+
+{% if json_preview %}
+<section class="form-section" style="margin-top: 2rem;">
+  <h2>Output Preview</h2>
+  <pre class="json-preview"><code>{{ json_preview }}</code></pre>
+</section>
+{% endif %}
+{% endblock %}

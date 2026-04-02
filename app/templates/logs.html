@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Logs — Excel2DB{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Application Logs</h1>
+  <small class="hint">Showing last 200 lines from logs/app.log</small>
+</div>
+
+<pre class="log-view">{{ log_content }}</pre>
+{% endblock %}

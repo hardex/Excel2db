@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Correct Validation Errors — Excel2DB{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Correct Validation Errors</h1>
+  <a href="/process" class="btn btn--secondary">← Back to Process</a>
+</div>
+
+<p>
+  Template: <strong>{{ template.template_code }} {{ template.template_version }}</strong> —
+  {{ invalid_fields | length }} field(s) require correction.
+</p>
+
+<form method="post" action="/process/correct">
+  <table class="data-table correction-table">
+    <thead>
+      <tr>
+        <th>Field</th>
+        <th>Location</th>
+        <th>Original Value</th>
+        <th>Error</th>
+        <th>Corrected Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in invalid_fields %}
+      <tr class="invalid">
+        <td>
+          <strong>{{ row.field.field_name }}</strong>
+          <br /><small><code>{{ row.field.field_code }}</code></small>
+          {% if row.field.description %}
+          <br /><small class="hint">{{ row.field.description }}</small>
+          {% endif %}
+        </td>
+        <td>
+          <code>{{ row.field.sheet }}!{{ row.field.cell }}</code>
+          <br /><small>{{ row.field.value_type }}</small>
+        </td>
+        <td>
+          {% if row.original_value is none %}
+          <em class="empty-val">(empty)</em>
+          {% else %}
+          <code>{{ row.original_value }}</code>
+          {% endif %}
+        </td>
+        <td class="error-cell">{{ row.error }}</td>
+        <td>
+          <input type="text"
+                 name="correction_{{ row.field.field_code }}"
+                 value="{{ row.corrected or '' }}"
+                 class="correction-input"
+                 placeholder="Enter corrected value" />
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="form-actions">
+    <button type="submit" class="btn btn--primary">Apply Corrections &amp; Revalidate</button>
+    <a href="/process" class="btn btn--secondary">Cancel</a>
+  </div>
+</form>
+{% endblock %}
