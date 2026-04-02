@@ -319,11 +319,16 @@ input[readonly] {
 .badge--success { background: #d1fae5; color: #065f46; }
 
 /* ─── Fields Table (template editor) ────────────────────────────────────── */
+.fields-table-wrap {
+  overflow-x: auto;
+  margin-top: 0.5rem;
+}
+
 .fields-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.875rem;
-  margin-top: 0.5rem;
+  white-space: nowrap;
 }
 
 .fields-table th {
