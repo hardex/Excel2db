@@ -60,6 +60,7 @@
     <h2>Fields</h2>
     <div id="hidden-fields-container"></div>
 
+    <div class="fields-table-wrap">
     <table class="fields-table" id="fields-table">
       <thead>
         <tr>
@@ -79,6 +80,7 @@
       <tbody id="fields-tbody">
       </tbody>
     </table>
+    </div>
     <p id="no-fields-msg" class="hint">No fields yet. Use the form below to add one.</p>
   </section>
 
@@ -212,12 +214,12 @@ function renderTable() {
 
   if (fields.length === 0) {
     noFieldsMsg.style.display = '';
-    document.getElementById('fields-table').style.display = 'none';
+    document.querySelector('.fields-table-wrap').style.display = 'none';
     return;
   }
 
   noFieldsMsg.style.display = 'none';
-  document.getElementById('fields-table').style.display = '';
+  document.querySelector('.fields-table-wrap').style.display = '';
 
   fields.forEach((f, i) => {
     const tr = document.createElement('tr');
