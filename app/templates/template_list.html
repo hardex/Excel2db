@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Templates — Excel2DB{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Templates</h1>
+  <a href="/templates/new" class="btn btn--primary">+ New Template</a>
+</div>
+
+{% if templates %}
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Code</th>
+      <th>Version</th>
+      <th>Description</th>
+      <th>Fields</th>
+      <th>Default</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for tmpl in templates %}
+    <tr {% if tmpl.is_default %}class="row--default"{% endif %}>
+      <td><code>{{ tmpl.template_code }}</code></td>
+      <td>{{ tmpl.template_version }}</td>
+      <td>{{ tmpl.description }}</td>
+      <td>{{ tmpl.fields | length }}</td>
+      <td>
+        {% if tmpl.is_default %}
+          <span class="badge badge--success">Default</span>
+        {% endif %}
+      </td>
+      <td class="actions">
+        <a href="/templates/{{ tmpl.template_code }}/{{ tmpl.template_version }}/edit"
+           class="btn btn--secondary btn--sm">Edit</a>
+
+        {% if not tmpl.is_default %}
+        <form method="post"
+              action="/templates/{{ tmpl.template_code }}/{{ tmpl.template_version }}/set-default"
+              style="display:inline">
+          <button type="submit" class="btn btn--secondary btn--sm"
+                  title="Set as default">Set Default</button>
+        </form>
+        {% endif %}
+
+        <form method="post"
+              action="/templates/{{ tmpl.template_code }}/{{ tmpl.template_version }}/delete"
+              style="display:inline"
+              onsubmit="return confirm('Delete template {{ tmpl.template_code }} {{ tmpl.template_version }}?')">
+          <button type="submit" class="btn btn--danger btn--sm">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<div class="empty-state">
+  <p>No templates found. <a href="/templates/new">Create your first template</a>.</p>
+</div>
+{% endif %}
+{% endblock %}

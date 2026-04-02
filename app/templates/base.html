@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Excel2DB{% endblock %}</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-inner">
+      <span class="nav-brand">Excel2DB</span>
+      <ul class="nav-links">
+        <li><a href="/process">Process</a></li>
+        <li><a href="/templates">Templates</a></li>
+        <li><a href="/logs">Logs</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    {% if msg %}
+    <div class="flash flash--{{ msg_type }}">
+      {{ msg }}
+    </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+
+  </main>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

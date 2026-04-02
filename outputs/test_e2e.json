@@ -1,0 +1,6 @@
+{
+  "customer_name": "John Doe",
+  "amount": "1,234.56",
+  "date": "2024-01-15",
+  "optional_field": null
+}
