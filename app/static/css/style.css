@@ -312,26 +312,82 @@ input[readonly] {
 
 .badge--success { background: #d1fae5; color: #065f46; }
 
-/* ─── Field Card (template editor) ─────────────────────────────────────── */
-.field-card {
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  background: #fdfdff;
+/* ─── Fields Table (template editor) ────────────────────────────────────── */
+.fields-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
 }
 
-.field-card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.75rem;
-}
-
-.field-card-title {
-  font-size: 0.9rem;
+.fields-table th {
+  text-align: left;
+  padding: 0.5rem 0.6rem;
+  background: #f1f5f9;
+  border-bottom: 2px solid #e2e8f0;
   font-weight: 600;
   color: #374151;
+  white-space: nowrap;
+}
+
+.fields-table td {
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px solid #e5e7eb;
+  vertical-align: middle;
+}
+
+.fields-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.fields-table .desc-cell {
+  color: #6b7280;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fields-table tbody tr.row-editing {
+  background: #eff6ff;
+  outline: 2px solid #3b82f6;
+}
+
+.field-error {
+  color: #dc2626;
+  font-size: 0.875rem;
+}
+
+#field-form-section.editing-mode {
+  border-left: 3px solid #3b82f6;
+  padding-left: calc(1rem - 3px);
+}
+
+/* ─── Check Cell Result ─────────────────────────────────────────────────── */
+.check-result-input {
+  background: #f9fafb;
+  border-style: dashed;
+}
+.check-result-input.check-ok {
+  border-color: #16a34a;
+  background: #f0fdf4;
+  color: #15803d;
+}
+.check-result-input.check-err {
+  border-color: #dc2626;
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.check-validation {
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+.check-validation--ok {
+  color: #16a34a;
+}
+.check-validation--err {
+  color: #dc2626;
 }
 
 /* ─── Status Box ─────────────────────────────────────────────────────────── */

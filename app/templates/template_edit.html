@@ -55,19 +55,99 @@
     </div>
   </section>
 
+  <!-- Fields Table (above Add Field) -->
   <section class="form-section">
-    <div class="section-header">
-      <h2>Fields</h2>
-      <button type="button" class="btn btn--secondary btn--sm" onclick="addField()">+ Add Field</button>
-    </div>
+    <h2>Fields</h2>
+    <div id="hidden-fields-container"></div>
 
-    <div id="fields-container">
-      <!-- Fields are rendered by JavaScript below using the existingFields data -->
-    </div>
+    <table class="fields-table" id="fields-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Field Code</th>
+          <th>Field Name</th>
+          <th>Sheet</th>
+          <th>Cell</th>
+          <th>Type</th>
+          <th>Allow Empty</th>
+          <th>Active</th>
+          <th>Description</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="fields-tbody">
+      </tbody>
+    </table>
+    <p id="no-fields-msg" class="hint">No fields yet. Use the form below to add one.</p>
+  </section>
 
-    <p id="no-fields-msg" {% if template and template.fields %}style="display:none"{% endif %} class="hint">
-      No fields yet. Click "+ Add Field" to add one.
-    </p>
+  <!-- Add / Edit Field Form -->
+  <section class="form-section" id="field-form-section">
+    <h2 id="field-form-title">Add Field</h2>
+    <div class="form-grid" id="add-field-form">
+      <div class="form-group">
+        <label for="af_field_code">Field Code <span class="required">*</span></label>
+        <input type="text" id="af_field_code" placeholder="e.g. customer_name" />
+      </div>
+      <div class="form-group">
+        <label for="af_field_name">Field Name <span class="required">*</span></label>
+        <input type="text" id="af_field_name" placeholder="e.g. Customer Name" />
+      </div>
+      <div class="form-group">
+        <label for="af_sheet">Sheet <span class="required">*</span></label>
+        <input type="text" id="af_sheet" placeholder="e.g. Sheet1" />
+      </div>
+      <div class="form-group">
+        <label for="af_cell">Cell <span class="required">*</span></label>
+        <input type="text" id="af_cell" placeholder="e.g. C7" />
+      </div>
+      <div class="form-group">
+        <label for="af_value_type">Value Type</label>
+        <select id="af_value_type">
+          <option value="string">String</option>
+          <option value="number">Number</option>
+          <option value="date">Date</option>
+        </select>
+      </div>
+      <div class="form-group" style="align-self: flex-end; display: flex; gap: 1.5rem; flex-wrap: wrap;">
+        <label class="checkbox-label">
+          <input type="checkbox" id="af_allow_empty" />
+          Allow Empty
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="af_active" checked />
+          Active
+        </label>
+      </div>
+      <div class="form-group form-group--full">
+        <label for="af_description">Description</label>
+        <input type="text" id="af_description" placeholder="Optional" />
+      </div>
+
+      <!-- Check Cell (inline) -->
+      <div class="form-group">
+        <label for="af_test_file">Test File (.xlsx)</label>
+        <input type="file" id="af_test_file" accept=".xlsx" />
+      </div>
+      <div class="form-group" style="align-self: flex-end; display: flex; gap: 1rem; align-items: center;">
+        <label class="checkbox-label">
+          <input type="checkbox" id="af_raw" />
+          Raw cell value
+        </label>
+        <button type="button" class="btn btn--secondary" onclick="checkCell()">Check</button>
+      </div>
+      <div class="form-group form-group--full">
+        <label for="af_check_result">Cell Value</label>
+        <input type="text" id="af_check_result" readonly placeholder="press Check to read cell value" class="check-result-input" />
+        <span id="af_check_validation" class="check-validation" style="display:none;"></span>
+      </div>
+
+      <div class="form-group--full" style="display: flex; flex-direction: row; gap: 0.5rem; align-items: center;">
+        <button type="button" class="btn btn--primary" id="field-form-btn" onclick="submitFieldForm()">+ Add Field</button>
+        <button type="button" class="btn btn--secondary" id="field-form-cancel" onclick="cancelEdit()" style="display:none;">Cancel</button>
+        <span id="add-field-error" class="field-error" style="display:none; margin-left: 0.5rem;"></span>
+      </div>
+    </div>
   </section>
 
   <div class="form-actions">
@@ -76,203 +156,273 @@
   </div>
 </form>
 
-<!-- Test Cell Section -->
-<section class="form-section" style="margin-top: 2rem;">
-  <h2>Test Cell Reader</h2>
-  <p class="hint">Upload an .xlsx file and specify a sheet + cell to preview its raw value.</p>
-
-  <form method="post" action="/templates/test-cell" enctype="multipart/form-data" class="test-cell-form">
-    <input type="hidden" name="template_code" value="{{ template.template_code if template else '' }}" />
-    <input type="hidden" name="template_version" value="{{ template.template_version if template else '' }}" />
-
-    <div class="form-grid">
-      <div class="form-group">
-        <label for="test_file">Excel File (.xlsx)</label>
-        <input type="file" id="test_file" name="file" accept=".xlsx" required />
-      </div>
-      <div class="form-group">
-        <label for="test_sheet">Sheet Name</label>
-        <input type="text" id="test_sheet" name="sheet" placeholder="e.g. Sheet1" required />
-      </div>
-      <div class="form-group">
-        <label for="test_cell">Cell Address</label>
-        <input type="text" id="test_cell" name="cell" placeholder="e.g. C7" required />
-      </div>
-      <div class="form-group" style="align-self: flex-end;">
-        <button type="submit" class="btn btn--secondary">Read Cell</button>
-      </div>
-    </div>
-  </form>
-</section>
-
-<!-- Field row template (hidden, cloned by JS) -->
-<template id="field-row-template">
-  <div class="field-row" data-index="__INDEX__">
-    __CONTENT__
-  </div>
-</template>
-
 <script>
-// Inline field rendering helper so we don't need a separate AJAX call.
-// fieldIndex is replaced by JS.
-function fieldRowHTML(index) {
-  return `
-  <div class="field-card">
-    <div class="field-card-header">
-      <span class="field-card-title">Field #<span class="field-num">${index + 1}</span></span>
-      <button type="button" class="btn btn--danger btn--sm" onclick="removeField(this)">Remove</button>
-    </div>
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Field Code <span class="required">*</span></label>
-        <input type="text" name="field_code_${index}" required placeholder="e.g. customer_name" />
-      </div>
-      <div class="form-group">
-        <label>Field Name <span class="required">*</span></label>
-        <input type="text" name="field_name_${index}" required placeholder="e.g. Customer Name" />
-      </div>
-      <div class="form-group">
-        <label>Sheet <span class="required">*</span></label>
-        <input type="text" name="sheet_${index}" required placeholder="e.g. Sheet1" />
-      </div>
-      <div class="form-group">
-        <label>Cell <span class="required">*</span></label>
-        <input type="text" name="cell_${index}" required placeholder="e.g. C7" />
-      </div>
-      <div class="form-group">
-        <label>Value Type</label>
-        <select name="value_type_${index}">
-          <option value="string">String</option>
-          <option value="number">Number</option>
-          <option value="date">Date</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="checkbox-label">
-          <input type="checkbox" name="allow_empty_${index}" />
-          Allow Empty
-        </label>
-      </div>
-      <div class="form-group">
-        <label class="checkbox-label">
-          <input type="checkbox" name="active_${index}" checked />
-          Active
-        </label>
-      </div>
-      <div class="form-group form-group--full">
-        <label>Description</label>
-        <input type="text" name="description_${index}" placeholder="Optional" />
-      </div>
-    </div>
-  </div>
-  `;
-}
+// ── State ─────────────────────────────────────────────────────────────────────
+let fields = {{ template_fields_json | tojson }};
+let editingIndex = null;   // null = add mode, number = editing that index
 
-// Build HTML for an existing field (passed from server via inline script below)
-function existingFieldHTML(index, field) {
-  const vtypes = ['string', 'number', 'date'];
-  const vtypeOptions = vtypes.map(v =>
-    `<option value="${v}" ${field.value_type === v ? 'selected' : ''}>${v.charAt(0).toUpperCase() + v.slice(1)}</option>`
-  ).join('');
+// ── DOM refs ──────────────────────────────────────────────────────────────────
+const tbody          = document.getElementById('fields-tbody');
+const hiddenCont     = document.getElementById('hidden-fields-container');
+const noFieldsMsg    = document.getElementById('no-fields-msg');
+const addErrEl       = document.getElementById('add-field-error');
+const formTitle      = document.getElementById('field-form-title');
+const formBtn        = document.getElementById('field-form-btn');
+const formCancel     = document.getElementById('field-form-cancel');
+const formSection    = document.getElementById('field-form-section');
 
-  return `
-  <div class="field-card">
-    <div class="field-card-header">
-      <span class="field-card-title">Field #<span class="field-num">${index + 1}</span></span>
-      <button type="button" class="btn btn--danger btn--sm" onclick="removeField(this)">Remove</button>
-    </div>
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Field Code <span class="required">*</span></label>
-        <input type="text" name="field_code_${index}" required value="${escHtml(field.field_code)}" />
-      </div>
-      <div class="form-group">
-        <label>Field Name <span class="required">*</span></label>
-        <input type="text" name="field_name_${index}" required value="${escHtml(field.field_name)}" />
-      </div>
-      <div class="form-group">
-        <label>Sheet <span class="required">*</span></label>
-        <input type="text" name="sheet_${index}" required value="${escHtml(field.sheet)}" />
-      </div>
-      <div class="form-group">
-        <label>Cell <span class="required">*</span></label>
-        <input type="text" name="cell_${index}" required value="${escHtml(field.cell)}" />
-      </div>
-      <div class="form-group">
-        <label>Value Type</label>
-        <select name="value_type_${index}">${vtypeOptions}</select>
-      </div>
-      <div class="form-group">
-        <label class="checkbox-label">
-          <input type="checkbox" name="allow_empty_${index}" ${field.allow_empty ? 'checked' : ''} />
-          Allow Empty
-        </label>
-      </div>
-      <div class="form-group">
-        <label class="checkbox-label">
-          <input type="checkbox" name="active_${index}" ${field.active ? 'checked' : ''} />
-          Active
-        </label>
-      </div>
-      <div class="form-group form-group--full">
-        <label>Description</label>
-        <input type="text" name="description_${index}" value="${escHtml(field.description)}" placeholder="Optional" />
-      </div>
-    </div>
-  </div>
-  `;
-}
-
-function escHtml(str) {
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function esc(str) {
   return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-let fieldCount = 0;
-const container = document.getElementById('fields-container');
-const noFieldsMsg = document.getElementById('no-fields-msg');
+function showAddError(msg) {
+  addErrEl.textContent = msg;
+  addErrEl.style.display = msg ? 'inline' : 'none';
+}
 
-// Render existing fields via JS for consistent index management
-const existingFields = {{ template_fields_json | tojson }};
-existingFields.forEach((field, idx) => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = existingFieldHTML(idx, field);
-  container.appendChild(wrapper.firstElementChild);
-  fieldCount = idx + 1;
+// ── Mode switching ────────────────────────────────────────────────────────────
+function setAddMode() {
+  editingIndex = null;
+  formTitle.textContent = 'Add Field';
+  formBtn.textContent   = '+ Add Field';
+  formCancel.style.display = 'none';
+  formSection.classList.remove('editing-mode');
+  // un-highlight all rows
+  tbody.querySelectorAll('tr').forEach(tr => tr.classList.remove('row-editing'));
+}
+
+function setEditMode(index) {
+  editingIndex = index;
+  formTitle.textContent = 'Edit Field';
+  formBtn.textContent   = 'Save Field';
+  formCancel.style.display = '';
+  formSection.classList.add('editing-mode');
+  // highlight edited row
+  tbody.querySelectorAll('tr').forEach((tr, i) => {
+    tr.classList.toggle('row-editing', i === index);
+  });
+}
+
+// ── Render ────────────────────────────────────────────────────────────────────
+function renderTable() {
+  tbody.innerHTML = '';
+  hiddenCont.innerHTML = '';
+
+  if (fields.length === 0) {
+    noFieldsMsg.style.display = '';
+    document.getElementById('fields-table').style.display = 'none';
+    return;
+  }
+
+  noFieldsMsg.style.display = 'none';
+  document.getElementById('fields-table').style.display = '';
+
+  fields.forEach((f, i) => {
+    const tr = document.createElement('tr');
+    tr.style.cursor = 'pointer';
+    tr.title = 'Double-click to edit';
+    if (editingIndex === i) tr.classList.add('row-editing');
+    tr.addEventListener('dblclick', () => startEditField(i));
+    tr.innerHTML = `
+      <td>${i + 1}</td>
+      <td><code>${esc(f.field_code)}</code></td>
+      <td>${esc(f.field_name)}</td>
+      <td>${esc(f.sheet)}</td>
+      <td>${esc(f.cell)}</td>
+      <td>${esc(f.value_type)}</td>
+      <td>${f.allow_empty ? '✓' : '-'}</td>
+      <td>${f.active ? '✓' : '-'}</td>
+      <td class="desc-cell">${esc(f.description)}</td>
+      <td><button type="button" class="btn btn--danger btn--sm" onclick="event.stopPropagation(); removeField(${i})">Remove</button></td>
+    `;
+    tbody.appendChild(tr);
+
+    // Hidden inputs for form submission
+    const keys = ['field_code','field_name','sheet','cell','value_type','description'];
+    keys.forEach(k => {
+      const inp = document.createElement('input');
+      inp.type = 'hidden';
+      inp.name = `${k}_${i}`;
+      inp.value = f[k] ?? '';
+      hiddenCont.appendChild(inp);
+    });
+    ['allow_empty','active'].forEach(k => {
+      if (f[k]) {
+        const inp = document.createElement('input');
+        inp.type = 'hidden';
+        inp.name = `${k}_${i}`;
+        inp.value = 'on';
+        hiddenCont.appendChild(inp);
+      }
+    });
+  });
+}
+
+// ── Start editing a field (double-click) ─────────────────────────────────────
+function startEditField(index) {
+  const f = fields[index];
+  document.getElementById('af_field_code').value    = f.field_code;
+  document.getElementById('af_field_name').value    = f.field_name;
+  document.getElementById('af_sheet').value         = f.sheet;
+  document.getElementById('af_cell').value          = f.cell;
+  document.getElementById('af_value_type').value    = f.value_type;
+  document.getElementById('af_allow_empty').checked = f.allow_empty;
+  document.getElementById('af_active').checked      = f.active;
+  document.getElementById('af_description').value   = f.description;
+  // Clear check result when switching to edit
+  document.getElementById('af_check_result').value  = '';
+  document.getElementById('af_check_result').classList.remove('check-ok', 'check-err');
+  showAddError('');
+  setEditMode(index);
+  formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.getElementById('af_field_code').focus();
+}
+
+// ── Cancel edit → back to add mode ────────────────────────────────────────────
+function cancelEdit() {
+  setAddMode();
+  clearAddForm();
+}
+
+// ── Submit (add or edit) ──────────────────────────────────────────────────────
+function submitFieldForm() {
+  const field_code  = document.getElementById('af_field_code').value.trim();
+  const field_name  = document.getElementById('af_field_name').value.trim();
+  const sheet       = document.getElementById('af_sheet').value.trim();
+  const cell        = document.getElementById('af_cell').value.trim();
+  const value_type  = document.getElementById('af_value_type').value;
+  const allow_empty = document.getElementById('af_allow_empty').checked;
+  const active        = document.getElementById('af_active').checked;
+  const description = document.getElementById('af_description').value.trim();
+
+  if (!field_code) { showAddError('Field Code is required.'); return; }
+  if (!field_name) { showAddError('Field Name is required.'); return; }
+  if (!sheet)      { showAddError('Sheet is required.'); return; }
+  if (!cell)       { showAddError('Cell is required.'); return; }
+
+  // Duplicate check — skip the row being edited
+  const duplicate = fields.some((f, i) => f.field_code === field_code && i !== editingIndex);
+  if (duplicate) {
+    showAddError(`Field code "${field_code}" already exists.`);
+    return;
+  }
+
+  showAddError('');
+  const fieldObj = { field_code, field_name, sheet, cell, value_type, allow_empty, active, description };
+
+  if (editingIndex !== null) {
+    // ── Edit mode: update in place ──
+    fields[editingIndex] = fieldObj;
+    setAddMode();
+  } else {
+    // ── Add mode: append ──
+    fields.push(fieldObj);
+  }
+
+  renderTable();
+  clearAddForm();
+  document.getElementById('af_field_code').focus();
+}
+
+// ── Check cell (AJAX) ────────────────────────────────────────────────────────
+async function checkCell() {
+  const fileInput   = document.getElementById('af_test_file');
+  const sheet       = document.getElementById('af_sheet').value.trim();
+  const cell        = document.getElementById('af_cell').value.trim();
+  const value_type  = document.getElementById('af_value_type').value;
+  const allow_empty = document.getElementById('af_allow_empty').checked;
+  const resultEl    = document.getElementById('af_check_result');
+  const validEl     = document.getElementById('af_check_validation');
+
+  resultEl.value = '';
+  resultEl.classList.remove('check-ok', 'check-err');
+  validEl.style.display = 'none';
+  validEl.textContent = '';
+  validEl.className = 'check-validation';
+
+  if (!fileInput.files.length) { resultEl.value = 'Error: select a .xlsx file first'; resultEl.classList.add('check-err'); return; }
+  if (!sheet)                  { resultEl.value = 'Error: Sheet is required';         resultEl.classList.add('check-err'); return; }
+  if (!cell)                   { resultEl.value = 'Error: Cell is required';          resultEl.classList.add('check-err'); return; }
+
+  const raw = document.getElementById('af_raw').checked;
+
+  const fd = new FormData();
+  fd.append('file', fileInput.files[0]);
+  fd.append('sheet', sheet);
+  fd.append('cell', cell);
+  fd.append('value_type', value_type);
+  fd.append('allow_empty', allow_empty ? 'true' : 'false');
+  fd.append('raw', raw ? 'true' : 'false');
+
+  resultEl.value = 'Loading...';
+  try {
+    const resp = await fetch('/templates/check-cell', { method: 'POST', body: fd });
+    if (!resp.ok) {
+      resultEl.value = 'Error: server returned ' + resp.status;
+      resultEl.classList.add('check-err');
+      return;
+    }
+    const data = await resp.json();
+    if (data.ok) {
+      resultEl.value = data.value;
+      resultEl.classList.add('check-ok');
+      // Show validation result
+      validEl.style.display = '';
+      if (data.validation_error) {
+        validEl.textContent = 'Validation failed: ' + data.validation_error;
+        validEl.classList.add('check-validation--err');
+      } else {
+        validEl.textContent = 'Validation passed (' + value_type + (allow_empty ? ', allow empty' : ', required') + ')';
+        validEl.classList.add('check-validation--ok');
+      }
+    } else {
+      resultEl.value = 'Error: ' + (data.error || 'Unknown error');
+      resultEl.classList.add('check-err');
+    }
+  } catch (e) {
+    resultEl.value = 'Error: ' + (e.message || 'Request failed');
+    resultEl.classList.add('check-err');
+  }
+}
+
+// ── Remove field ──────────────────────────────────────────────────────────────
+function removeField(index) {
+  // If editing the row being removed, cancel edit
+  if (editingIndex === index) {
+    setAddMode();
+    clearAddForm();
+  } else if (editingIndex !== null && editingIndex > index) {
+    editingIndex--;
+  }
+  fields.splice(index, 1);
+  renderTable();
+}
+
+// ── Clear add form (keep Sheet and Test File) ─────────────────────────────────
+function clearAddForm() {
+  document.getElementById('af_field_code').value  = '';
+  document.getElementById('af_field_name').value  = '';
+  // af_sheet — keep
+  document.getElementById('af_cell').value        = '';
+  document.getElementById('af_value_type').value  = 'string';
+  document.getElementById('af_allow_empty').checked = false;
+  document.getElementById('af_active').checked      = true;
+  document.getElementById('af_description').value = '';
+  document.getElementById('af_check_result').value = '';
+  document.getElementById('af_check_result').classList.remove('check-ok', 'check-err');
+  const validEl = document.getElementById('af_check_validation');
+  validEl.style.display = 'none'; validEl.textContent = ''; validEl.className = 'check-validation';
+  // af_test_file — keep
+  showAddError('');
+}
+
+// ── Allow Enter key in add form inputs (but not on buttons) ───────────────────
+document.getElementById('add-field-form').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && e.target.tagName !== 'BUTTON') { e.preventDefault(); submitFieldForm(); }
 });
 
-function updateNoFieldsMsg() {
-  noFieldsMsg.style.display = container.children.length === 0 ? '' : 'none';
-}
-
-function addField() {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = fieldRowHTML(fieldCount);
-  container.appendChild(wrapper.firstElementChild);
-  fieldCount++;
-  updateNoFieldsMsg();
-}
-
-function removeField(btn) {
-  const card = btn.closest('.field-card');
-  card.remove();
-  reindexFields();
-  updateNoFieldsMsg();
-}
-
-function reindexFields() {
-  const cards = container.querySelectorAll('.field-card');
-  cards.forEach((card, idx) => {
-    // Update all input/select name attributes
-    card.querySelectorAll('[name]').forEach(el => {
-      el.name = el.name.replace(/_\d+$/, `_${idx}`);
-    });
-    // Update visual number
-    const num = card.querySelector('.field-num');
-    if (num) num.textContent = idx + 1;
-  });
-  fieldCount = cards.length;
-}
-
-updateNoFieldsMsg();
+// ── Initial render ────────────────────────────────────────────────────────────
+renderTable();
 </script>
 {% endblock %}
