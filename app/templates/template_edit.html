@@ -20,6 +20,7 @@
 
 <form method="post"
       action="{% if is_new %}/templates/new{% else %}/templates/{{ template.template_code }}/{{ template.template_version }}/edit{% endif %}"
+      enctype="multipart/form-data"
       id="templateForm">
 
   <section class="form-section">
@@ -52,13 +53,13 @@
       </div>
       <div class="form-group--full" style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
         <label for="af_test_file" style="white-space: nowrap; margin: 0;">Test File (.xlsx)</label>
-        <input type="file" id="af_test_file" accept=".xlsx" style="width: auto;" />
+        <input type="file" id="af_test_file" name="test_file" accept=".xlsx" style="width: auto;" />
         <input type="hidden" id="test_file_path_hidden" name="test_file_path"
                value="{{ template.test_file_path if template and template.test_file_path else '' }}" />
       </div>
       <div class="form-group--full">
         <span class="hint" id="test-file-path" style="word-break: break-all;">
-          {% if not is_new and template and template.test_file_path %}
+          {% if template and template.test_file_path %}
             {% if test_file_available %}
             <span style="color: #065f46;">{{ template.test_file_path }}</span>
             {% else %}
@@ -356,8 +357,8 @@ async function checkCell() {
   validEl.textContent = '';
   validEl.className = 'check-validation';
 
-  const storedPath = document.getElementById('test_file_path_hidden').value;
-  if (!fileInput.files.length && !storedPath) { resultEl.value = 'Error: select a test file in Template Info first'; resultEl.classList.add('check-err'); return; }
+  const storedPath = document.getElementById('test_file_path_hidden').value.trim();
+  if (!fileInput.files.length && !storedPath) { resultEl.value = 'Error: select or enter a test file path'; resultEl.classList.add('check-err'); return; }
   if (!sheet)                  { resultEl.value = 'Error: Sheet is required';         resultEl.classList.add('check-err'); return; }
   if (!cell)                   { resultEl.value = 'Error: Cell is required';          resultEl.classList.add('check-err'); return; }
 
@@ -367,7 +368,7 @@ async function checkCell() {
   if (fileInput.files.length) {
     fd.append('file', fileInput.files[0]);
   }
-  fd.append('stored_test_file', fileInput.files.length ? '' : storedPath);
+  fd.append('stored_test_file', storedPath);
   fd.append('sheet', sheet);
   fd.append('cell', cell);
   fd.append('value_type', value_type);
@@ -441,13 +442,11 @@ document.getElementById('add-field-form').addEventListener('keydown', function(e
   if (e.key === 'Enter' && e.target.tagName !== 'BUTTON') { e.preventDefault(); submitFieldForm(); }
 });
 
-// ── Test file: update path display on change ─────────────────────────────────
+// ── Test file: update path display when file selected ─────────────────────────
 document.getElementById('af_test_file').addEventListener('change', function() {
   const pathEl = document.getElementById('test-file-path');
   if (this.files.length) {
-    pathEl.innerHTML = '<span style="color:#065f46">' + esc(this.files[0].name) + '</span>';
-    // Clear stored path — the newly selected file will be sent via FormData
-    document.getElementById('test_file_path_hidden').value = '';
+    pathEl.innerHTML = esc(this.files[0].name) + ' <em>(save template to store)</em>';
   }
 });
 
