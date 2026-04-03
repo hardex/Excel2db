@@ -109,3 +109,102 @@
 2026-04-03 18:06:04 INFO Template updated: Pricing_2.0
 2026-04-03 18:09:56 INFO Template updated: Pricing_2.0
 2026-04-03 18:15:06 INFO Template updated: Pricing_2.0
+2026-04-03 22:19:27 INFO Template updated: Pricing_2.0
+2026-04-03 22:20:26 INFO Template updated: Pricing_2.0
+2026-04-03 22:25:03 INFO Template updated: Pricing_2.0
+2026-04-03 22:32:46 INFO Template updated: Pricing_2.0
+2026-04-03 22:34:35 INFO Template updated: Pricing_2.0
+2026-04-03 22:37:15 INFO Template updated: Pricing_1.0
+2026-04-03 22:37:54 INFO Template updated: Pricing_1.0
+2026-04-03 22:38:27 INFO Upload started: source=Trading 212.xlsx
+2026-04-03 22:38:27 INFO Upload completed: source=Trading 212.xlsx
+2026-04-03 22:38:27 INFO Template selected: template_code=Pricing, template_version=1.0
+2026-04-03 22:38:27 INFO Processing started: source=Trading 212.xlsx
+2026-04-03 22:38:27 INFO Workbook opened successfully
+2026-04-03 22:38:27 INFO Read field: field_code=ClientName, sheet=Intro, cell=C3, raw=False
+2026-04-03 22:38:27 INFO Read field: field_code=OpportunityID, sheet=Intro, cell=E2, raw=False
+2026-04-03 22:38:27 INFO Read field: field_code=qtrBeginning, sheet=Intro, cell=D21, raw=False
+2026-04-03 22:38:27 INFO Read field: field_code=qtrEnding, sheet=Intro, cell=D22, raw=False
+2026-04-03 22:38:27 INFO Read field: field_code=DealTerm, sheet=Intro, cell=D18, raw=False
+2026-04-03 22:38:27 INFO Read field: field_code=DealOwner, sheet=Intro, cell=G2, raw=False
+2026-04-03 22:38:27 INFO Output created: outputs/Trading 212.json
+2026-04-03 22:38:27 INFO Processing completed: status=success
+2026-04-03 22:38:59 INFO Upload started: source=Viseca копія.xlsx
+2026-04-03 22:38:59 INFO Upload completed: source=Viseca копія.xlsx
+2026-04-03 22:38:59 INFO Template selected: template_code=Pricing, template_version=2.0
+2026-04-03 22:38:59 INFO Processing started: source=Viseca копія.xlsx
+2026-04-03 22:38:59 INFO Workbook opened successfully
+2026-04-03 22:38:59 INFO Read field: field_code=ClientName, sheet=Intro, cell=C3, raw=False
+2026-04-03 22:38:59 INFO Read field: field_code=OpportunityID, sheet=Intro, cell=E2, raw=False
+2026-04-03 22:38:59 INFO Read field: field_code=qtrBeginning, sheet=Intro, cell=D21, raw=False
+2026-04-03 22:38:59 INFO Read field: field_code=qtrEnding, sheet=Intro, cell=D22, raw=False
+2026-04-03 22:38:59 INFO Read field: field_code=DealTerm, sheet=Intro, cell=D18, raw=False
+2026-04-03 22:38:59 WARNING Validation failed: field_code=qtrBeginning, rule=date/allow_empty=False, value=None
+2026-04-03 22:38:59 WARNING Validation failed: field_code=qtrEnding, rule=date/allow_empty=False, value=None
+2026-04-03 22:39:38 INFO Manual correction: field_code=qtrBeginning, original_value=None, corrected_value='09.01.2023', corrected_at=2026-04-03T19:39:38.640000
+2026-04-03 22:39:38 INFO Manual correction: field_code=qtrEnding, original_value=None, corrected_value='09.01.2030', corrected_at=2026-04-03T19:39:38.640000
+2026-04-03 22:39:38 INFO Output created: outputs/Viseca копія.json
+2026-04-03 22:39:38 INFO Processing completed: status=success
+2026-04-03 22:40:27 INFO Upload started: source=Trading 212.xlsx
+2026-04-03 22:40:27 INFO Upload completed: source=Trading 212.xlsx
+2026-04-03 22:40:27 INFO Template selected: template_code=Pricing, template_version=2.0
+2026-04-03 22:40:27 INFO Processing started: source=Trading 212.xlsx
+2026-04-03 22:40:27 INFO Workbook opened successfully
+2026-04-03 22:40:27 INFO Read field: field_code=ClientName, sheet=Intro, cell=C3, raw=False
+2026-04-03 22:40:27 INFO Read field: field_code=OpportunityID, sheet=Intro, cell=E2, raw=False
+2026-04-03 22:40:27 INFO Read field: field_code=qtrBeginning, sheet=Intro, cell=D21, raw=False
+2026-04-03 22:40:27 INFO Read field: field_code=qtrEnding, sheet=Intro, cell=D22, raw=False
+2026-04-03 22:40:27 INFO Read field: field_code=DealTerm, sheet=Intro, cell=D18, raw=False
+2026-04-03 22:40:27 INFO Output created: outputs/Trading 212.json
+2026-04-03 22:40:27 INFO Processing completed: status=success
+2026-04-03 22:40:39 INFO Upload started: source=Trading 212.xlsx
+2026-04-03 22:40:39 INFO Upload completed: source=Trading 212.xlsx
+2026-04-03 22:40:39 INFO Template selected: template_code=Pricing, template_version=2.0
+2026-04-03 22:40:39 INFO Processing started: source=Trading 212.xlsx
+2026-04-03 22:40:40 INFO Workbook opened successfully
+2026-04-03 22:40:40 INFO Read field: field_code=ClientName, sheet=Intro, cell=C3, raw=False
+2026-04-03 22:40:40 INFO Read field: field_code=OpportunityID, sheet=Intro, cell=E2, raw=False
+2026-04-03 22:40:40 INFO Read field: field_code=qtrBeginning, sheet=Intro, cell=D21, raw=False
+2026-04-03 22:40:40 INFO Read field: field_code=qtrEnding, sheet=Intro, cell=D22, raw=False
+2026-04-03 22:40:40 INFO Read field: field_code=DealTerm, sheet=Intro, cell=D18, raw=False
+2026-04-03 22:40:40 INFO Output created: outputs/Trading 212.json
+2026-04-03 22:40:40 INFO Processing completed: status=success
+2026-04-03 22:40:52 INFO Upload started: source=Viseca копія.xlsx
+2026-04-03 22:40:52 INFO Upload completed: source=Viseca копія.xlsx
+2026-04-03 22:40:52 INFO Template selected: template_code=Pricing, template_version=2.0
+2026-04-03 22:40:52 INFO Processing started: source=Viseca копія.xlsx
+2026-04-03 22:40:53 INFO Workbook opened successfully
+2026-04-03 22:40:53 INFO Read field: field_code=ClientName, sheet=Intro, cell=C3, raw=False
+2026-04-03 22:40:53 INFO Read field: field_code=OpportunityID, sheet=Intro, cell=E2, raw=False
+2026-04-03 22:40:53 INFO Read field: field_code=qtrBeginning, sheet=Intro, cell=D21, raw=False
+2026-04-03 22:40:53 INFO Read field: field_code=qtrEnding, sheet=Intro, cell=D22, raw=False
+2026-04-03 22:40:53 INFO Read field: field_code=DealTerm, sheet=Intro, cell=D18, raw=False
+2026-04-03 22:40:53 WARNING Validation failed: field_code=qtrBeginning, rule=date/allow_empty=False, value=None
+2026-04-03 22:40:53 WARNING Validation failed: field_code=qtrEnding, rule=date/allow_empty=False, value=None
+2026-04-03 22:41:13 INFO Manual correction: field_code=qtrBeginning, original_value=None, corrected_value='12.30.2012', corrected_at=2026-04-03T19:41:13.484828
+2026-04-03 22:41:13 INFO Manual correction: field_code=qtrEnding, original_value=None, corrected_value='12.31.2030', corrected_at=2026-04-03T19:41:13.484828
+2026-04-03 22:41:13 WARNING Validation failed: field_code=qtrBeginning, rule=date/allow_empty=False, value='12.30.2012'
+2026-04-03 22:41:13 WARNING Validation failed: field_code=qtrEnding, rule=date/allow_empty=False, value='12.31.2030'
+2026-04-03 22:41:48 INFO Manual correction: field_code=qtrBeginning, original_value=None, corrected_value='12/30/2012', corrected_at=2026-04-03T19:41:48.674262
+2026-04-03 22:41:48 INFO Manual correction: field_code=qtrEnding, original_value=None, corrected_value='12/31/2030', corrected_at=2026-04-03T19:41:48.674262
+2026-04-03 22:41:48 INFO Output created: outputs/Viseca копія.json
+2026-04-03 22:41:48 INFO Processing completed: status=success
+2026-04-03 22:42:16 INFO Upload started: source=Viseca копія.xlsx
+2026-04-03 22:42:16 INFO Upload completed: source=Viseca копія.xlsx
+2026-04-03 22:42:16 INFO Template selected: template_code=Pricing, template_version=2.0
+2026-04-03 22:42:16 INFO Processing started: source=Viseca копія.xlsx
+2026-04-03 22:42:17 INFO Workbook opened successfully
+2026-04-03 22:42:17 INFO Read field: field_code=ClientName, sheet=Intro, cell=C3, raw=False
+2026-04-03 22:42:17 INFO Read field: field_code=OpportunityID, sheet=Intro, cell=E2, raw=False
+2026-04-03 22:42:17 INFO Read field: field_code=qtrBeginning, sheet=Intro, cell=D21, raw=False
+2026-04-03 22:42:17 INFO Read field: field_code=qtrEnding, sheet=Intro, cell=D22, raw=False
+2026-04-03 22:42:17 INFO Read field: field_code=DealTerm, sheet=Intro, cell=D18, raw=False
+2026-04-03 22:42:17 WARNING Validation failed: field_code=qtrBeginning, rule=date/allow_empty=False, value=None
+2026-04-03 22:42:17 WARNING Validation failed: field_code=qtrEnding, rule=date/allow_empty=False, value=None
+2026-04-03 22:42:40 INFO Manual correction: field_code=qtrBeginning, original_value=None, corrected_value='01.12.2012', corrected_at=2026-04-03T19:42:40.614652
+2026-04-03 22:42:40 INFO Manual correction: field_code=qtrEnding, original_value=None, corrected_value='12.31.2030', corrected_at=2026-04-03T19:42:40.614652
+2026-04-03 22:42:40 WARNING Validation failed: field_code=qtrEnding, rule=date/allow_empty=False, value='12.31.2030'
+2026-04-03 22:42:51 INFO Manual correction: field_code=qtrEnding, original_value=None, corrected_value='12/31/2030', corrected_at=2026-04-03T19:42:51.782654
+2026-04-03 22:42:51 INFO Output created: outputs/Viseca копія.json
+2026-04-03 22:42:51 INFO Processing completed: status=success
+2026-04-03 22:55:29 INFO Template updated: Pricing_1.0
