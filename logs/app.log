@@ -96,3 +96,13 @@
 2026-04-02 23:37:26 INFO Read field: field_code=DealTerm, sheet=Intro, cell=D18, raw=False
 2026-04-02 23:37:26 INFO Output created: outputs/Trading 212 копія.json
 2026-04-02 23:37:26 INFO Processing completed: status=success
+2026-04-03 10:36:29 INFO Template updated: Pricing_1.0
+2026-04-03 10:44:52 INFO Template saved as new: Pricing_2.0 (from Pricing_1.0)
+2026-04-03 11:00:13 INFO Template updated: Pricing_2.0
+2026-04-03 11:01:28 INFO Template updated: Pricing_2.0
+2026-04-03 11:02:42 INFO Template updated: Pricing_2.0
+2026-04-03 11:03:57 INFO Template updated: Pricing_2.0
+2026-04-03 11:11:25 INFO Template updated: Pricing_2.0
+2026-04-03 11:19:12 INFO Template updated: Pricing_2.0
+2026-04-03 11:19:41 INFO Template updated: Pricing_2.0
+2026-04-03 17:57:53 INFO Template updated: Pricing_2.0

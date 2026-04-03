@@ -29,15 +29,20 @@
         <label for="template_code">Template Code <span class="required">*</span></label>
         <input type="text" id="template_code" name="template_code"
                value="{{ template.template_code if template else '' }}"
-               {% if not is_new %}readonly{% endif %}
                required placeholder="e.g. customer_form" />
       </div>
       <div class="form-group">
         <label for="template_version">Version <span class="required">*</span></label>
         <input type="text" id="template_version" name="template_version"
                value="{{ template.template_version if template else '' }}"
-               {% if not is_new %}readonly{% endif %}
                required placeholder="e.g. v1" />
+      </div>
+      <div class="form-group" style="align-self: flex-end;">
+        <label class="checkbox-label">
+          <input type="checkbox" name="is_default"
+                 {% if template and template.is_default %}checked{% endif %} />
+          Set as default template
+        </label>
       </div>
       <div class="form-group form-group--full">
         <label for="description">Description</label>
@@ -45,12 +50,22 @@
                value="{{ template.description if template else '' }}"
                placeholder="Optional description" />
       </div>
-      <div class="form-group">
-        <label class="checkbox-label">
-          <input type="checkbox" name="is_default"
-                 {% if template and template.is_default %}checked{% endif %} />
-          Set as default template
-        </label>
+      <div class="form-group--full" style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+        <label for="af_test_file" style="white-space: nowrap; margin: 0;">Test File (.xlsx)</label>
+        <input type="file" id="af_test_file" accept=".xlsx" style="width: auto;" />
+        <input type="hidden" id="test_file_path_hidden" name="test_file_path"
+               value="{{ template.test_file_path if template and template.test_file_path else '' }}" />
+      </div>
+      <div class="form-group--full">
+        <span class="hint" id="test-file-path" style="word-break: break-all;">
+          {% if not is_new and template and template.test_file_path %}
+            {% if test_file_available %}
+            <span style="color: #065f46;">{{ template.test_file_path }}</span>
+            {% else %}
+            <span style="color: #ef4444;">{{ template.test_file_path }} — file not found</span>
+            {% endif %}
+          {% endif %}
+        </span>
       </div>
     </div>
   </section>
@@ -131,23 +146,17 @@
         <input type="text" id="af_description" placeholder="Optional" />
       </div>
 
-      <!-- Check Cell (inline) -->
-      <div class="form-group">
-        <label for="af_test_file">Test File (.xlsx)</label>
-        <input type="file" id="af_test_file" accept=".xlsx" />
-      </div>
-      <div class="form-group" style="align-self: flex-end;">
-        <button type="button" class="btn btn--secondary" onclick="checkCell()">Check</button>
-      </div>
+      <!-- Check Cell result -->
       <div class="form-group form-group--full">
         <label for="af_check_result">Cell Value</label>
         <input type="text" id="af_check_result" readonly placeholder="press Check to read cell value" class="check-result-input" />
         <span id="af_check_validation" class="check-validation" style="display:none;"></span>
       </div>
 
-      <div class="form-group--full" style="display: flex; flex-direction: row; gap: 0.5rem; align-items: center;">
+      <div class="form-group--full" style="display: flex; flex-direction: row; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
         <button type="button" class="btn btn--primary" id="field-form-btn" onclick="submitFieldForm()">+ Add Field</button>
         <button type="button" class="btn btn--secondary" id="field-form-cancel" onclick="cancelEdit()" style="display:none;">Cancel</button>
+        <button type="button" class="btn btn--secondary" onclick="checkCell()">Check</button>
         <span id="add-field-error" class="field-error" style="display:none; margin-left: 0.5rem;"></span>
       </div>
     </div>
@@ -347,14 +356,18 @@ async function checkCell() {
   validEl.textContent = '';
   validEl.className = 'check-validation';
 
-  if (!fileInput.files.length) { resultEl.value = 'Error: select a .xlsx file first'; resultEl.classList.add('check-err'); return; }
+  const storedPath = document.getElementById('test_file_path_hidden').value;
+  if (!fileInput.files.length && !storedPath) { resultEl.value = 'Error: select a test file in Template Info first'; resultEl.classList.add('check-err'); return; }
   if (!sheet)                  { resultEl.value = 'Error: Sheet is required';         resultEl.classList.add('check-err'); return; }
   if (!cell)                   { resultEl.value = 'Error: Cell is required';          resultEl.classList.add('check-err'); return; }
 
   const raw = document.getElementById('af_raw').checked;
 
   const fd = new FormData();
-  fd.append('file', fileInput.files[0]);
+  if (fileInput.files.length) {
+    fd.append('file', fileInput.files[0]);
+  }
+  fd.append('stored_test_file', fileInput.files.length ? '' : storedPath);
   fd.append('sheet', sheet);
   fd.append('cell', cell);
   fd.append('value_type', value_type);
@@ -426,6 +439,16 @@ function clearAddForm() {
 // ── Allow Enter key in add form inputs (but not on buttons) ───────────────────
 document.getElementById('add-field-form').addEventListener('keydown', function(e) {
   if (e.key === 'Enter' && e.target.tagName !== 'BUTTON') { e.preventDefault(); submitFieldForm(); }
+});
+
+// ── Test file: update path display on change ─────────────────────────────────
+document.getElementById('af_test_file').addEventListener('change', function() {
+  const pathEl = document.getElementById('test-file-path');
+  if (this.files.length) {
+    pathEl.innerHTML = '<span style="color:#065f46">' + esc(this.files[0].name) + '</span>';
+    // Clear stored path — the newly selected file will be sent via FormData
+    document.getElementById('test_file_path_hidden').value = '';
+  }
 });
 
 // ── Initial render ────────────────────────────────────────────────────────────
