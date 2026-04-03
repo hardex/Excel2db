@@ -134,6 +134,11 @@ async def start_processing(
     except Exception as exc:
         logger.error(f"Processing failed: {exc}")
         return _redirect("/process", f"Failed to read workbook: {exc}", "error")
+    finally:
+        try:
+            dest.unlink()
+        except Exception:
+            pass
 
     # Validate
     errors = validate_fields(active_fields, extracted)
