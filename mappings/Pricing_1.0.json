@@ -3,7 +3,7 @@
   "template_version": "1.0",
   "description": "test",
   "is_default": false,
-  "test_file_path": "/Users/oleksandr/Documents/\u041f\u0440\u043e\u0435\u043a\u0442\u044b/2026/Visa_AI/Excel to DB/Viseca.xlsx",
+  "test_file_path": "RBI Group.xlsx",
   "fields": [
     {
       "field_code": "ClientName",
