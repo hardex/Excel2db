@@ -1,9 +1,6 @@
 import urllib.parse
 import json
-import os
-import shutil
 from pathlib import Path
-from typing import Annotated, Optional
 
 from fastapi import APIRouter, Form, Request, UploadFile, File
 from fastapi.responses import HTMLResponse, RedirectResponse
@@ -97,6 +94,7 @@ async def template_new_form(request: Request):
             "msg_type": msg_type,
             "test_result": None,
             "test_error": None,
+            "test_file_available": False,
         },
     )
 
@@ -121,6 +119,9 @@ async def template_new_submit(request: Request):
 
     fields = _parse_fields_from_form(form_dict)
 
+    # Store test file path if provided
+    test_file_path = str(form_dict.get("test_file_path", "")).strip()
+
     # Determine if this should be default
     all_tmpl = list_templates()
     is_default = form_dict.get("is_default") in ("on", "true", "1") or len(all_tmpl) == 0
@@ -130,6 +131,7 @@ async def template_new_submit(request: Request):
         template_version=template_version,
         description=str(form_dict.get("description", "")).strip(),
         is_default=is_default,
+        test_file_path=test_file_path,
         fields=fields,
     )
 
@@ -154,6 +156,7 @@ async def template_edit_form(request: Request, code: str, version: str):
     msg_type = request.query_params.get("msg_type", "success")
     test_result = request.query_params.get("test_result", None)
     test_error = request.query_params.get("test_error", None)
+    test_file_available = bool(tmpl.test_file_path and Path(tmpl.test_file_path).exists())
     return templates_engine.TemplateResponse(
         request,
         "template_edit.html",
@@ -165,6 +168,7 @@ async def template_edit_form(request: Request, code: str, version: str):
             "msg_type": msg_type,
             "test_result": test_result,
             "test_error": test_error,
+            "test_file_available": test_file_available,
         },
     )
 
@@ -178,28 +182,63 @@ async def template_edit_submit(request: Request, code: str, version: str):
     form = await request.form()
     form_dict = dict(form)
 
+    new_code = str(form_dict.get("template_code", code)).strip()
+    new_version = str(form_dict.get("template_version", version)).strip()
+
+    if not new_code or not new_version:
+        return _redirect(
+            f"/templates/{code}/{version}/edit",
+            "Template code and version are required",
+            "error",
+        )
+
+    code_changed = new_code != code or new_version != version
+
+    # If code/version changed, check the new name doesn't already exist
+    if code_changed and template_exists(new_code, new_version):
+        return _redirect(
+            f"/templates/{code}/{version}/edit",
+            f"Template {new_code}_{new_version} already exists",
+            "error",
+        )
+
     fields = _parse_fields_from_form(form_dict)
     is_default = form_dict.get("is_default") in ("on", "true", "1")
 
+    # Keep existing path or update with new one from form
+    test_file_path = str(form_dict.get("test_file_path", "")).strip()
+    if not test_file_path:
+        test_file_path = existing.test_file_path
+
+    # Check if saved test file still exists
+    if test_file_path and not Path(test_file_path).exists():
+        test_file_path = ""
+
     updated = TemplateModel(
-        template_code=code,
-        template_version=version,
+        template_code=new_code,
+        template_version=new_version,
         description=str(form_dict.get("description", "")).strip(),
         is_default=is_default,
+        test_file_path=test_file_path,
         fields=fields,
     )
 
     if is_default:
         all_tmpl = list_templates()
         for t in all_tmpl:
-            if t.is_default and not (t.template_code == code and t.template_version == version):
+            if t.is_default and not (t.template_code == new_code and t.template_version == new_version):
                 t.is_default = False
                 save_template(t)
 
     save_template(updated)
-    logger.info(f"Template updated: {code}_{version}")
+
+    if code_changed:
+        logger.info(f"Template saved as new: {new_code}_{new_version} (from {code}_{version})")
+    else:
+        logger.info(f"Template updated: {new_code}_{new_version}")
+
     return _redirect(
-        f"/templates/{code}/{version}/edit",
+        f"/templates/{new_code}/{new_version}/edit",
         "Template saved successfully",
         "success",
     )
@@ -275,12 +314,13 @@ async def test_cell(
 
 @router.post("/check-cell")
 async def check_cell(
-    file: UploadFile = File(...),
+    file: UploadFile = File(None),
     sheet: str = Form(...),
     cell: str = Form(...),
     value_type: str = Form("string"),
     allow_empty: str = Form("false"),
     raw: str = Form("true"),
+    stored_test_file: str = Form(""),
 ):
     """AJAX endpoint: read a single cell, validate, and return JSON result."""
     import uuid
@@ -289,22 +329,28 @@ async def check_cell(
     from app.models.schemas import FieldModel
 
     try:
-        if not file.filename or not file.filename.endswith(".xlsx"):
-            return JSONResponse({"ok": False, "error": "Only .xlsx files are accepted"})
+        temp_path = None
+        file_path = None
 
-        # Use a safe temp filename to avoid issues with special characters
-        temp_path = UPLOADS_DIR / f"_check_{uuid.uuid4().hex}.xlsx"
-        with open(temp_path, "wb") as f_out:
-            content = await file.read()
-            f_out.write(content)
+        if file and file.filename and file.filename.endswith(".xlsx"):
+            temp_path = UPLOADS_DIR / f"_check_{uuid.uuid4().hex}.xlsx"
+            with open(temp_path, "wb") as f_out:
+                content = await file.read()
+                f_out.write(content)
+            file_path = str(temp_path)
+        elif stored_test_file and Path(stored_test_file).exists():
+            file_path = stored_test_file
+        else:
+            return JSONResponse({"ok": False, "error": "Select a .xlsx test file first"})
 
         is_raw = raw in ("true", "on", "1")
-        result = read_single_cell(str(temp_path), sheet.strip(), cell.strip().upper(), raw=is_raw)
+        result = read_single_cell(file_path, sheet.strip(), cell.strip().upper(), raw=is_raw)
 
-        try:
-            temp_path.unlink()
-        except Exception:
-            pass
+        if temp_path:
+            try:
+                temp_path.unlink()
+            except Exception:
+                pass
 
         if result["error"]:
             return JSONResponse({"ok": False, "error": str(result["error"])})

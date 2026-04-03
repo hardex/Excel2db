@@ -327,13 +327,13 @@ input[readonly] {
 .fields-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   white-space: nowrap;
 }
 
 .fields-table th {
   text-align: left;
-  padding: 0.5rem 0.6rem;
+  padding: 0.15rem 0.4rem;
   background: #f1f5f9;
   border-bottom: 2px solid #e2e8f0;
   font-weight: 600;
@@ -342,7 +342,7 @@ input[readonly] {
 }
 
 .fields-table td {
-  padding: 0.5rem 0.6rem;
+  padding: 0.15rem 0.4rem;
   border-bottom: 1px solid #e5e7eb;
   vertical-align: middle;
 }

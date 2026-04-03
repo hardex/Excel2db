@@ -19,4 +19,5 @@ class TemplateModel(BaseModel):
     template_version: str
     description: str = ""
     is_default: bool = False
+    test_file_path: str = ""
     fields: List[FieldModel] = []
