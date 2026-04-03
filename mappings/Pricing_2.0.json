@@ -3,7 +3,7 @@
   "template_version": "2.0",
   "description": "test",
   "is_default": true,
-  "test_file_path": "/Users/oleksandr/Documents/dev/ai/Excel2db/uploads/_testfile_Viseca \u043a\u043e\u043f.xlsx",
+  "test_file_path": "/Users/oleksandr/Documents/dev/ai/Excel2db/uploads/Viseca \u043a\u043e\u043f\u0456\u044f.xlsx",
   "fields": [
     {
       "field_code": "ClientName",

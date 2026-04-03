@@ -92,9 +92,9 @@ async def template_new_form(request: Request):
             "is_new": True,
             "msg": msg,
             "msg_type": msg_type,
+            "test_file_available": False,
             "test_result": None,
             "test_error": None,
-            "test_file_available": False,
         },
     )
 
@@ -119,8 +119,15 @@ async def template_new_submit(request: Request):
 
     fields = _parse_fields_from_form(form_dict)
 
-    # Store test file path if provided
+    # Handle test file: save uploaded file and store absolute path
     test_file_path = str(form_dict.get("test_file_path", "")).strip()
+    test_file = form_dict.get("test_file")
+    if test_file and hasattr(test_file, "filename") and test_file.filename:
+        dest = UPLOADS_DIR / test_file.filename
+        content = await test_file.read()
+        with open(dest, "wb") as f_out:
+            f_out.write(content)
+        test_file_path = str(dest.resolve())
 
     # Determine if this should be default
     all_tmpl = list_templates()
@@ -166,9 +173,9 @@ async def template_edit_form(request: Request, code: str, version: str):
             "is_new": False,
             "msg": msg,
             "msg_type": msg_type,
+            "test_file_available": test_file_available,
             "test_result": test_result,
             "test_error": test_error,
-            "test_file_available": test_file_available,
         },
     )
 
@@ -205,14 +212,17 @@ async def template_edit_submit(request: Request, code: str, version: str):
     fields = _parse_fields_from_form(form_dict)
     is_default = form_dict.get("is_default") in ("on", "true", "1")
 
-    # Keep existing path or update with new one from form
+    # Handle test file: upload new or keep existing path
     test_file_path = str(form_dict.get("test_file_path", "")).strip()
-    if not test_file_path:
+    test_file = form_dict.get("test_file")
+    if test_file and hasattr(test_file, "filename") and test_file.filename:
+        dest = UPLOADS_DIR / test_file.filename
+        content = await test_file.read()
+        with open(dest, "wb") as f_out:
+            f_out.write(content)
+        test_file_path = str(dest.resolve())
+    elif not test_file_path:
         test_file_path = existing.test_file_path
-
-    # Check if saved test file still exists
-    if test_file_path and not Path(test_file_path).exists():
-        test_file_path = ""
 
     updated = TemplateModel(
         template_code=new_code,
@@ -332,6 +342,7 @@ async def check_cell(
         temp_path = None
         file_path = None
 
+        # Prefer uploaded file; fall back to stored path on disk
         if file and file.filename and file.filename.endswith(".xlsx"):
             temp_path = UPLOADS_DIR / f"_check_{uuid.uuid4().hex}.xlsx"
             with open(temp_path, "wb") as f_out:
@@ -341,7 +352,7 @@ async def check_cell(
         elif stored_test_file and Path(stored_test_file).exists():
             file_path = stored_test_file
         else:
-            return JSONResponse({"ok": False, "error": "Select a .xlsx test file first"})
+            return JSONResponse({"ok": False, "error": "Select or enter a valid .xlsx test file path"})
 
         is_raw = raw in ("true", "on", "1")
         result = read_single_cell(file_path, sheet.strip(), cell.strip().upper(), raw=is_raw)
