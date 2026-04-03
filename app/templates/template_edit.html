@@ -20,7 +20,6 @@
 
 <form method="post"
       action="{% if is_new %}/templates/new{% else %}/templates/{{ template.template_code }}/{{ template.template_version }}/edit{% endif %}"
-      enctype="multipart/form-data"
       id="templateForm">
 
   <section class="form-section">
@@ -52,21 +51,23 @@
                placeholder="Optional description" />
       </div>
       <div class="form-group--full" style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
-        <label for="af_test_file" style="white-space: nowrap; margin: 0;">Test File (.xlsx)</label>
-        <input type="file" id="af_test_file" name="test_file" accept=".xlsx" style="width: auto;" />
-        <input type="hidden" id="test_file_path_hidden" name="test_file_path"
-               value="{{ template.test_file_path if template and template.test_file_path else '' }}" />
+        <label for="af_test_file" style="white-space: nowrap; margin: 0;">Once using Test File (.xlsx)</label>
+        <input type="file" id="af_test_file" accept=".xlsx" style="width: auto;" />
       </div>
-      <div class="form-group--full">
-        <span class="hint" id="test-file-path" style="word-break: break-all;">
-          {% if template and template.test_file_path %}
-            {% if test_file_available %}
-            <span style="color: #065f46;">{{ template.test_file_path }}</span>
-            {% else %}
-            <span style="color: #ef4444;">{{ template.test_file_path }} — file not found</span>
-            {% endif %}
+      <div class="form-group form-group--full">
+        <label for="test_file_path">Full PATH of the test file stored in the template :</label>
+        <input type="text" id="test_file_path" name="test_file_path"
+               value="{{ template.test_file_path if template and template.test_file_path else '' }}"
+               placeholder="Full path to .xlsx file, e.g. /Users/name/Documents/file.xlsx" />
+        {% if template and template.test_file_path %}
+        <span class="hint">
+          {% if test_file_available %}
+          <span style="color: #065f46;">File found</span>
+          {% else %}
+          <span style="color: #ef4444;">File not found</span>
           {% endif %}
         </span>
+        {% endif %}
       </div>
     </div>
   </section>
@@ -147,18 +148,18 @@
         <input type="text" id="af_description" placeholder="Optional" />
       </div>
 
-      <!-- Check Cell result -->
-      <div class="form-group form-group--full">
-        <label for="af_check_result">Cell Value</label>
-        <input type="text" id="af_check_result" readonly placeholder="press Check to read cell value" class="check-result-input" />
-        <span id="af_check_validation" class="check-validation" style="display:none;"></span>
-      </div>
-
       <div class="form-group--full" style="display: flex; flex-direction: row; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
         <button type="button" class="btn btn--primary" id="field-form-btn" onclick="submitFieldForm()">+ Add Field</button>
         <button type="button" class="btn btn--secondary" id="field-form-cancel" onclick="cancelEdit()" style="display:none;">Cancel</button>
         <button type="button" class="btn btn--secondary" onclick="checkCell()">Check</button>
         <span id="add-field-error" class="field-error" style="display:none; margin-left: 0.5rem;"></span>
+      </div>
+
+      <!-- Check Cell result -->
+      <div class="form-group form-group--full">
+        <label for="af_check_result">Cell Value</label>
+        <input type="text" id="af_check_result" readonly placeholder="press Check to read cell value" class="check-result-input" />
+        <span id="af_check_validation" class="check-validation" style="display:none;"></span>
       </div>
     </div>
   </section>
@@ -357,7 +358,7 @@ async function checkCell() {
   validEl.textContent = '';
   validEl.className = 'check-validation';
 
-  const storedPath = document.getElementById('test_file_path_hidden').value.trim();
+  const storedPath = document.getElementById('test_file_path').value.trim();
   if (!fileInput.files.length && !storedPath) { resultEl.value = 'Error: select or enter a test file path'; resultEl.classList.add('check-err'); return; }
   if (!sheet)                  { resultEl.value = 'Error: Sheet is required';         resultEl.classList.add('check-err'); return; }
   if (!cell)                   { resultEl.value = 'Error: Cell is required';          resultEl.classList.add('check-err'); return; }
@@ -442,11 +443,12 @@ document.getElementById('add-field-form').addEventListener('keydown', function(e
   if (e.key === 'Enter' && e.target.tagName !== 'BUTTON') { e.preventDefault(); submitFieldForm(); }
 });
 
-// ── Test file: update path display when file selected ─────────────────────────
+// ── Test file: populate path input when file selected ─────────────────────────
 document.getElementById('af_test_file').addEventListener('change', function() {
-  const pathEl = document.getElementById('test-file-path');
+  const pathInput = document.getElementById('test_file_path');
   if (this.files.length) {
-    pathEl.innerHTML = esc(this.files[0].name) + ' <em>(save template to store)</em>';
+    pathInput.value = this.files[0].name;
+    pathInput.focus();
   }
 });
 

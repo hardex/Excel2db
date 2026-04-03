@@ -119,15 +119,7 @@ async def template_new_submit(request: Request):
 
     fields = _parse_fields_from_form(form_dict)
 
-    # Handle test file: save uploaded file and store absolute path
     test_file_path = str(form_dict.get("test_file_path", "")).strip()
-    test_file = form_dict.get("test_file")
-    if test_file and hasattr(test_file, "filename") and test_file.filename:
-        dest = UPLOADS_DIR / test_file.filename
-        content = await test_file.read()
-        with open(dest, "wb") as f_out:
-            f_out.write(content)
-        test_file_path = str(dest.resolve())
 
     # Determine if this should be default
     all_tmpl = list_templates()
@@ -212,16 +204,8 @@ async def template_edit_submit(request: Request, code: str, version: str):
     fields = _parse_fields_from_form(form_dict)
     is_default = form_dict.get("is_default") in ("on", "true", "1")
 
-    # Handle test file: upload new or keep existing path
     test_file_path = str(form_dict.get("test_file_path", "")).strip()
-    test_file = form_dict.get("test_file")
-    if test_file and hasattr(test_file, "filename") and test_file.filename:
-        dest = UPLOADS_DIR / test_file.filename
-        content = await test_file.read()
-        with open(dest, "wb") as f_out:
-            f_out.write(content)
-        test_file_path = str(dest.resolve())
-    elif not test_file_path:
+    if not test_file_path:
         test_file_path = existing.test_file_path
 
     updated = TemplateModel(

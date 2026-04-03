@@ -3,7 +3,7 @@
   "template_version": "1.0",
   "description": "test",
   "is_default": false,
-  "test_file_path": "",
+  "test_file_path": "/Users/oleksandr/Documents/\u041f\u0440\u043e\u0435\u043a\u0442\u044b/2026/Visa_AI/Excel to DB/Viseca.xlsx",
   "fields": [
     {
       "field_code": "ClientName",
@@ -55,6 +55,28 @@
       "sheet": "Intro",
       "cell": "D18",
       "value_type": "number",
+      "allow_empty": false,
+      "active": true,
+      "raw_cell_value": false,
+      "description": ""
+    },
+    {
+      "field_code": "DealOwner",
+      "field_name": "Deal Owner (AE)",
+      "sheet": "Intro",
+      "cell": "G2",
+      "value_type": "string",
+      "allow_empty": false,
+      "active": true,
+      "raw_cell_value": false,
+      "description": ""
+    },
+    {
+      "field_code": "ScenarioName",
+      "field_name": "Scenario Name",
+      "sheet": "Intro",
+      "cell": "I2",
+      "value_type": "string",
       "allow_empty": false,
       "active": true,
       "raw_cell_value": false,
