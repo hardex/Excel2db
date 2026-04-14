@@ -20,7 +20,8 @@
 
 <form method="post"
       action="{% if is_new %}/templates/new{% else %}/templates/{{ template.template_code }}/{{ template.template_version }}/edit{% endif %}"
-      id="templateForm">
+      id="templateForm"
+      enctype="multipart/form-data">
 
   <section class="form-section">
     <h2>Template Info</h2>
@@ -52,7 +53,7 @@
       </div>
       <div class="form-group--full" style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
         <label for="af_test_file" style="white-space: nowrap; margin: 0;">Once using Test File (.xlsx)</label>
-        <input type="file" id="af_test_file" accept=".xlsx" style="width: auto;" />
+        <input type="file" id="af_test_file" name="test_file" accept=".xlsx" style="width: auto;" />
       </div>
       <div class="form-group form-group--full">
         <label for="test_file_path">Full PATH of the test file stored in the template :</label>
@@ -158,7 +159,7 @@
       <!-- Check Cell result -->
       <div class="form-group form-group--full">
         <label for="af_check_result">Cell Value</label>
-        <input type="text" id="af_check_result" readonly placeholder="press Check to read cell value" class="check-result-input" />
+        <textarea id="af_check_result" readonly rows="3" placeholder="press Check to read cell value" class="check-result-input" style="resize: vertical; overflow-y: auto;"></textarea>
         <span id="af_check_validation" class="check-validation" style="display:none;"></span>
       </div>
     </div>
@@ -443,14 +444,76 @@ document.getElementById('add-field-form').addEventListener('keydown', function(e
   if (e.key === 'Enter' && e.target.tagName !== 'BUTTON') { e.preventDefault(); submitFieldForm(); }
 });
 
-// ── Test file: populate path input when file selected ─────────────────────────
-document.getElementById('af_test_file').addEventListener('change', function() {
+// ── Test file: upload immediately and populate path ──────────────────────────
+document.getElementById('af_test_file').addEventListener('change', async function() {
   const pathInput = document.getElementById('test_file_path');
-  if (this.files.length) {
-    pathInput.value = this.files[0].name;
-    pathInput.focus();
+  if (!this.files.length) return;
+
+  const fd = new FormData();
+  fd.append('file', this.files[0]);
+  fd.append('template_code', document.getElementById('template_code').value.trim());
+  fd.append('template_version', document.getElementById('template_version').value.trim());
+
+  pathInput.value = 'Uploading...';
+  try {
+    const resp = await fetch('/templates/upload-test-file', { method: 'POST', body: fd });
+    const data = await resp.json();
+    if (data.ok) {
+      pathInput.value = data.path;
+      // Trigger live file check
+      pathInput.dispatchEvent(new Event('input'));
+    } else {
+      pathInput.value = '';
+      alert('Upload failed: ' + (data.error || 'Unknown error'));
+    }
+  } catch (e) {
+    pathInput.value = '';
+    alert('Upload failed: ' + (e.message || 'Request failed'));
   }
 });
+
+// ── Live file path check ─────────────────────────────────────────────────────
+(function() {
+  const pathInput = document.getElementById('test_file_path');
+  const hintContainer = pathInput.parentElement.querySelector('.hint');
+
+  async function checkFilePath() {
+    const path = pathInput.value.trim();
+    if (!path) {
+      if (hintContainer) hintContainer.style.display = 'none';
+      return;
+    }
+    try {
+      const resp = await fetch('/templates/check-file', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ path })
+      });
+      const data = await resp.json();
+      // Create or update hint span
+      let hint = pathInput.parentElement.querySelector('.hint');
+      if (!hint) {
+        hint = document.createElement('span');
+        hint.className = 'hint';
+        pathInput.parentElement.appendChild(hint);
+      }
+      hint.style.display = '';
+      if (data.exists) {
+        hint.innerHTML = '<span style="color: #065f46;">File found</span>';
+      } else {
+        hint.innerHTML = '<span style="color: #ef4444;">File not found</span>';
+      }
+    } catch (e) { /* ignore network errors */ }
+  }
+
+  let debounceTimer;
+  pathInput.addEventListener('input', function() {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(checkFilePath, 400);
+  });
+  // Also check on page load if there's a value
+  if (pathInput.value.trim()) checkFilePath();
+})();
 
 // ── Initial render ────────────────────────────────────────────────────────────
 renderTable();
