@@ -124,6 +124,7 @@ async def start_processing(
     template_code: str = Form(...),
     template_version: str = Form(...),
     selected_file_path: str = Form(""),
+    output_format: str = Form("json"),
 ):
     dest = None
     file_path = None
@@ -174,9 +175,14 @@ async def start_processing(
     # Validate
     errors = validate_fields(active_fields, extracted)
 
+    fmt = output_format.strip().lower()
+    if fmt not in ("json", "csv"):
+        fmt = "json"
+
     session = {"source_filename": source_filename}
     session["template_code"] = template_code
     session["template_version"] = template_version
+    session["output_format"] = fmt
     session["extracted"] = extracted
     session["validation_errors"] = errors
     session["corrections"] = {}
@@ -188,7 +194,7 @@ async def start_processing(
 
     # All valid — generate output
     final_values = _build_final_values(session)
-    output_path = generate_output(source_filename, final_values)
+    output_path = generate_output(source_filename, final_values, fmt)
     session["output_path"] = output_path
     logger.info("Processing completed: status=success")
 
@@ -318,7 +324,8 @@ async def submit_corrections(request: Request):
     # All valid — generate output
     final_values = _build_final_values(session)
     source_filename = session["source_filename"]
-    output_path = generate_output(source_filename, final_values)
+    fmt = session.get("output_format", "json")
+    output_path = generate_output(source_filename, final_values, fmt)
     session["output_path"] = output_path
     logger.info("Processing completed: status=success")
 
@@ -334,11 +341,16 @@ async def result_page(request: Request):
         return _redirect("/process", "No result available — please process a file first", "error")
 
     output_path = session["output_path"]
+    fmt = session.get("output_format", "json")
+    preview = None
     try:
         with open(output_path, encoding="utf-8") as f:
-            json_preview = json.dumps(json.load(f), indent=2)
+            if fmt == "csv":
+                preview = f.read()
+            else:
+                preview = json.dumps(json.load(f), indent=2)
     except Exception:
-        json_preview = None
+        pass
 
     msg = request.query_params.get("msg", "")
     msg_type = request.query_params.get("msg_type", "success")
@@ -349,7 +361,8 @@ async def result_page(request: Request):
         {
             "output_path": output_path,
             "source_filename": session.get("source_filename"),
-            "json_preview": json_preview,
+            "output_format": fmt,
+            "preview": preview,
             "msg": msg,
             "msg_type": msg_type,
         },
@@ -366,8 +379,10 @@ async def download_output(request: Request):
     if not Path(output_path).exists():
         return _redirect("/process/result", "Output file not found on disk", "error")
 
+    fmt = session.get("output_format", "json")
+    media = "text/csv" if fmt == "csv" else "application/json"
     return FileResponse(
         path=output_path,
         filename=Path(output_path).name,
-        media_type="application/json",
+        media_type=media,
     )

@@ -7,7 +7,7 @@
 </div>
 
 <div class="flash flash--success">
-  All fields validated successfully. Output JSON has been generated.
+  All fields validated successfully. Output {{ output_format | upper }} has been generated.
 </div>
 
 <div class="result-info">
@@ -16,14 +16,14 @@
 </div>
 
 <div class="form-actions">
-  <a href="/process/download" class="btn btn--primary">Download JSON</a>
+  <a href="/process/download" class="btn btn--primary">Download {{ output_format | upper }}</a>
   <a href="/process" class="btn btn--secondary">Process Another File</a>
 </div>
 
-{% if json_preview %}
+{% if preview %}
 <section class="form-section" style="margin-top: 2rem;">
   <h2>Output Preview</h2>
-  <pre class="json-preview"><code>{{ json_preview }}</code></pre>
+  <pre class="json-preview"><code>{{ preview }}</code></pre>
 </section>
 {% endif %}
 {% endblock %}
