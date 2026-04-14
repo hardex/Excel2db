@@ -3,7 +3,7 @@
   "template_version": "2.0",
   "description": "test",
   "is_default": true,
-  "test_file_path": "Trading 212.xlsx",
+  "test_file_path": "/Users/oleksandr/Documents/dev/ai/Excel2db/uploads/test_Pricing_2.0.xlsx",
   "fields": [
     {
       "field_code": "ClientName",
@@ -59,6 +59,28 @@
       "active": true,
       "raw_cell_value": false,
       "description": ""
+    },
+    {
+      "field_code": "CompanyOverview",
+      "field_name": "Company Overview",
+      "sheet": "Intro",
+      "cell": "B5",
+      "value_type": "string",
+      "allow_empty": false,
+      "active": true,
+      "raw_cell_value": false,
+      "description": ""
+    },
+    {
+      "field_code": "AlignmentGoals",
+      "field_name": "Alignment with VE Corporate goals",
+      "sheet": "Intro",
+      "cell": "B7",
+      "value_type": "string",
+      "allow_empty": false,
+      "active": true,
+      "raw_cell_value": false,
+      "description": "Alignment with VE Corporate goals: (How does this deal support VE\u2019s corporate goals?"
     }
   ]
 }

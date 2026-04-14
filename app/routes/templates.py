@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 
 from fastapi import APIRouter, Form, Request, UploadFile, File
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
 from app.models.schemas import FieldModel, TemplateModel
@@ -121,6 +121,15 @@ async def template_new_submit(request: Request):
 
     test_file_path = str(form_dict.get("test_file_path", "")).strip()
 
+    # Save uploaded test file if provided
+    test_file = form_dict.get("test_file")
+    if test_file and hasattr(test_file, "filename") and test_file.filename and test_file.filename.endswith(".xlsx"):
+        saved_path = UPLOADS_DIR / f"test_{template_code}_{template_version}.xlsx"
+        content = await test_file.read()
+        with open(saved_path, "wb") as f_out:
+            f_out.write(content)
+        test_file_path = str(saved_path.resolve())
+
     # Determine if this should be default
     all_tmpl = list_templates()
     is_default = form_dict.get("is_default") in ("on", "true", "1") or len(all_tmpl) == 0
@@ -207,6 +216,15 @@ async def template_edit_submit(request: Request, code: str, version: str):
     test_file_path = str(form_dict.get("test_file_path", "")).strip()
     if not test_file_path:
         test_file_path = existing.test_file_path
+
+    # Save uploaded test file if provided
+    test_file = form_dict.get("test_file")
+    if test_file and hasattr(test_file, "filename") and test_file.filename and test_file.filename.endswith(".xlsx"):
+        saved_path = UPLOADS_DIR / f"test_{new_code}_{new_version}.xlsx"
+        content = await test_file.read()
+        with open(saved_path, "wb") as f_out:
+            f_out.write(content)
+        test_file_path = str(saved_path.resolve())
 
     updated = TemplateModel(
         template_code=new_code,
@@ -306,6 +324,34 @@ async def test_cell(
         return RedirectResponse(url=f"{base}?test_result={val_enc}", status_code=303)
 
 
+@router.post("/upload-test-file")
+async def upload_test_file(
+    file: UploadFile = File(...),
+    template_code: str = Form(""),
+    template_version: str = Form(""),
+):
+    """AJAX endpoint: upload test file and return its saved path."""
+    if not file.filename or not file.filename.endswith(".xlsx"):
+        return JSONResponse({"ok": False, "error": "Only .xlsx files are accepted"})
+
+    code = template_code.strip() or "unsaved"
+    ver = template_version.strip() or "draft"
+    saved_path = UPLOADS_DIR / f"test_{code}_{ver}.xlsx"
+    content = await file.read()
+    with open(saved_path, "wb") as f_out:
+        f_out.write(content)
+    return JSONResponse({"ok": True, "path": str(saved_path.resolve())})
+
+
+@router.post("/check-file")
+async def check_file(request: Request):
+    data = await request.json()
+    file_path = data.get("path", "").strip()
+    if not file_path:
+        return JSONResponse({"exists": False})
+    return JSONResponse({"exists": Path(file_path).exists()})
+
+
 @router.post("/check-cell")
 async def check_cell(
     file: UploadFile = File(None),
@@ -318,7 +364,6 @@ async def check_cell(
 ):
     """AJAX endpoint: read a single cell, validate, and return JSON result."""
     import uuid
-    from fastapi.responses import JSONResponse
     from app.services.validation_service import _validate_field
     from app.models.schemas import FieldModel
 
