@@ -8,6 +8,7 @@
 </div>
 
 <p>
+  File: <strong>{{ source_filename }}</strong><br />
   Template: <strong>{{ template.template_code }} {{ template.template_version }}</strong> —
   {{ invalid_fields | length }} field(s) require correction.
 </p>
@@ -50,7 +51,7 @@
                  name="correction_{{ row.field.field_code }}"
                  value="{{ row.corrected or '' }}"
                  class="correction-input"
-                 placeholder="Enter corrected value" />
+                 placeholder="{% if row.field.value_type == 'date' %}e.g. MM/DD/YYYY{% else %}Enter corrected value{% endif %}" />
         </td>
       </tr>
       {% endfor %}

@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import APIRouter, File, Form, Request, UploadFile
-from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
 from app.models.schemas import FieldModel
@@ -98,27 +98,57 @@ async def process_page(request: Request):
     )
 
 
+@router.post("/list-files")
+async def list_folder_files(request: Request):
+    """AJAX endpoint: list .xlsx files in a given folder."""
+    data = await request.json()
+    folder = data.get("path", "").strip()
+    if not folder:
+        return JSONResponse({"ok": False, "error": "Folder path is required"})
+    p = Path(folder)
+    if not p.exists():
+        return JSONResponse({"ok": False, "error": "Folder not found"})
+    if not p.is_dir():
+        return JSONResponse({"ok": False, "error": "Path is not a folder"})
+    files = sorted(
+        [f.name for f in p.iterdir() if f.is_file() and f.suffix.lower() == ".xlsx"],
+        key=str.lower,
+    )
+    return JSONResponse({"ok": True, "files": files, "folder": str(p.resolve())})
+
+
 @router.post("/start")
 async def start_processing(
     request: Request,
-    file: UploadFile = File(...),
+    file: UploadFile = File(None),
     template_code: str = Form(...),
     template_version: str = Form(...),
+    selected_file_path: str = Form(""),
 ):
-    # Validate and save file
-    if not file.filename or not file.filename.endswith(".xlsx"):
-        return _redirect("/process", "Only .xlsx files are accepted", "error")
+    dest = None
+    file_path = None
+    source_filename = None
 
-    source_filename = file.filename
-    logger.info(f"Upload started: source={source_filename}")
-
-    dest = UPLOADS_DIR / source_filename
-    content = await file.read()
-    with open(dest, "wb") as f_out:
-        f_out.write(content)
-
-    logger.info(f"Upload completed: source={source_filename}")
-    file_path = str(dest)
+    # Option 1: file selected from folder listing
+    if selected_file_path.strip():
+        p = Path(selected_file_path.strip())
+        if not p.exists() or not p.suffix.lower() == ".xlsx":
+            return _redirect("/process", "Selected file not found or not .xlsx", "error")
+        file_path = str(p)
+        source_filename = p.name
+        logger.info(f"File from folder: source={source_filename}")
+    # Option 2: uploaded file
+    elif file and file.filename and file.filename.endswith(".xlsx"):
+        source_filename = file.filename
+        logger.info(f"Upload started: source={source_filename}")
+        dest = UPLOADS_DIR / source_filename
+        content = await file.read()
+        with open(dest, "wb") as f_out:
+            f_out.write(content)
+        logger.info(f"Upload completed: source={source_filename}")
+        file_path = str(dest)
+    else:
+        return _redirect("/process", "Please select an Excel file (.xlsx)", "error")
 
     tmpl = get_template(template_code, template_version)
     if not tmpl:
@@ -136,7 +166,8 @@ async def start_processing(
         return _redirect("/process", f"Failed to read workbook: {exc}", "error")
     finally:
         try:
-            dest.unlink()
+            if dest:
+                dest.unlink()
         except Exception:
             pass
 
@@ -211,6 +242,7 @@ async def correct_page(request: Request):
         {
             "invalid_fields": invalid_fields,
             "template": tmpl,
+            "source_filename": session.get("source_filename", ""),
             "msg": msg,
             "msg_type": msg_type,
         },

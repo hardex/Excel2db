@@ -354,3 +354,146 @@
 2026-04-14 12:09:15 INFO Read field: field_code=AlignmentGoals, sheet=Intro, cell=B7, raw=False
 2026-04-14 12:09:15 INFO Output created: outputs/Trading 212.json
 2026-04-14 12:09:15 INFO Processing completed: status=success
+2026-04-14 12:23:35 INFO File from folder: source=Example end state.xlsx
+2026-04-14 12:23:35 INFO Template selected: template_code=Pricing, template_version=2.0
+2026-04-14 12:23:35 INFO Processing started: source=Example end state.xlsx
+2026-04-14 12:23:35 INFO Workbook opened successfully
+2026-04-14 12:23:35 INFO Read field: field_code=ClientName, sheet=Intro, cell=C3, raw=False
+2026-04-14 12:23:35 INFO Read field: field_code=OpportunityID, sheet=Intro, cell=E2, raw=False
+2026-04-14 12:23:35 INFO Read field: field_code=qtrBeginning, sheet=Intro, cell=D21, raw=False
+2026-04-14 12:23:35 INFO Read field: field_code=qtrEnding, sheet=Intro, cell=D22, raw=False
+2026-04-14 12:23:35 INFO Read field: field_code=DealTerm, sheet=Intro, cell=D18, raw=False
+2026-04-14 12:23:35 INFO Read field: field_code=CompanyOverview, sheet=Intro, cell=B5, raw=False
+2026-04-14 12:23:35 INFO Read field: field_code=AlignmentGoals, sheet=Intro, cell=B7, raw=False
+2026-04-14 12:23:35 WARNING Validation failed: field_code=qtrBeginning, rule=date/allow_empty=False, value=None
+2026-04-14 12:23:35 WARNING Validation failed: field_code=qtrEnding, rule=date/allow_empty=False, value=None
+2026-04-14 12:23:35 WARNING Validation failed: field_code=DealTerm, rule=number/allow_empty=False, value=None
+2026-04-14 12:23:35 WARNING Validation failed: field_code=CompanyOverview, rule=string/allow_empty=False, value=None
+2026-04-14 12:23:35 WARNING Validation failed: field_code=AlignmentGoals, rule=string/allow_empty=False, value=None
+2026-04-14 12:25:28 INFO File from folder: source=Example end state.xlsx
+2026-04-14 12:25:28 INFO Template selected: template_code=Pricing, template_version=2.0
+2026-04-14 12:25:28 INFO Processing started: source=Example end state.xlsx
+2026-04-14 12:25:28 INFO Workbook opened successfully
+2026-04-14 12:25:28 INFO Read field: field_code=ClientName, sheet=Intro, cell=C3, raw=False
+2026-04-14 12:25:28 INFO Read field: field_code=OpportunityID, sheet=Intro, cell=E2, raw=False
+2026-04-14 12:25:28 INFO Read field: field_code=qtrBeginning, sheet=Intro, cell=D21, raw=False
+2026-04-14 12:25:28 INFO Read field: field_code=qtrEnding, sheet=Intro, cell=D22, raw=False
+2026-04-14 12:25:28 INFO Read field: field_code=DealTerm, sheet=Intro, cell=D18, raw=False
+2026-04-14 12:25:28 INFO Read field: field_code=CompanyOverview, sheet=Intro, cell=B5, raw=False
+2026-04-14 12:25:28 INFO Read field: field_code=AlignmentGoals, sheet=Intro, cell=B7, raw=False
+2026-04-14 12:25:28 WARNING Validation failed: field_code=qtrBeginning, rule=date/allow_empty=False, value=None
+2026-04-14 12:25:28 WARNING Validation failed: field_code=qtrEnding, rule=date/allow_empty=False, value=None
+2026-04-14 12:25:28 WARNING Validation failed: field_code=DealTerm, rule=number/allow_empty=False, value=None
+2026-04-14 12:25:28 WARNING Validation failed: field_code=CompanyOverview, rule=string/allow_empty=False, value=None
+2026-04-14 12:25:28 WARNING Validation failed: field_code=AlignmentGoals, rule=string/allow_empty=False, value=None
+2026-04-14 12:26:09 INFO File from folder: source=RBI Group.xlsx
+2026-04-14 12:26:09 INFO Template selected: template_code=Pricing, template_version=2.0
+2026-04-14 12:26:09 INFO Processing started: source=RBI Group.xlsx
+2026-04-14 12:26:09 INFO Workbook opened successfully
+2026-04-14 12:26:09 INFO Read field: field_code=ClientName, sheet=Intro, cell=C3, raw=False
+2026-04-14 12:26:09 INFO Read field: field_code=OpportunityID, sheet=Intro, cell=E2, raw=False
+2026-04-14 12:26:09 INFO Read field: field_code=qtrBeginning, sheet=Intro, cell=D21, raw=False
+2026-04-14 12:26:09 INFO Read field: field_code=qtrEnding, sheet=Intro, cell=D22, raw=False
+2026-04-14 12:26:09 INFO Read field: field_code=DealTerm, sheet=Intro, cell=D18, raw=False
+2026-04-14 12:26:09 INFO Read field: field_code=CompanyOverview, sheet=Intro, cell=B5, raw=False
+2026-04-14 12:26:09 INFO Read field: field_code=AlignmentGoals, sheet=Intro, cell=B7, raw=False
+2026-04-14 12:26:09 INFO Output created: outputs/RBI Group.json
+2026-04-14 12:26:09 INFO Processing completed: status=success
+2026-04-14 12:27:57 INFO File from folder: source=Viseca.xlsx
+2026-04-14 12:27:57 INFO Template selected: template_code=Pricing, template_version=2.0
+2026-04-14 12:27:57 INFO Processing started: source=Viseca.xlsx
+2026-04-14 12:27:57 INFO Workbook opened successfully
+2026-04-14 12:27:57 INFO Read field: field_code=ClientName, sheet=Intro, cell=C3, raw=False
+2026-04-14 12:27:57 INFO Read field: field_code=OpportunityID, sheet=Intro, cell=E2, raw=False
+2026-04-14 12:27:57 INFO Read field: field_code=qtrBeginning, sheet=Intro, cell=D21, raw=False
+2026-04-14 12:27:57 INFO Read field: field_code=qtrEnding, sheet=Intro, cell=D22, raw=False
+2026-04-14 12:27:57 INFO Read field: field_code=DealTerm, sheet=Intro, cell=D18, raw=False
+2026-04-14 12:27:57 INFO Read field: field_code=CompanyOverview, sheet=Intro, cell=B5, raw=False
+2026-04-14 12:27:57 INFO Read field: field_code=AlignmentGoals, sheet=Intro, cell=B7, raw=False
+2026-04-14 12:27:57 WARNING Validation failed: field_code=qtrBeginning, rule=date/allow_empty=False, value=None
+2026-04-14 12:27:57 WARNING Validation failed: field_code=qtrEnding, rule=date/allow_empty=False, value=None
+2026-04-14 12:27:57 WARNING Validation failed: field_code=CompanyOverview, rule=string/allow_empty=False, value=None
+2026-04-14 12:27:57 WARNING Validation failed: field_code=AlignmentGoals, rule=string/allow_empty=False, value=None
+2026-04-14 12:33:00 INFO File from folder: source=Viseca копія.xlsx
+2026-04-14 12:33:00 INFO Template selected: template_code=Pricing, template_version=2.0
+2026-04-14 12:33:00 INFO Processing started: source=Viseca копія.xlsx
+2026-04-14 12:33:01 INFO Workbook opened successfully
+2026-04-14 12:33:01 INFO Read field: field_code=ClientName, sheet=Intro, cell=C3, raw=False
+2026-04-14 12:33:01 INFO Read field: field_code=OpportunityID, sheet=Intro, cell=E2, raw=False
+2026-04-14 12:33:01 INFO Read field: field_code=qtrBeginning, sheet=Intro, cell=D21, raw=False
+2026-04-14 12:33:01 INFO Read field: field_code=qtrEnding, sheet=Intro, cell=D22, raw=False
+2026-04-14 12:33:01 INFO Read field: field_code=DealTerm, sheet=Intro, cell=D18, raw=False
+2026-04-14 12:33:01 INFO Read field: field_code=CompanyOverview, sheet=Intro, cell=B5, raw=False
+2026-04-14 12:33:01 INFO Read field: field_code=AlignmentGoals, sheet=Intro, cell=B7, raw=False
+2026-04-14 12:33:01 WARNING Validation failed: field_code=qtrBeginning, rule=date/allow_empty=False, value=None
+2026-04-14 12:33:01 WARNING Validation failed: field_code=qtrEnding, rule=date/allow_empty=False, value=None
+2026-04-14 12:33:01 WARNING Validation failed: field_code=CompanyOverview, rule=string/allow_empty=False, value=None
+2026-04-14 12:33:01 WARNING Validation failed: field_code=AlignmentGoals, rule=string/allow_empty=False, value=None
+2026-04-14 12:33:40 INFO Manual correction: field_code=qtrBeginning, original_value=None, corrected_value='09/16/2020', corrected_at=2026-04-14T09:33:40.559891
+2026-04-14 12:33:40 INFO Manual correction: field_code=qtrEnding, original_value=None, corrected_value='09/16/2021', corrected_at=2026-04-14T09:33:40.559891
+2026-04-14 12:33:40 INFO Manual correction: field_code=CompanyOverview, original_value=None, corrected_value='test', corrected_at=2026-04-14T09:33:40.559891
+2026-04-14 12:33:40 INFO Manual correction: field_code=AlignmentGoals, original_value=None, corrected_value='test', corrected_at=2026-04-14T09:33:40.559891
+2026-04-14 12:33:40 INFO Output created: outputs/Viseca копія.json
+2026-04-14 12:33:40 INFO Processing completed: status=success
+2026-04-14 12:45:04 INFO Upload started: source=Viseca.xlsx
+2026-04-14 12:45:04 INFO Upload completed: source=Viseca.xlsx
+2026-04-14 12:45:04 INFO Template selected: template_code=Pricing, template_version=2.0
+2026-04-14 12:45:04 INFO Processing started: source=Viseca.xlsx
+2026-04-14 12:45:04 INFO Workbook opened successfully
+2026-04-14 12:45:04 INFO Read field: field_code=ClientName, sheet=Intro, cell=C3, raw=False
+2026-04-14 12:45:04 INFO Read field: field_code=OpportunityID, sheet=Intro, cell=E2, raw=False
+2026-04-14 12:45:04 INFO Read field: field_code=qtrBeginning, sheet=Intro, cell=D21, raw=False
+2026-04-14 12:45:04 INFO Read field: field_code=qtrEnding, sheet=Intro, cell=D22, raw=False
+2026-04-14 12:45:04 INFO Read field: field_code=DealTerm, sheet=Intro, cell=D18, raw=False
+2026-04-14 12:45:04 INFO Read field: field_code=CompanyOverview, sheet=Intro, cell=B5, raw=False
+2026-04-14 12:45:04 INFO Read field: field_code=AlignmentGoals, sheet=Intro, cell=B7, raw=False
+2026-04-14 12:45:04 WARNING Validation failed: field_code=qtrBeginning, rule=date/allow_empty=False, value=None
+2026-04-14 12:45:04 WARNING Validation failed: field_code=qtrEnding, rule=date/allow_empty=False, value=None
+2026-04-14 12:45:04 WARNING Validation failed: field_code=CompanyOverview, rule=string/allow_empty=False, value=None
+2026-04-14 12:45:04 WARNING Validation failed: field_code=AlignmentGoals, rule=string/allow_empty=False, value=None
+2026-04-14 12:54:02 INFO Upload started: source=RBI Group.xlsx
+2026-04-14 12:54:02 INFO Upload completed: source=RBI Group.xlsx
+2026-04-14 12:54:02 INFO Template selected: template_code=Pricing, template_version=2.0
+2026-04-14 12:54:02 INFO Processing started: source=RBI Group.xlsx
+2026-04-14 12:54:02 INFO Workbook opened successfully
+2026-04-14 12:54:02 INFO Read field: field_code=ClientName, sheet=Intro, cell=C3, raw=False
+2026-04-14 12:54:02 INFO Read field: field_code=OpportunityID, sheet=Intro, cell=E2, raw=False
+2026-04-14 12:54:02 INFO Read field: field_code=qtrBeginning, sheet=Intro, cell=D21, raw=False
+2026-04-14 12:54:02 INFO Read field: field_code=qtrEnding, sheet=Intro, cell=D22, raw=False
+2026-04-14 12:54:02 INFO Read field: field_code=DealTerm, sheet=Intro, cell=D18, raw=False
+2026-04-14 12:54:02 INFO Read field: field_code=CompanyOverview, sheet=Intro, cell=B5, raw=False
+2026-04-14 12:54:02 INFO Read field: field_code=AlignmentGoals, sheet=Intro, cell=B7, raw=False
+2026-04-14 12:54:02 INFO Output created: outputs/RBI Group.json
+2026-04-14 12:54:02 INFO Processing completed: status=success
+2026-04-14 12:54:18 INFO Upload started: source=Viseca копія.xlsx
+2026-04-14 12:54:18 INFO Upload completed: source=Viseca копія.xlsx
+2026-04-14 12:54:18 INFO Template selected: template_code=Pricing, template_version=2.0
+2026-04-14 12:54:18 INFO Processing started: source=Viseca копія.xlsx
+2026-04-14 12:54:18 INFO Workbook opened successfully
+2026-04-14 12:54:18 INFO Read field: field_code=ClientName, sheet=Intro, cell=C3, raw=False
+2026-04-14 12:54:18 INFO Read field: field_code=OpportunityID, sheet=Intro, cell=E2, raw=False
+2026-04-14 12:54:18 INFO Read field: field_code=qtrBeginning, sheet=Intro, cell=D21, raw=False
+2026-04-14 12:54:18 INFO Read field: field_code=qtrEnding, sheet=Intro, cell=D22, raw=False
+2026-04-14 12:54:18 INFO Read field: field_code=DealTerm, sheet=Intro, cell=D18, raw=False
+2026-04-14 12:54:18 INFO Read field: field_code=CompanyOverview, sheet=Intro, cell=B5, raw=False
+2026-04-14 12:54:18 INFO Read field: field_code=AlignmentGoals, sheet=Intro, cell=B7, raw=False
+2026-04-14 12:54:18 WARNING Validation failed: field_code=qtrBeginning, rule=date/allow_empty=False, value=None
+2026-04-14 12:54:18 WARNING Validation failed: field_code=qtrEnding, rule=date/allow_empty=False, value=None
+2026-04-14 12:54:18 WARNING Validation failed: field_code=CompanyOverview, rule=string/allow_empty=False, value=None
+2026-04-14 12:54:18 WARNING Validation failed: field_code=AlignmentGoals, rule=string/allow_empty=False, value=None
+2026-04-14 12:54:31 INFO Upload started: source=Viseca копія.xlsx
+2026-04-14 12:54:31 INFO Upload completed: source=Viseca копія.xlsx
+2026-04-14 12:54:31 INFO Template selected: template_code=Pricing, template_version=2.0
+2026-04-14 12:54:31 INFO Processing started: source=Viseca копія.xlsx
+2026-04-14 12:54:31 INFO Workbook opened successfully
+2026-04-14 12:54:31 INFO Read field: field_code=ClientName, sheet=Intro, cell=C3, raw=False
+2026-04-14 12:54:31 INFO Read field: field_code=OpportunityID, sheet=Intro, cell=E2, raw=False
+2026-04-14 12:54:31 INFO Read field: field_code=qtrBeginning, sheet=Intro, cell=D21, raw=False
+2026-04-14 12:54:31 INFO Read field: field_code=qtrEnding, sheet=Intro, cell=D22, raw=False
+2026-04-14 12:54:31 INFO Read field: field_code=DealTerm, sheet=Intro, cell=D18, raw=False
+2026-04-14 12:54:31 INFO Read field: field_code=CompanyOverview, sheet=Intro, cell=B5, raw=False
+2026-04-14 12:54:31 INFO Read field: field_code=AlignmentGoals, sheet=Intro, cell=B7, raw=False
+2026-04-14 12:54:31 WARNING Validation failed: field_code=qtrBeginning, rule=date/allow_empty=False, value=None
+2026-04-14 12:54:31 WARNING Validation failed: field_code=qtrEnding, rule=date/allow_empty=False, value=None
+2026-04-14 12:54:31 WARNING Validation failed: field_code=CompanyOverview, rule=string/allow_empty=False, value=None
+2026-04-14 12:54:31 WARNING Validation failed: field_code=AlignmentGoals, rule=string/allow_empty=False, value=None
