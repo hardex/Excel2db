@@ -33,6 +33,13 @@
         <p class="hint">No templates available. <a href="/templates/new">Create one first</a>.</p>
         {% endif %}
       </div>
+      <div class="form-group">
+        <label for="output_format">Output Format</label>
+        <select id="output_format" name="output_format">
+          <option value="json">JSON</option>
+          <option value="csv">CSV</option>
+        </select>
+      </div>
       {% if all_templates %}
       <div class="form-group" style="align-self: flex-end;">
         <button type="submit" class="btn btn--primary">Start Processing</button>
