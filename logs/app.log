@@ -539,3 +539,17 @@
 2026-04-14 13:15:31 INFO Read field: field_code=AlignmentGoals, sheet=Intro, cell=B7, raw=False
 2026-04-14 13:15:31 INFO Output created: outputs/RBI Group.csv
 2026-04-14 13:15:31 INFO Processing completed: status=success
+2026-04-14 18:59:33 INFO Upload started: source=RBI Group.xlsx
+2026-04-14 18:59:33 INFO Upload completed: source=RBI Group.xlsx
+2026-04-14 18:59:33 INFO Template selected: template_code=Pricing, template_version=2.0
+2026-04-14 18:59:33 INFO Processing started: source=RBI Group.xlsx
+2026-04-14 18:59:33 INFO Workbook opened successfully
+2026-04-14 18:59:33 INFO Read field: field_code=ClientName, sheet=Intro, cell=C3, raw=False
+2026-04-14 18:59:33 INFO Read field: field_code=OpportunityID, sheet=Intro, cell=E2, raw=False
+2026-04-14 18:59:33 INFO Read field: field_code=qtrBeginning, sheet=Intro, cell=D21, raw=False
+2026-04-14 18:59:33 INFO Read field: field_code=qtrEnding, sheet=Intro, cell=D22, raw=False
+2026-04-14 18:59:33 INFO Read field: field_code=DealTerm, sheet=Intro, cell=D18, raw=False
+2026-04-14 18:59:33 INFO Read field: field_code=CompanyOverview, sheet=Intro, cell=B5, raw=False
+2026-04-14 18:59:33 INFO Read field: field_code=AlignmentGoals, sheet=Intro, cell=B7, raw=False
+2026-04-14 18:59:33 INFO Output created: outputs/RBI Group.csv
+2026-04-14 18:59:33 INFO Processing completed: status=success
