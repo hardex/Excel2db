@@ -16,6 +16,8 @@ from app.services import (
     template_exists,
     read_single_cell,
     get_logger,
+    template_to_stage2,
+    export_to_file,
 )
 
 router = APIRouter(prefix="/templates", tags=["templates"])
@@ -48,6 +50,7 @@ def _parse_fields_from_form(form: dict) -> list[FieldModel]:
             FieldModel(
                 field_code=str(fc).strip(),
                 field_name=str(form.get(f"field_name_{index}", "")).strip(),
+                field_name_cell=str(form.get(f"field_name_cell_{index}", "")).strip(),
                 sheet=str(form.get(f"sheet_{index}", "")).strip(),
                 cell=str(form.get(f"cell_{index}", "")).strip(),
                 value_type=str(form.get(f"value_type_{index}", "string")).strip(),
@@ -55,6 +58,7 @@ def _parse_fields_from_form(form: dict) -> list[FieldModel]:
                 active=form.get(f"active_{index}") in ("on", "true", "1", True),
                 raw_cell_value=form.get(f"raw_cell_value_{index}") in ("on", "true", "1", True),
                 description=str(form.get(f"description_{index}", "")).strip(),
+                ai_prompt=str(form.get(f"ai_prompt_{index}", "")).strip(),
             )
         )
         index += 1
@@ -361,8 +365,15 @@ async def check_cell(
     allow_empty: str = Form("false"),
     raw: str = Form("true"),
     stored_test_file: str = Form(""),
+    field_name: str = Form(""),
+    field_name_cell: str = Form(""),
 ):
-    """AJAX endpoint: read a single cell, validate, and return JSON result."""
+    """AJAX endpoint: mirrors the AI prompt checks.
+
+    1) If `field_name_cell` is provided, read it and verify it equals `field_name`.
+    2) Read `cell` (value cell — may be a range or comma-separated) and validate
+       it against `value_type` + `allow_empty`.
+    """
     import uuid
     from app.services.validation_service import _validate_field
     from app.models.schemas import FieldModel
@@ -371,7 +382,6 @@ async def check_cell(
         temp_path = None
         file_path = None
 
-        # Prefer uploaded file; fall back to stored path on disk
         if file and file.filename and file.filename.endswith(".xlsx"):
             temp_path = UPLOADS_DIR / f"_check_{uuid.uuid4().hex}.xlsx"
             with open(temp_path, "wb") as f_out:
@@ -384,7 +394,39 @@ async def check_cell(
             return JSONResponse({"ok": False, "error": "Select or enter a valid .xlsx test file path"})
 
         is_raw = raw in ("true", "on", "1")
-        result = read_single_cell(file_path, sheet.strip(), cell.strip().upper(), raw=is_raw)
+        sheet_s = sheet.strip()
+
+        # --- Label check (Field Name vs Field Name Cell) -------------------------
+        label_check = None
+        fnc = field_name_cell.strip()
+        fn = field_name.strip()
+        if fnc:
+            label_res = read_single_cell(file_path, sheet_s, fnc, raw=False)
+            if label_res["error"]:
+                label_check = {
+                    "cell": fnc,
+                    "value": None,
+                    "expected": fn,
+                    "ok": False,
+                    "error": label_res["error"],
+                }
+            else:
+                actual = label_res["value"]
+                actual_s = "" if actual is None else str(actual).strip()
+                matches = bool(fn) and actual_s == fn
+                label_check = {
+                    "cell": fnc,
+                    "value": actual_s if actual is not None else "(empty)",
+                    "expected": fn,
+                    "ok": matches,
+                    "error": None if matches else (
+                        "Field Name is empty — cannot compare." if not fn
+                        else f"Label at {fnc} is '{actual_s}', expected '{fn}'."
+                    ),
+                }
+
+        # --- Value cell read + type validation -----------------------------------
+        value_res = read_single_cell(file_path, sheet_s, cell.strip(), raw=is_raw, value_type=value_type.strip())
 
         if temp_path:
             try:
@@ -392,18 +434,21 @@ async def check_cell(
             except Exception:
                 pass
 
-        if result["error"]:
-            return JSONResponse({"ok": False, "error": str(result["error"])})
+        if value_res["error"]:
+            return JSONResponse({
+                "ok": False,
+                "error": str(value_res["error"]),
+                "label_check": label_check,
+            })
 
-        val = result["value"]
+        val = value_res["value"]
         display = str(val) if val is not None else "(empty)"
 
-        # Validate against field type rules
         field = FieldModel(
             field_code="_check",
-            field_name="_check",
-            sheet=sheet.strip(),
-            cell=cell.strip().upper(),
+            field_name=fn or "_check",
+            sheet=sheet_s,
+            cell=cell.strip(),
             value_type=value_type.strip(),
             allow_empty=allow_empty in ("true", "on", "1"),
         )
@@ -413,7 +458,101 @@ async def check_cell(
             "ok": True,
             "value": display,
             "validation_error": validation_error,
+            "label_check": label_check,
         })
     except Exception as exc:
         logger.error(f"Check cell failed: {exc}")
         return JSONResponse({"ok": False, "error": str(exc)})
+
+
+# ─── Stage 2 Export & Feedback ────────────────────────────────────────────────
+
+EXPORT_DIR = Path("exports")
+EXPORT_DIR.mkdir(parents=True, exist_ok=True)
+
+
+@router.get("/{code}/{version}/export")
+async def export_stage2(code: str, version: str):
+    """Export a template as Stage 2 mapping JSON (download)."""
+    from fastapi.responses import FileResponse
+
+    tmpl = get_template(code, version)
+    if not tmpl:
+        return _redirect("/templates", f"Template {code}_{version} not found", "error")
+
+    filename = f"{code}_{version}_stage2.json"
+    export_path = EXPORT_DIR / filename
+    export_to_file(tmpl, str(export_path))
+
+    return FileResponse(
+        path=str(export_path),
+        filename=filename,
+        media_type="application/json",
+    )
+
+
+@router.post("/{code}/{version}/export-to-processor")
+async def export_to_processor(request: Request, code: str, version: str):
+    """Export mapping directly to the ed_py_ai processor mappings folder."""
+    tmpl = get_template(code, version)
+    if not tmpl:
+        return JSONResponse({"ok": False, "error": f"Template {code}_{version} not found"})
+
+    data = await request.json()
+    target_folder = data.get("target_folder", "")
+
+    if not target_folder:
+        # Default: try to find ed_py_ai relative to this project
+        for candidate in [
+            Path(__file__).resolve().parent.parent.parent.parent / "ed_py_ai" / "excel_processor" / "mappings",
+            Path.home() / "Documents" / "dev" / "ai" / "ed_py_ai" / "excel_processor" / "mappings",
+        ]:
+            if candidate.parent.exists():
+                target_folder = str(candidate)
+                break
+
+    if not target_folder:
+        return JSONResponse({"ok": False, "error": "Could not determine target folder. Provide target_folder."})
+
+    filename = f"{code}_{version}.json"
+    export_path = Path(target_folder) / filename
+    export_to_file(tmpl, str(export_path))
+
+    return JSONResponse({"ok": True, "path": str(export_path)})
+
+
+@router.post("/{code}/{version}/import-feedback")
+async def import_feedback(request: Request, code: str, version: str):
+    """Import Stage 2 feedback report to update field AI prompts and search areas.
+
+    Expects JSON: { "field_code": { "valid": false, "reason": "...", "suggestion": "..." }, ... }
+    """
+    tmpl = get_template(code, version)
+    if not tmpl:
+        return JSONResponse({"ok": False, "error": f"Template {code}_{version} not found"})
+
+    feedback = await request.json()
+    updated_count = 0
+
+    for field in tmpl.fields:
+        fb = feedback.get(field.field_code)
+        if not fb or fb.get("valid", True):
+            continue
+
+        # Append feedback to description for user review
+        reason = fb.get("reason", "")
+        suggestion = fb.get("suggestion", "")
+        feedback_note = f" [Stage 2 feedback: {reason}"
+        if suggestion:
+            feedback_note += f" Suggestion: {suggestion}"
+        feedback_note += "]"
+
+        if feedback_note not in field.description:
+            field.description += feedback_note
+            updated_count += 1
+
+    if updated_count > 0:
+        save_template(tmpl)
+        logger.info(f"Imported feedback for {code}_{version}: {updated_count} fields updated")
+
+    return JSONResponse({"ok": True, "updated": updated_count})

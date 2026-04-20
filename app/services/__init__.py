@@ -11,6 +11,7 @@ from .template_service import (
 from .excel_service import read_workbook_fields, read_single_cell, get_sheet_names
 from .validation_service import validate_fields
 from .output_service import generate_output, get_output_path
+from .export_service import template_to_stage2, export_to_file
 
 __all__ = [
     "get_logger",
@@ -28,4 +29,6 @@ __all__ = [
     "validate_fields",
     "generate_output",
     "get_output_path",
+    "template_to_stage2",
+    "export_to_file",
 ]
