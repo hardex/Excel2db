@@ -82,11 +82,13 @@
     <table class="fields-table" id="fields-table">
       <thead>
         <tr>
+          <th style="width: 1.5rem;" title="Drag to reorder"></th>
           <th>#</th>
           <th>Field Code</th>
           <th>Field Name</th>
+          <th>Field Name Cell</th>
           <th>Sheet</th>
-          <th>Cell</th>
+          <th>Value Cell</th>
           <th>Type</th>
           <th>Allow Empty</th>
           <th>Active</th>
@@ -115,14 +117,18 @@
         <input type="text" id="af_field_name" placeholder="e.g. Customer Name" />
       </div>
       <div class="form-group">
+        <label for="af_field_name_cell">Field Name Cell</label>
+        <input type="text" id="af_field_name_cell" placeholder="e.g. D27 (label cell)" />
+      </div>
+      <div class="form-group">
         <label for="af_sheet">Sheet <span class="required">*</span></label>
         <input type="text" id="af_sheet" placeholder="e.g. Sheet1" />
       </div>
-      <div class="form-group">
-        <label for="af_cell">Cell <span class="required">*</span></label>
-        <input type="text" id="af_cell" placeholder="e.g. C7" />
-      </div>
-      <div class="form-group--full" style="display: flex; flex-direction: row; gap: 1.5rem; align-items: flex-end; flex-wrap: wrap;">
+      <div class="form-group form-group--full" style="display: flex; flex-direction: row; gap: 1.5rem; align-items: flex-end; flex-wrap: wrap;">
+        <div style="flex: 1 1 16rem; min-width: 12rem;">
+          <label for="af_cell">Value Cell <span class="required">*</span></label>
+          <input type="text" id="af_cell" placeholder="e.g. C7, E28:I32, K10" style="width: 100%;" />
+        </div>
         <div>
           <label for="af_value_type">Value Type</label>
           <select id="af_value_type">
@@ -132,7 +138,7 @@
           </select>
         </div>
         <label class="checkbox-label">
-          <input type="checkbox" id="af_allow_empty" />
+          <input type="checkbox" id="af_allow_empty" checked />
           Allow Empty
         </label>
         <label class="checkbox-label">
@@ -147,6 +153,13 @@
       <div class="form-group form-group--full">
         <label for="af_description">Description</label>
         <input type="text" id="af_description" placeholder="Optional" />
+      </div>
+
+      <!-- AI Prompt Validation & Data Mapping -->
+      <div class="form-group form-group--full" style="border-top: 1px solid #e5e7eb; padding-top: 0.75rem; margin-top: 0.25rem;">
+        <label for="af_ai_prompt">AI Prompt Validation &amp; Data Mapping</label>
+        <textarea id="af_ai_prompt" rows="3" placeholder="Auto-generated from Field Name, Field Name Cell, Value Cell and Value Type" style="resize: vertical;"></textarea>
+        <span class="hint">Auto-updated when Field Name, Field Name Cell, Value Cell or Value Type changes. You can still edit manually after.</span>
       </div>
 
       <div class="form-group--full" style="display: flex; flex-direction: row; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
@@ -168,6 +181,14 @@
   <div class="form-actions">
     <button type="submit" class="btn btn--primary">Save Template</button>
     <a href="/templates" class="btn btn--secondary">Cancel</a>
+    {% if not is_new %}
+    <span style="margin-left: auto; display: flex; gap: 0.5rem; align-items: center;">
+      <a href="/templates/{{ template.template_code }}/{{ template.template_version }}/export"
+         class="btn btn--secondary" title="Download Stage 2 mapping JSON">Export Stage 2 JSON</a>
+      <button type="button" class="btn btn--secondary" onclick="exportToProcessor()" title="Push mapping directly to ed_py_ai processor">Push to Processor</button>
+      <span id="export-status" class="hint" style="display:none;"></span>
+    </span>
+    {% endif %}
   </div>
 </form>
 
@@ -219,6 +240,71 @@ function setEditMode(index) {
   });
 }
 
+// ── Drag & drop reordering ────────────────────────────────────────────────────
+let dragSrcIndex = null;
+
+function clearDragMarkers() {
+  tbody.querySelectorAll('tr').forEach(row => {
+    row.style.borderTop = '';
+    row.style.borderBottom = '';
+    row.style.opacity = '';
+  });
+}
+
+function attachDragHandlers(tr) {
+  tr.addEventListener('dragstart', e => {
+    dragSrcIndex = parseInt(tr.dataset.index, 10);
+    tr.style.opacity = '0.4';
+    try {
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', String(dragSrcIndex));
+    } catch (_) { /* some browsers */ }
+  });
+  tr.addEventListener('dragover', e => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    const rect = tr.getBoundingClientRect();
+    const after = (e.clientY - rect.top) > rect.height / 2;
+    tbody.querySelectorAll('tr').forEach(r => { r.style.borderTop = ''; r.style.borderBottom = ''; });
+    tr.style[after ? 'borderBottom' : 'borderTop'] = '2px solid #3b82f6';
+  });
+  tr.addEventListener('dragleave', () => {
+    tr.style.borderTop = '';
+    tr.style.borderBottom = '';
+  });
+  tr.addEventListener('drop', e => {
+    e.preventDefault();
+    if (dragSrcIndex === null) return;
+    const dstIndexRaw = parseInt(tr.dataset.index, 10);
+    if (Number.isNaN(dstIndexRaw)) return;
+    const rect = tr.getBoundingClientRect();
+    const after = (e.clientY - rect.top) > rect.height / 2;
+    let dst = dstIndexRaw + (after ? 1 : 0);
+    if (dragSrcIndex < dst) dst -= 1;
+    moveField(dragSrcIndex, dst);
+    dragSrcIndex = null;
+    clearDragMarkers();
+  });
+  tr.addEventListener('dragend', () => {
+    dragSrcIndex = null;
+    clearDragMarkers();
+  });
+}
+
+function moveField(from, to) {
+  if (from === to || from < 0 || to < 0 || from >= fields.length) return;
+  if (to > fields.length) to = fields.length;
+  const [moved] = fields.splice(from, 1);
+  fields.splice(to, 0, moved);
+  // Keep editingIndex pointing at the same field
+  if (editingIndex !== null) {
+    if (editingIndex === from) editingIndex = to;
+    else if (from < editingIndex && to >= editingIndex) editingIndex -= 1;
+    else if (from > editingIndex && to <= editingIndex) editingIndex += 1;
+  }
+  renderTable();
+}
+
 // ── Render ────────────────────────────────────────────────────────────────────
 function renderTable() {
   tbody.innerHTML = '';
@@ -235,14 +321,19 @@ function renderTable() {
 
   fields.forEach((f, i) => {
     const tr = document.createElement('tr');
+    tr.draggable = true;
+    tr.dataset.index = i;
     tr.style.cursor = 'pointer';
-    tr.title = 'Double-click to edit';
+    tr.title = 'Double-click to edit · drag the handle to reorder';
     if (editingIndex === i) tr.classList.add('row-editing');
     tr.addEventListener('dblclick', () => startEditField(i));
+    attachDragHandlers(tr);
     tr.innerHTML = `
+      <td class="drag-handle" title="Drag to reorder" style="cursor: grab; text-align: center; color: #9ca3af; user-select: none;">⋮⋮</td>
       <td>${i + 1}</td>
       <td><code>${esc(f.field_code)}</code></td>
       <td>${esc(f.field_name)}</td>
+      <td>${esc(f.field_name_cell)}</td>
       <td>${esc(f.sheet)}</td>
       <td>${esc(f.cell)}</td>
       <td>${esc(f.value_type)}</td>
@@ -255,7 +346,8 @@ function renderTable() {
     tbody.appendChild(tr);
 
     // Hidden inputs for form submission
-    const keys = ['field_code','field_name','sheet','cell','value_type','description'];
+    const keys = ['field_code','field_name','field_name_cell','sheet','cell','value_type','description',
+                  'ai_prompt'];
     keys.forEach(k => {
       const inp = document.createElement('input');
       inp.type = 'hidden';
@@ -278,15 +370,17 @@ function renderTable() {
 // ── Start editing a field (double-click) ─────────────────────────────────────
 function startEditField(index) {
   const f = fields[index];
-  document.getElementById('af_field_code').value    = f.field_code;
-  document.getElementById('af_field_name').value    = f.field_name;
-  document.getElementById('af_sheet').value         = f.sheet;
-  document.getElementById('af_cell').value          = f.cell;
-  document.getElementById('af_value_type').value    = f.value_type;
-  document.getElementById('af_allow_empty').checked = f.allow_empty;
-  document.getElementById('af_active').checked      = f.active;
-  document.getElementById('af_raw').checked         = f.raw_cell_value;
-  document.getElementById('af_description').value   = f.description;
+  document.getElementById('af_field_code').value       = f.field_code;
+  document.getElementById('af_field_name').value       = f.field_name;
+  document.getElementById('af_field_name_cell').value  = f.field_name_cell || '';
+  document.getElementById('af_sheet').value            = f.sheet;
+  document.getElementById('af_cell').value             = f.cell;
+  document.getElementById('af_value_type').value       = f.value_type;
+  document.getElementById('af_allow_empty').checked    = f.allow_empty;
+  document.getElementById('af_active').checked         = f.active;
+  document.getElementById('af_raw').checked            = f.raw_cell_value;
+  document.getElementById('af_description').value      = f.description;
+  document.getElementById('af_ai_prompt').value        = f.ai_prompt || '';
   // Clear check result when switching to edit
   document.getElementById('af_check_result').value  = '';
   document.getElementById('af_check_result').classList.remove('check-ok', 'check-err');
@@ -304,20 +398,21 @@ function cancelEdit() {
 
 // ── Submit (add or edit) ──────────────────────────────────────────────────────
 function submitFieldForm() {
-  const field_code  = document.getElementById('af_field_code').value.trim();
-  const field_name  = document.getElementById('af_field_name').value.trim();
-  const sheet       = document.getElementById('af_sheet').value.trim();
-  const cell        = document.getElementById('af_cell').value.trim();
-  const value_type  = document.getElementById('af_value_type').value;
-  const allow_empty = document.getElementById('af_allow_empty').checked;
-  const active         = document.getElementById('af_active').checked;
-  const raw_cell_value = document.getElementById('af_raw').checked;
-  const description    = document.getElementById('af_description').value.trim();
+  const field_code       = document.getElementById('af_field_code').value.trim();
+  const field_name       = document.getElementById('af_field_name').value.trim();
+  const field_name_cell  = document.getElementById('af_field_name_cell').value.trim();
+  const sheet            = document.getElementById('af_sheet').value.trim();
+  const cell             = document.getElementById('af_cell').value.trim();
+  const value_type       = document.getElementById('af_value_type').value;
+  const allow_empty      = document.getElementById('af_allow_empty').checked;
+  const active           = document.getElementById('af_active').checked;
+  const raw_cell_value   = document.getElementById('af_raw').checked;
+  const description      = document.getElementById('af_description').value.trim();
 
   if (!field_code) { showAddError('Field Code is required.'); return; }
   if (!field_name) { showAddError('Field Name is required.'); return; }
   if (!sheet)      { showAddError('Sheet is required.'); return; }
-  if (!cell)       { showAddError('Cell is required.'); return; }
+  if (!cell)       { showAddError('Value Cell is required.'); return; }
 
   // Duplicate check — skip the row being edited
   const duplicate = fields.some((f, i) => f.field_code === field_code && i !== editingIndex);
@@ -326,8 +421,10 @@ function submitFieldForm() {
     return;
   }
 
+  const ai_prompt = document.getElementById('af_ai_prompt').value.trim();
+
   showAddError('');
-  const fieldObj = { field_code, field_name, sheet, cell, value_type, allow_empty, active, raw_cell_value, description };
+  const fieldObj = { field_code, field_name, field_name_cell, sheet, cell, value_type, allow_empty, active, raw_cell_value, description, ai_prompt };
 
   if (editingIndex !== null) {
     // ── Edit mode: update in place ──
@@ -370,12 +467,17 @@ async function checkCell() {
   if (fileInput.files.length) {
     fd.append('file', fileInput.files[0]);
   }
+  const field_name      = document.getElementById('af_field_name').value.trim();
+  const field_name_cell = document.getElementById('af_field_name_cell').value.trim();
+
   fd.append('stored_test_file', storedPath);
   fd.append('sheet', sheet);
   fd.append('cell', cell);
   fd.append('value_type', value_type);
   fd.append('allow_empty', allow_empty ? 'true' : 'false');
   fd.append('raw', raw ? 'true' : 'false');
+  fd.append('field_name', field_name);
+  fd.append('field_name_cell', field_name_cell);
 
   resultEl.value = 'Loading...';
   try {
@@ -386,20 +488,38 @@ async function checkCell() {
       return;
     }
     const data = await resp.json();
+    const lc = data.label_check;
+    const lines = [];
+    let anyErr = false;
+
+    if (lc) {
+      if (lc.ok) {
+        lines.push(`Label @ ${lc.cell} = "${lc.value}" — matches Field Name ✓`);
+      } else {
+        anyErr = true;
+        lines.push(`Label @ ${lc.cell} = "${lc.value ?? ''}" — ${lc.error || 'mismatch'} ✗`);
+      }
+    }
+
     if (data.ok) {
-      resultEl.value = data.value;
-      resultEl.classList.add('check-ok');
-      // Show validation result
+      lines.push(`Value @ ${cell}: ${data.value}`);
+      resultEl.value = lines.join('\n');
       validEl.style.display = '';
+      const typeNote = '(' + value_type + (allow_empty ? ', allow empty' : ', required') + ')';
       if (data.validation_error) {
-        validEl.textContent = 'Validation failed: ' + data.validation_error;
+        anyErr = true;
+        validEl.textContent = 'Validation failed: ' + data.validation_error + ' ' + typeNote;
         validEl.classList.add('check-validation--err');
       } else {
-        validEl.textContent = 'Validation passed (' + value_type + (allow_empty ? ', allow empty' : ', required') + ')';
-        validEl.classList.add('check-validation--ok');
+        validEl.textContent = (anyErr
+          ? 'Value type passed ' + typeNote + ' — but label check failed above.'
+          : 'All checks passed ' + typeNote);
+        validEl.classList.add(anyErr ? 'check-validation--err' : 'check-validation--ok');
       }
+      resultEl.classList.add(anyErr ? 'check-err' : 'check-ok');
     } else {
-      resultEl.value = 'Error: ' + (data.error || 'Unknown error');
+      lines.push('Error: ' + (data.error || 'Unknown error'));
+      resultEl.value = lines.join('\n');
       resultEl.classList.add('check-err');
     }
   } catch (e) {
@@ -423,15 +543,18 @@ function removeField(index) {
 
 // ── Clear add form (keep Sheet and Test File) ─────────────────────────────────
 function clearAddForm() {
-  document.getElementById('af_field_code').value  = '';
-  document.getElementById('af_field_name').value  = '';
+  document.getElementById('af_field_code').value       = '';
+  document.getElementById('af_field_name').value       = '';
+  document.getElementById('af_field_name_cell').value  = '';
   // af_sheet — keep
-  document.getElementById('af_cell').value        = '';
-  document.getElementById('af_value_type').value  = 'string';
-  document.getElementById('af_allow_empty').checked = false;
-  document.getElementById('af_active').checked      = true;
-  document.getElementById('af_description').value = '';
-  document.getElementById('af_check_result').value = '';
+  document.getElementById('af_cell').value             = '';
+  document.getElementById('af_value_type').value       = 'string';
+  document.getElementById('af_allow_empty').checked    = true;
+  document.getElementById('af_active').checked         = true;
+  document.getElementById('af_description').value      = '';
+  // Stage 2
+  document.getElementById('af_ai_prompt').value        = '';
+  document.getElementById('af_check_result').value     = '';
   document.getElementById('af_check_result').classList.remove('check-ok', 'check-err');
   const validEl = document.getElementById('af_check_validation');
   validEl.style.display = 'none'; validEl.textContent = ''; validEl.className = 'check-validation';
@@ -514,6 +637,73 @@ document.getElementById('af_test_file').addEventListener('change', async functio
   // Also check on page load if there's a value
   if (pathInput.value.trim()) checkFilePath();
 })();
+
+// ── Export to Processor (Stage 2) ────────────────────────────────────────────
+async function exportToProcessor() {
+  const statusEl = document.getElementById('export-status');
+  if (!statusEl) return;
+  statusEl.style.display = '';
+  statusEl.textContent = 'Exporting...';
+  statusEl.style.color = '#6b7280';
+
+  const code = document.getElementById('template_code').value.trim();
+  const version = document.getElementById('template_version').value.trim();
+
+  try {
+    const resp = await fetch(`/templates/${code}/${version}/export-to-processor`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({}),
+    });
+    const data = await resp.json();
+    if (data.ok) {
+      statusEl.textContent = 'Exported to: ' + data.path;
+      statusEl.style.color = '#065f46';
+    } else {
+      statusEl.textContent = 'Error: ' + (data.error || 'Unknown');
+      statusEl.style.color = '#ef4444';
+    }
+  } catch (e) {
+    statusEl.textContent = 'Error: ' + (e.message || 'Failed');
+    statusEl.style.color = '#ef4444';
+  }
+}
+
+// ── Auto-generate AI prompt when key fields change ───────────────────────────
+function regenerateAiPrompt() {
+  const fn  = document.getElementById('af_field_name').value.trim();
+  const fnc = document.getElementById('af_field_name_cell').value.trim();
+  const vc  = document.getElementById('af_cell').value.trim();
+  const vt  = document.getElementById('af_value_type').value;
+
+  let labelClause = '';
+  if (fn && fnc) {
+    labelClause = `cell ${fnc} contains the label "${fn}"`;
+  } else if (fn) {
+    labelClause = `the field "${fn}" is present`;
+  } else if (fnc) {
+    labelClause = `cell ${fnc} contains the field label`;
+  }
+
+  const valueClause = vc ? `the value read from ${vc} is a valid ${vt}` : '';
+
+  let text = '';
+  if (labelClause && valueClause) {
+    text = `Verify that ${labelClause}, and that ${valueClause}.`;
+  } else if (labelClause) {
+    text = `Verify that ${labelClause}.`;
+  } else if (valueClause) {
+    text = `Verify that ${valueClause}.`;
+  }
+
+  document.getElementById('af_ai_prompt').value = text;
+}
+
+['af_field_name', 'af_field_name_cell', 'af_cell', 'af_value_type'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', regenerateAiPrompt);
+  if (el) el.addEventListener('change', regenerateAiPrompt);
+});
 
 // ── Initial render ────────────────────────────────────────────────────────────
 renderTable();

@@ -1,8 +1,26 @@
+import re
+
 import openpyxl
 from typing import Any
 
 from app.models.schemas import FieldModel
 from app.services.logging_service import get_logger
+
+_NEWLINE_RE = re.compile(r"[\r\n]+")
+
+
+def _normalize_value(v):
+    """Replace runs of CR/LF with a single space (mirrors browser single-line input paste)."""
+    if isinstance(v, str):
+        return _NEWLINE_RE.sub(" ", v)
+    return v
+
+
+def _apply_date_placeholder(value, value_type: str):
+    """For date fields, treat the literal placeholder 'mm/yyyy' as empty (None)."""
+    if value_type == "date" and isinstance(value, str) and value.strip().lower() == "mm/yyyy":
+        return None
+    return value
 
 logger = get_logger()
 
@@ -42,12 +60,13 @@ def read_workbook_fields(file_path: str, fields: list[FieldModel]) -> dict[str, 
 
         ws = wb[sheet_name]
         try:
-            cell = ws[cell_addr]
-            value = cell.value
+            values = _read_cell_spec(ws, cell_addr)
+            value = _collapse_values(values) if values else None
+            value = _apply_date_placeholder(value, field.value_type)
             results[field.field_code] = {"value": value, "error": None}
             logger.info(
                 f"Read field: field_code={field.field_code}, sheet={sheet_name}, "
-                f"cell={cell_addr}, raw={field.raw_cell_value}"
+                f"cell={cell_addr}, raw={field.raw_cell_value}, n={len(values)}"
             )
         except Exception as exc:
             results[field.field_code] = {"value": None, "error": str(exc)}
@@ -63,11 +82,50 @@ def read_workbook_fields(file_path: str, fields: list[FieldModel]) -> dict[str, 
     return results
 
 
-def read_single_cell(file_path: str, sheet_name: str, cell_addr: str, raw: bool = True) -> dict:
-    """Read a single cell value from a workbook (used by Test Cell feature).
+def _read_cell_spec(ws, spec: str) -> list:
+    """Read values matching a cell spec that may contain commas and ranges.
+
+    Examples of accepted specs: "A1", "A1:B5", "A1, B5:C10, D2".
+    """
+    values: list = []
+    for part in spec.split(","):
+        p = part.strip()
+        if not p:
+            continue
+        target = ws[p]
+        if isinstance(target, tuple):  # range of rows
+            for row in target:
+                if isinstance(row, tuple):
+                    for c in row:
+                        values.append(_normalize_value(c.value))
+                else:
+                    values.append(_normalize_value(row.value))
+        else:
+            values.append(_normalize_value(target.value))
+    return values
+
+
+def _collapse_values(values: list):
+    """Collapse a list of cell values to a single value for downstream consumers.
+
+    Returns the single value if only one was read, otherwise a comma-joined string
+    of stringified non-empty values.
+    """
+    if len(values) == 1:
+        return values[0]
+    return ", ".join("" if v is None else str(v) for v in values)
+
+
+def read_single_cell(file_path: str, sheet_name: str, cell_addr: str, raw: bool = True, value_type: str = "") -> dict:
+    """Read value(s) from a workbook (used by Test Cell feature).
+
+    `cell_addr` may be a single cell (`A1`), a range (`A1:B5`), or a comma-
+    separated list of cells/ranges (`A1, B5:C10`).
 
     Args:
         raw: If True, read raw values (formulas as text). If False, read calculated values.
+        value_type: Optional field type. When "date", treats the literal "mm/yyyy"
+            placeholder as empty (None).
     """
     try:
         wb = openpyxl.load_workbook(file_path, data_only=not raw)
@@ -80,10 +138,11 @@ def read_single_cell(file_path: str, sheet_name: str, cell_addr: str, raw: bool 
 
     ws = wb[sheet_name]
     try:
-        cell = ws[cell_addr]
-        value = cell.value
+        values = _read_cell_spec(ws, cell_addr)
         wb.close()
-        return {"value": value, "error": None}
+        if not values:
+            return {"value": None, "error": "No cells read"}
+        return {"value": _apply_date_placeholder(_collapse_values(values), value_type), "error": None}
     except Exception as exc:
         wb.close()
         return {"value": None, "error": str(exc)}

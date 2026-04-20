@@ -553,3 +553,270 @@
 2026-04-14 18:59:33 INFO Read field: field_code=AlignmentGoals, sheet=Intro, cell=B7, raw=False
 2026-04-14 18:59:33 INFO Output created: outputs/RBI Group.csv
 2026-04-14 18:59:33 INFO Processing completed: status=success
+2026-04-16 12:24:49 INFO Detected 66 colored cells in ../ed_py_ai/templates/RBI Group.xlsx
+2026-04-16 12:24:49 INFO Generated 10 field candidates from ../ed_py_ai/templates/RBI Group.xlsx
+2026-04-16 14:37:12 INFO Detected 66 colored cells in ../ed_py_ai/templates/RBI Group.xlsx
+2026-04-16 14:37:12 INFO Generated 10 field candidates from ../ed_py_ai/templates/RBI Group.xlsx
+2026-04-16 14:37:12 INFO Exported Stage 2 mapping: ../ed_py_ai/excel_processor/mappings/RBI_Test_1.0.json
+2026-04-16 22:16:06 INFO Detected 66 colored cells in uploads/_detect_e2615f0685d74e81b0b7825561c277c4.xlsx
+2026-04-16 22:16:06 INFO Generated 10 field candidates from uploads/_detect_e2615f0685d74e81b0b7825561c277c4.xlsx
+2026-04-20 11:09:12 INFO Detected 47 colored cells in /Users/oleksandr/Documents/dev/ai/excel_pipeline/Excel2db/uploads/test_Pricing_2.0.xlsx
+2026-04-20 11:09:12 INFO Generated 8 field candidates from /Users/oleksandr/Documents/dev/ai/excel_pipeline/Excel2db/uploads/test_Pricing_2.0.xlsx
+2026-04-20 11:10:30 INFO Detected 66 colored cells in uploads/_detect_b188d5a48ed948ae99543d313dc2e536.xlsx
+2026-04-20 11:10:30 INFO Generated 10 field candidates from uploads/_detect_b188d5a48ed948ae99543d313dc2e536.xlsx
+2026-04-20 11:35:09 INFO Detected 431 yellow cells in uploads/test_Pricing_1.0.xlsx
+2026-04-20 11:35:09 INFO Generated 431 per-cell candidates from uploads/test_Pricing_1.0.xlsx
+2026-04-20 11:35:53 INFO Template updated: Pricing_1.0
+2026-04-20 11:35:59 INFO Detected 431 yellow cells in /Users/oleksandr/Documents/dev/ai/excel_pipeline/Excel2db/uploads/test_Pricing_1.0.xlsx
+2026-04-20 11:35:59 INFO Generated 431 per-cell candidates from /Users/oleksandr/Documents/dev/ai/excel_pipeline/Excel2db/uploads/test_Pricing_1.0.xlsx
+2026-04-20 18:15:56 INFO Template updated: Pricing_1.0
+2026-04-20 18:25:59 INFO Template updated: Pricing_1.0
+2026-04-20 21:54:58 INFO Template updated: Pricing_1.0
+2026-04-20 21:58:55 INFO Template updated: Pricing_1.0
+2026-04-20 21:59:15 INFO Template updated: Pricing_1.0
+2026-04-20 22:03:07 INFO Template updated: Pricing_1.0
+2026-04-20 22:08:12 INFO Template updated: Pricing_1.0
+2026-04-20 22:25:15 INFO Template updated: Pricing_1.0
+2026-04-20 22:40:33 INFO Template updated: Pricing_1.0
+2026-04-20 22:41:43 INFO Upload started: source=RBI Group.xlsx
+2026-04-20 22:41:43 INFO Upload completed: source=RBI Group.xlsx
+2026-04-20 22:41:43 INFO Template selected: template_code=Pricing, template_version=1.0
+2026-04-20 22:41:43 INFO Processing started: source=RBI Group.xlsx
+2026-04-20 22:41:43 INFO Workbook opened successfully
+2026-04-20 22:41:43 INFO Read field: field_code=client_name, sheet=Intro, cell=C3, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=opportunity_id, sheet=Intro, cell=E2, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=primary_market, sheet=Intro, cell=E3, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=deal_owner_ae, sheet=Intro, cell=G2, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=cluster, sheet=Intro, cell=G3, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=scenario_name, sheet=Intro, cell=I2, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=ci_ref_finance, sheet=Intro, cell=I3, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=opportunity_overview, sheet=Intro, cell=B5, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=alignment_with_ve_corporate_goals, sheet=Intro, cell=B7, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=win_retain_strategy, sheet=Intro, cell=B9, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=key_benefits, sheet=Intro, cell=B11, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=key_commercial_concerns, sheet=Intro, cell=B13, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=other_factors, sheet=Intro, cell=B15, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=deal_term, sheet=Intro, cell=D18, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=has_existing_vd_portfolio, sheet=Intro, cell=D19, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=existing_vd_portfolio_contract_end_date, sheet=Intro, cell=D20, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=qtr_beginning, sheet=Intro, cell=D21, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=qtr_ending, sheet=Intro, cell=D22, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=break_clause_year, sheet=Intro, cell=D23, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=client_full_name, sheet=Intro, cell=H18, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=client_address, sheet=Intro, cell=H19, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=client_notice_address, sheet=Intro, cell=H20, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=cw_number, sheet=Intro, cell=H21, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=fy_number, sheet=Intro, cell=H22, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=bid_identifier, sheet=Intro, cell=H23, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=has_existing_cia_with_client, sheet=Intro, cell=N18, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=has_pif_submitted, sheet=Intro, cell=N19, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=vdc_name, sheet=Intro, cell=N20, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=existing_oct_l12m_pv_eur, sheet=Intro, cell=N21, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=existing_oct_l12m_txn_count, sheet=Intro, cell=N22, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=existing_aft_l12m_pv_eur, sheet=Intro, cell=N23, raw=False, n=1
+2026-04-20 22:41:43 INFO Read field: field_code=existing_aft_l12m_txn_count, sheet=Intro, cell=N24, raw=False, n=1
+2026-04-20 22:41:44 INFO Output created: outputs/RBI Group.csv
+2026-04-20 22:41:44 INFO Processing completed: status=success
+2026-04-20 22:43:16 INFO Upload started: source=Trading 212.xlsx
+2026-04-20 22:43:16 INFO Upload completed: source=Trading 212.xlsx
+2026-04-20 22:43:16 INFO Template selected: template_code=Pricing, template_version=1.0
+2026-04-20 22:43:16 INFO Processing started: source=Trading 212.xlsx
+2026-04-20 22:43:16 INFO Workbook opened successfully
+2026-04-20 22:43:16 INFO Read field: field_code=client_name, sheet=Intro, cell=C3, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=opportunity_id, sheet=Intro, cell=E2, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=primary_market, sheet=Intro, cell=E3, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=deal_owner_ae, sheet=Intro, cell=G2, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=cluster, sheet=Intro, cell=G3, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=scenario_name, sheet=Intro, cell=I2, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=ci_ref_finance, sheet=Intro, cell=I3, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=opportunity_overview, sheet=Intro, cell=B5, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=alignment_with_ve_corporate_goals, sheet=Intro, cell=B7, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=win_retain_strategy, sheet=Intro, cell=B9, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=key_benefits, sheet=Intro, cell=B11, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=key_commercial_concerns, sheet=Intro, cell=B13, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=other_factors, sheet=Intro, cell=B15, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=deal_term, sheet=Intro, cell=D18, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=has_existing_vd_portfolio, sheet=Intro, cell=D19, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=existing_vd_portfolio_contract_end_date, sheet=Intro, cell=D20, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=qtr_beginning, sheet=Intro, cell=D21, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=qtr_ending, sheet=Intro, cell=D22, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=break_clause_year, sheet=Intro, cell=D23, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=client_full_name, sheet=Intro, cell=H18, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=client_address, sheet=Intro, cell=H19, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=client_notice_address, sheet=Intro, cell=H20, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=cw_number, sheet=Intro, cell=H21, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=fy_number, sheet=Intro, cell=H22, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=bid_identifier, sheet=Intro, cell=H23, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=has_existing_cia_with_client, sheet=Intro, cell=N18, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=has_pif_submitted, sheet=Intro, cell=N19, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=vdc_name, sheet=Intro, cell=N20, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=existing_oct_l12m_pv_eur, sheet=Intro, cell=N21, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=existing_oct_l12m_txn_count, sheet=Intro, cell=N22, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=existing_aft_l12m_pv_eur, sheet=Intro, cell=N23, raw=False, n=1
+2026-04-20 22:43:16 INFO Read field: field_code=existing_aft_l12m_txn_count, sheet=Intro, cell=N24, raw=False, n=1
+2026-04-20 22:43:16 WARNING Validation failed: field_code=existing_vd_portfolio_contract_end_date, rule=date/allow_empty=True, value='mm/yyyy'
+2026-04-20 22:45:11 INFO Manual correction: field_code=existing_vd_portfolio_contract_end_date, original_value='mm/yyyy', corrected_value='', corrected_at=2026-04-20T19:45:11.782648
+2026-04-20 22:45:11 INFO Output created: outputs/Trading 212.csv
+2026-04-20 22:45:11 INFO Processing completed: status=success
+2026-04-20 22:50:32 INFO Template updated: Pricing_1.0
+2026-04-20 22:51:09 INFO Upload started: source=Trading 212.xlsx
+2026-04-20 22:51:09 INFO Upload completed: source=Trading 212.xlsx
+2026-04-20 22:51:09 INFO Template selected: template_code=Pricing, template_version=1.0
+2026-04-20 22:51:09 INFO Processing started: source=Trading 212.xlsx
+2026-04-20 22:51:09 INFO Workbook opened successfully
+2026-04-20 22:51:09 INFO Read field: field_code=client_name, sheet=Intro, cell=C3, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=opportunity_id, sheet=Intro, cell=E2, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=primary_market, sheet=Intro, cell=E3, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=deal_owner_ae, sheet=Intro, cell=G2, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=cluster, sheet=Intro, cell=G3, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=scenario_name, sheet=Intro, cell=I2, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=ci_ref_finance, sheet=Intro, cell=I3, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=executive_summary, sheet=Intro, cell=B5, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=alignment_with_ve_corporate_goals, sheet=Intro, cell=B7, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=win_retain_strategy, sheet=Intro, cell=B9, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=key_benefits, sheet=Intro, cell=B11, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=key_commercial_concerns, sheet=Intro, cell=B13, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=other_factors, sheet=Intro, cell=B15, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=deal_term, sheet=Intro, cell=D18, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=has_existing_vd_portfolio, sheet=Intro, cell=D19, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=existing_vd_portfolio_contract_end_date, sheet=Intro, cell=D20, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=qtr_beginning, sheet=Intro, cell=D21, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=qtr_ending, sheet=Intro, cell=D22, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=break_clause_year, sheet=Intro, cell=D23, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=client_full_name, sheet=Intro, cell=H18, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=client_address, sheet=Intro, cell=H19, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=client_notice_address, sheet=Intro, cell=H20, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=cw_number, sheet=Intro, cell=H21, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=fy_number, sheet=Intro, cell=H22, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=bid_identifier, sheet=Intro, cell=H23, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=has_existing_cia_with_client, sheet=Intro, cell=N18, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=has_pif_submitted, sheet=Intro, cell=N19, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=vdc_name, sheet=Intro, cell=N20, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=existing_oct_l12m_pv_eur, sheet=Intro, cell=N21, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=existing_oct_l12m_txn_count, sheet=Intro, cell=N22, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=existing_aft_l12m_pv_eur, sheet=Intro, cell=N23, raw=False, n=1
+2026-04-20 22:51:09 INFO Read field: field_code=existing_aft_l12m_txn_count, sheet=Intro, cell=N24, raw=False, n=1
+2026-04-20 22:51:09 WARNING Validation failed: field_code=existing_vd_portfolio_contract_end_date, rule=date/allow_empty=True, value='mm/yyyy'
+2026-04-20 22:51:12 INFO Manual correction: field_code=existing_vd_portfolio_contract_end_date, original_value='mm/yyyy', corrected_value='', corrected_at=2026-04-20T19:51:12.185174
+2026-04-20 22:51:12 INFO Output created: outputs/Trading 212.csv
+2026-04-20 22:51:12 INFO Processing completed: status=success
+2026-04-20 22:54:40 INFO Default template set: Pricing_1.0
+2026-04-20 22:56:42 INFO Upload started: source=Viseca.xlsx
+2026-04-20 22:56:42 INFO Upload completed: source=Viseca.xlsx
+2026-04-20 22:56:42 INFO Template selected: template_code=Pricing, template_version=1.0
+2026-04-20 22:56:42 INFO Processing started: source=Viseca.xlsx
+2026-04-20 22:56:42 INFO Workbook opened successfully
+2026-04-20 22:56:42 INFO Read field: field_code=client_name, sheet=Intro, cell=C3, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=opportunity_id, sheet=Intro, cell=E2, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=primary_market, sheet=Intro, cell=E3, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=deal_owner_ae, sheet=Intro, cell=G2, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=cluster, sheet=Intro, cell=G3, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=scenario_name, sheet=Intro, cell=I2, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=ci_ref_finance, sheet=Intro, cell=I3, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=executive_summary, sheet=Intro, cell=B5, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=alignment_with_ve_corporate_goals, sheet=Intro, cell=B7, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=win_retain_strategy, sheet=Intro, cell=B9, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=key_benefits, sheet=Intro, cell=B11, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=key_commercial_concerns, sheet=Intro, cell=B13, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=other_factors, sheet=Intro, cell=B15, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=deal_term, sheet=Intro, cell=D18, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=has_existing_vd_portfolio, sheet=Intro, cell=D19, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=existing_vd_portfolio_contract_end_date, sheet=Intro, cell=D20, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=qtr_beginning, sheet=Intro, cell=D21, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=qtr_ending, sheet=Intro, cell=D22, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=break_clause_year, sheet=Intro, cell=D23, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=client_full_name, sheet=Intro, cell=H18, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=client_address, sheet=Intro, cell=H19, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=client_notice_address, sheet=Intro, cell=H20, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=cw_number, sheet=Intro, cell=H21, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=fy_number, sheet=Intro, cell=H22, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=bid_identifier, sheet=Intro, cell=H23, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=has_existing_cia_with_client, sheet=Intro, cell=N18, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=has_pif_submitted, sheet=Intro, cell=N19, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=vdc_name, sheet=Intro, cell=N20, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=existing_oct_l12m_pv_eur, sheet=Intro, cell=N21, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=existing_oct_l12m_txn_count, sheet=Intro, cell=N22, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=existing_aft_l12m_pv_eur, sheet=Intro, cell=N23, raw=False, n=1
+2026-04-20 22:56:42 INFO Read field: field_code=existing_aft_l12m_txn_count, sheet=Intro, cell=N24, raw=False, n=1
+2026-04-20 22:56:42 WARNING Validation failed: field_code=existing_vd_portfolio_contract_end_date, rule=date/allow_empty=True, value='mm/yyyy'
+2026-04-20 22:56:49 INFO Manual correction: field_code=existing_vd_portfolio_contract_end_date, original_value='mm/yyyy', corrected_value='', corrected_at=2026-04-20T19:56:49.776809
+2026-04-20 22:56:49 INFO Output created: outputs/Viseca.csv
+2026-04-20 22:56:49 INFO Processing completed: status=success
+2026-04-20 23:08:14 INFO Upload started: source=Trading 212.xlsx
+2026-04-20 23:08:14 INFO Upload completed: source=Trading 212.xlsx
+2026-04-20 23:08:14 INFO Template selected: template_code=Pricing, template_version=1.0
+2026-04-20 23:08:14 INFO Processing started: source=Trading 212.xlsx
+2026-04-20 23:08:14 INFO Workbook opened successfully
+2026-04-20 23:08:14 INFO Read field: field_code=client_name, sheet=Intro, cell=C3, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=opportunity_id, sheet=Intro, cell=E2, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=primary_market, sheet=Intro, cell=E3, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=deal_owner_ae, sheet=Intro, cell=G2, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=cluster, sheet=Intro, cell=G3, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=scenario_name, sheet=Intro, cell=I2, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=ci_ref_finance, sheet=Intro, cell=I3, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=executive_summary, sheet=Intro, cell=B5, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=alignment_with_ve_corporate_goals, sheet=Intro, cell=B7, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=win_retain_strategy, sheet=Intro, cell=B9, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=key_benefits, sheet=Intro, cell=B11, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=key_commercial_concerns, sheet=Intro, cell=B13, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=other_factors, sheet=Intro, cell=B15, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=deal_term, sheet=Intro, cell=D18, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=has_existing_vd_portfolio, sheet=Intro, cell=D19, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=existing_vd_portfolio_contract_end_date, sheet=Intro, cell=D20, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=qtr_beginning, sheet=Intro, cell=D21, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=qtr_ending, sheet=Intro, cell=D22, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=break_clause_year, sheet=Intro, cell=D23, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=client_full_name, sheet=Intro, cell=H18, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=client_address, sheet=Intro, cell=H19, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=client_notice_address, sheet=Intro, cell=H20, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=cw_number, sheet=Intro, cell=H21, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=fy_number, sheet=Intro, cell=H22, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=bid_identifier, sheet=Intro, cell=H23, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=has_existing_cia_with_client, sheet=Intro, cell=N18, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=has_pif_submitted, sheet=Intro, cell=N19, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=vdc_name, sheet=Intro, cell=N20, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=existing_oct_l12m_pv_eur, sheet=Intro, cell=N21, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=existing_oct_l12m_txn_count, sheet=Intro, cell=N22, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=existing_aft_l12m_pv_eur, sheet=Intro, cell=N23, raw=False, n=1
+2026-04-20 23:08:14 INFO Read field: field_code=existing_aft_l12m_txn_count, sheet=Intro, cell=N24, raw=False, n=1
+2026-04-20 23:08:14 INFO Output created: outputs/Trading 212.csv
+2026-04-20 23:08:14 INFO Processing completed: status=success
+2026-04-20 23:12:08 INFO Upload started: source=Trading 212.xlsx
+2026-04-20 23:12:08 INFO Upload completed: source=Trading 212.xlsx
+2026-04-20 23:12:08 INFO Template selected: template_code=Pricing, template_version=1.0
+2026-04-20 23:12:08 INFO Processing started: source=Trading 212.xlsx
+2026-04-20 23:12:08 INFO Workbook opened successfully
+2026-04-20 23:12:08 INFO Read field: field_code=client_name, sheet=Intro, cell=C3, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=opportunity_id, sheet=Intro, cell=E2, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=primary_market, sheet=Intro, cell=E3, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=deal_owner_ae, sheet=Intro, cell=G2, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=cluster, sheet=Intro, cell=G3, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=scenario_name, sheet=Intro, cell=I2, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=ci_ref_finance, sheet=Intro, cell=I3, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=executive_summary, sheet=Intro, cell=B5, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=alignment_with_ve_corporate_goals, sheet=Intro, cell=B7, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=win_retain_strategy, sheet=Intro, cell=B9, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=key_benefits, sheet=Intro, cell=B11, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=key_commercial_concerns, sheet=Intro, cell=B13, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=other_factors, sheet=Intro, cell=B15, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=deal_term, sheet=Intro, cell=D18, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=has_existing_vd_portfolio, sheet=Intro, cell=D19, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=existing_vd_portfolio_contract_end_date, sheet=Intro, cell=D20, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=qtr_beginning, sheet=Intro, cell=D21, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=qtr_ending, sheet=Intro, cell=D22, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=break_clause_year, sheet=Intro, cell=D23, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=client_full_name, sheet=Intro, cell=H18, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=client_address, sheet=Intro, cell=H19, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=client_notice_address, sheet=Intro, cell=H20, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=cw_number, sheet=Intro, cell=H21, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=fy_number, sheet=Intro, cell=H22, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=bid_identifier, sheet=Intro, cell=H23, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=has_existing_cia_with_client, sheet=Intro, cell=N18, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=has_pif_submitted, sheet=Intro, cell=N19, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=vdc_name, sheet=Intro, cell=N20, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=existing_oct_l12m_pv_eur, sheet=Intro, cell=N21, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=existing_oct_l12m_txn_count, sheet=Intro, cell=N22, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=existing_aft_l12m_pv_eur, sheet=Intro, cell=N23, raw=False, n=1
+2026-04-20 23:12:08 INFO Read field: field_code=existing_aft_l12m_txn_count, sheet=Intro, cell=N24, raw=False, n=1
+2026-04-20 23:12:08 INFO Output created: outputs/Trading 212.csv
+2026-04-20 23:12:08 INFO Processing completed: status=success
