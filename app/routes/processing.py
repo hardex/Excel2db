@@ -299,14 +299,20 @@ async def submit_corrections(request: Request):
         if isinstance(raw, dict):
             val = raw.get("value")
             err = raw.get("error")
+            label_value = raw.get("label_value")
+            values_list = raw.get("values")
         else:
             val = raw
             err = None
+            label_value = None
+            values_list = None
 
         if fc in corrections:
-            merged[fc] = {"value": corrections[fc], "error": None}
+            # User edited a single scalar — drop the per-cell list so revalidation
+            # uses the corrected value.
+            merged[fc] = {"value": corrections[fc], "error": None, "label_value": label_value, "values": None}
         else:
-            merged[fc] = {"value": val, "error": err}
+            merged[fc] = {"value": val, "error": err, "label_value": label_value, "values": values_list}
 
     new_errors = validate_fields(active_fields, merged)
 

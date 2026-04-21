@@ -1,3 +1,4 @@
+import re
 import urllib.parse
 import json
 from pathlib import Path
@@ -29,6 +30,21 @@ UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
 
 
 # ─── Helpers ────────────────────────────────────────────────────────────────
+
+# `template_code` and `template_version` are used both as filename segments
+# (mappings/{code}_{version}.json) and as URL path parameters, so they must
+# not contain path separators, NUL, or newlines.
+_INVALID_NAME_RE = re.compile(r"[\\/\x00\r\n]")
+
+
+def _validate_template_identifiers(code: str, version: str) -> str | None:
+    """Return a user-facing error message, or None if valid."""
+    if _INVALID_NAME_RE.search(code):
+        return "Template code must not contain \\, /, or newline characters"
+    if _INVALID_NAME_RE.search(version):
+        return "Template version must not contain \\, /, or newline characters"
+    return None
+
 
 def _redirect(url: str, msg: str = "", msg_type: str = "success") -> RedirectResponse:
     sep = "&" if "?" in url else "?"
@@ -113,6 +129,10 @@ async def template_new_submit(request: Request):
 
     if not template_code or not template_version:
         return _redirect("/templates/new", "Template code and version are required", "error")
+
+    bad = _validate_template_identifiers(template_code, template_version)
+    if bad:
+        return _redirect("/templates/new", bad, "error")
 
     if template_exists(template_code, template_version):
         return _redirect(
@@ -203,6 +223,10 @@ async def template_edit_submit(request: Request, code: str, version: str):
             "Template code and version are required",
             "error",
         )
+
+    bad = _validate_template_identifiers(new_code, new_version)
+    if bad:
+        return _redirect(f"/templates/{code}/{version}/edit", bad, "error")
 
     code_changed = new_code != code or new_version != version
 
@@ -413,16 +437,23 @@ async def check_cell(
             else:
                 actual = label_res["value"]
                 actual_s = "" if actual is None else str(actual).strip()
-                matches = bool(fn) and actual_s == fn
+                # Empty label in file is always valid.
+                # Invalid only when actual_s is non-empty AND doesn't match the template's Field Name.
+                if not actual_s:
+                    matches = True
+                    err = None
+                elif not fn:
+                    matches = False
+                    err = "Field Name is empty in template — cannot compare."
+                else:
+                    matches = (actual_s == fn)
+                    err = None if matches else f"Label at {fnc} is '{actual_s}', expected '{fn}'."
                 label_check = {
                     "cell": fnc,
-                    "value": actual_s if actual is not None else "(empty)",
+                    "value": actual_s if actual_s else "(empty)",
                     "expected": fn,
                     "ok": matches,
-                    "error": None if matches else (
-                        "Field Name is empty — cannot compare." if not fn
-                        else f"Label at {fnc} is '{actual_s}', expected '{fn}'."
-                    ),
+                    "error": err,
                 }
 
         # --- Value cell read + type validation -----------------------------------
@@ -442,6 +473,7 @@ async def check_cell(
             })
 
         val = value_res["value"]
+        vals = value_res.get("values") or []
         display = str(val) if val is not None else "(empty)"
 
         field = FieldModel(
@@ -452,7 +484,15 @@ async def check_cell(
             value_type=value_type.strip(),
             allow_empty=allow_empty in ("true", "on", "1"),
         )
-        validation_error = _validate_field(field, val)
+        if len(vals) > 1:
+            validation_error = None
+            for v in vals:
+                e = _validate_field(field, v)
+                if e:
+                    validation_error = e
+                    break
+        else:
+            validation_error = _validate_field(field, val)
 
         return JSONResponse({
             "ok": True,

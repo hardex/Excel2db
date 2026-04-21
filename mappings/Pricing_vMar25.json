@@ -1,8 +1,8 @@
 {
   "template_code": "Pricing",
-  "template_version": "1.0",
+  "template_version": "vMar25",
   "description": "test",
-  "is_default": false,
+  "is_default": true,
   "test_file_path": "/Users/oleksandr/Documents/dev/ai/excel_pipeline/Excel2db/uploads/test_Pricing_1.0.xlsx",
   "fields": [
     {

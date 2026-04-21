@@ -820,3 +820,663 @@
 2026-04-20 23:12:08 INFO Read field: field_code=existing_aft_l12m_txn_count, sheet=Intro, cell=N24, raw=False, n=1
 2026-04-20 23:12:08 INFO Output created: outputs/Trading 212.csv
 2026-04-20 23:12:08 INFO Processing completed: status=success
+2026-04-21 09:13:03 INFO Template updated: Pricing_1.0
+2026-04-21 09:15:08 INFO Template updated: Pricing_1.0
+2026-04-21 09:22:54 INFO Template updated: Pricing_1.0
+2026-04-21 10:39:54 INFO Template updated: Pricing_1.0
+2026-04-21 11:32:10 INFO Template updated: Pricing_1.0
+2026-04-21 11:36:26 INFO Upload started: source=RBI Group.xlsx
+2026-04-21 11:36:26 INFO Upload completed: source=RBI Group.xlsx
+2026-04-21 11:36:26 INFO Template selected: template_code=Pricing, template_version=1.0
+2026-04-21 11:36:26 INFO Processing started: source=RBI Group.xlsx
+2026-04-21 11:36:26 INFO Workbook opened successfully
+2026-04-21 11:36:26 INFO Read field: field_code=client_name, sheet=Intro, cell=C3, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=opportunity_id, sheet=Intro, cell=E2, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=primary_market, sheet=Intro, cell=E3, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=deal_owner_ae, sheet=Intro, cell=G2, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=cluster, sheet=Intro, cell=G3, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=scenario_name, sheet=Intro, cell=I2, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=ci_ref_finance, sheet=Intro, cell=I3, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=executive_summary, sheet=Intro, cell=B5, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=alignment_with_ve_corporate_goals, sheet=Intro, cell=B7, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=win_retain_strategy, sheet=Intro, cell=B9, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=key_benefits, sheet=Intro, cell=B11, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=key_commercial_concerns, sheet=Intro, cell=B13, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=other_factors, sheet=Intro, cell=B15, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=deal_term, sheet=Intro, cell=D18, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=has_existing_vd_portfolio, sheet=Intro, cell=D19, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=existing_vd_portfolio_contract_end_date, sheet=Intro, cell=D20, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=qtr_beginning, sheet=Intro, cell=D21, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=qtr_ending, sheet=Intro, cell=D22, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=break_clause_year, sheet=Intro, cell=D23, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=client_full_name, sheet=Intro, cell=H18, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=client_address, sheet=Intro, cell=H19, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=client_notice_address, sheet=Intro, cell=H20, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=cw_number, sheet=Intro, cell=H21, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=fy_number, sheet=Intro, cell=H22, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=bid_identifier, sheet=Intro, cell=H23, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=has_existing_cia_with_client, sheet=Intro, cell=N18, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=has_pif_submitted, sheet=Intro, cell=N19, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=vdc_name, sheet=Intro, cell=N20, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=existing_oct_l12m_pv_eur, sheet=Intro, cell=N21, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=existing_oct_l12m_txn_count, sheet=Intro, cell=N22, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=existing_aft_l12m_pv_eur, sheet=Intro, cell=N23, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=existing_aft_l12m_txn_count, sheet=Intro, cell=N24, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=origin_market, sheet=Inputs, cell=G3, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=client_ype, sheet=Inputs, cell=G4, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=enabler_name, sheet=Inputs, cell=G5, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=aft_irf, sheet=Inputs, cell=I4, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=oct_irf, sheet=Inputs, cell=I5, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=fx_eur_usd, sheet=Inputs, cell=O1, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=fx_eur_gbp, sheet=Inputs, cell=O3, raw=False, n=1
+2026-04-21 11:36:26 INFO Read field: field_code=domestic_metrics, sheet=Inputs, cell=E9:K9, raw=False, n=7
+2026-04-21 11:36:26 INFO Output created: outputs/RBI Group.csv
+2026-04-21 11:36:26 INFO Processing completed: status=success
+2026-04-21 13:21:21 INFO Template updated: Pricing_1.0
+2026-04-21 13:45:59 INFO Template updated: Pricing_1.0
+2026-04-21 15:18:41 INFO Upload started: source=RBI Group.xlsx
+2026-04-21 15:18:41 INFO Upload completed: source=RBI Group.xlsx
+2026-04-21 15:18:41 INFO Template selected: template_code=Pricing, template_version=1.0
+2026-04-21 15:18:41 INFO Processing started: source=RBI Group.xlsx
+2026-04-21 15:18:41 INFO Workbook opened successfully
+2026-04-21 15:18:41 INFO Read field: field_code=client_name, sheet=Intro, cell=C3, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=opportunity_id, sheet=Intro, cell=E2, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=primary_market, sheet=Intro, cell=E3, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=deal_owner_ae, sheet=Intro, cell=G2, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=cluster, sheet=Intro, cell=G3, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=scenario_name, sheet=Intro, cell=I2, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=ci_ref_finance, sheet=Intro, cell=I3, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=executive_summary, sheet=Intro, cell=B5, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=alignment_with_ve_corporate_goals, sheet=Intro, cell=B7, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=win_retain_strategy, sheet=Intro, cell=B9, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=key_benefits, sheet=Intro, cell=B11, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=key_commercial_concerns, sheet=Intro, cell=B13, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=other_factors, sheet=Intro, cell=B15, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=deal_term, sheet=Intro, cell=D18, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=has_existing_vd_portfolio, sheet=Intro, cell=D19, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=existing_vd_portfolio_contract_end_date, sheet=Intro, cell=D20, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=qtr_beginning, sheet=Intro, cell=D21, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=qtr_ending, sheet=Intro, cell=D22, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=break_clause_year, sheet=Intro, cell=D23, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=client_full_name, sheet=Intro, cell=H18, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=client_address, sheet=Intro, cell=H19, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=client_notice_address, sheet=Intro, cell=H20, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=cw_number, sheet=Intro, cell=H21, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=fy_number, sheet=Intro, cell=H22, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=bid_identifier, sheet=Intro, cell=H23, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=has_existing_cia_with_client, sheet=Intro, cell=N18, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=has_pif_submitted, sheet=Intro, cell=N19, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=vdc_name, sheet=Intro, cell=N20, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=existing_oct_l12m_pv_eur, sheet=Intro, cell=N21, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=existing_oct_l12m_txn_count, sheet=Intro, cell=N22, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=existing_aft_l12m_pv_eur, sheet=Intro, cell=N23, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=existing_aft_l12m_txn_count, sheet=Intro, cell=N24, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=origin_market, sheet=Inputs, cell=G3, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=client_ype, sheet=Inputs, cell=G4, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=enabler_name, sheet=Inputs, cell=G5, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=aft_irf, sheet=Inputs, cell=I4, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=oct_irf, sheet=Inputs, cell=I5, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=fx_eur_usd, sheet=Inputs, cell=O1, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=fx_eur_gbp, sheet=Inputs, cell=O3, raw=False, n=1
+2026-04-21 15:18:41 INFO Read field: field_code=domestic_metrics, sheet=Inputs, cell=E9:K9, raw=False, n=7
+2026-04-21 15:18:41 INFO Read field: field_code=intra_eea_metrics, sheet=Inputs, cell=E10:K10, raw=False, n=7
+2026-04-21 15:18:41 INFO Read field: field_code=intra_non_eea_metrics, sheet=Inputs, cell=E11:K11, raw=False, n=7
+2026-04-21 15:18:41 INFO Read field: field_code=inter_metrics, sheet=Inputs, cell=E12:K12, raw=False, n=7
+2026-04-21 15:18:41 INFO Read field: field_code=oct_pp_aa_dom_tt, sheet=Inputs, cell=E28:I28, raw=False, n=5
+2026-04-21 15:18:41 INFO Read field: field_code=oct_pp_aa_intra_eea_euro_tt, sheet=Inputs, cell=E29:I29, raw=False, n=5
+2026-04-21 15:18:41 INFO Read field: field_code=oct_pp_aa_intra_eea_non_euro_tt, sheet=Inputs, cell=E30:I30, raw=False, n=5
+2026-04-21 15:18:41 INFO Read field: field_code=oct_pp_aa_intra_non_eea_tt, sheet=Inputs, cell=E31:I31, raw=False, n=5
+2026-04-21 15:18:41 INFO Read field: field_code=oct_pp_aa_inter_tt, sheet=Inputs, cell=E32:I32, raw=False, n=5
+2026-04-21 15:18:41 INFO Read field: field_code=oct_pp_aa_dom_uc, sheet=Inputs, cell=R28:U28, raw=False, n=4
+2026-04-21 15:18:41 INFO Read field: field_code=oct_pp_aa_intra_eea_euro_uc, sheet=Inputs, cell=R29:U29, raw=False, n=4
+2026-04-21 15:18:41 INFO Read field: field_code=oct_pp_aa_intra_eea_non_euro_uc, sheet=Inputs, cell=R30:U30, raw=False, n=4
+2026-04-21 15:18:41 INFO Read field: field_code=oct_pp_aa_intra_non_eea_uc, sheet=Inputs, cell=R31:U31, raw=False, n=4
+2026-04-21 15:18:41 INFO Read field: field_code=oct_pp_aa_inter_uc, sheet=Inputs, cell=R32:U32, raw=False, n=4
+2026-04-21 15:18:41 INFO Read field: field_code=oct_fd_dom_tt, sheet=Inputs, cell=E43:I43, raw=False, n=5
+2026-04-21 15:18:41 INFO Read field: field_code=oct_fd_intra_eea_euro_tt, sheet=Inputs, cell=E44:I44, raw=False, n=5
+2026-04-21 15:18:41 INFO Read field: field_code=oct_fd_intra_eea_non_euro_tt, sheet=Inputs, cell=E45:I45, raw=False, n=5
+2026-04-21 15:18:41 INFO Read field: field_code=oct_fd_intra_non_eea_tt, sheet=Inputs, cell=E46:I46, raw=False, n=5
+2026-04-21 15:18:41 INFO Read field: field_code=oct_fd_inter_tt, sheet=Inputs, cell=E47:I47, raw=False, n=5
+2026-04-21 15:18:41 INFO Read field: field_code=oct_fd_dom_uc, sheet=Inputs, cell=R43:U43, raw=False, n=4
+2026-04-21 15:18:41 INFO Read field: field_code=oct_fd_intra_eea_euro_uc, sheet=Inputs, cell=R44:U44, raw=False, n=4
+2026-04-21 15:18:41 INFO Read field: field_code=oct_fd_intra_eea_non_euro_uc, sheet=Inputs, cell=R45:U45, raw=False, n=4
+2026-04-21 15:18:41 INFO Read field: field_code=oct_fd_intra_non_eea_uc, sheet=Inputs, cell=R46:U46, raw=False, n=4
+2026-04-21 15:18:41 INFO Read field: field_code=oct_fd_inter_uc, sheet=Inputs, cell=R47:U47, raw=False, n=4
+2026-04-21 15:18:41 INFO Read field: field_code=aft_pp_aa_dom_tt, sheet=Inputs, cell=E58:I58, raw=False, n=5
+2026-04-21 15:18:41 INFO Read field: field_code=aft_pp_aa_intra_eea_euro_tt, sheet=Inputs, cell=E59:I59, raw=False, n=5
+2026-04-21 15:18:41 INFO Read field: field_code=aft_pp_aa_intra_eea_non_euro_tt, sheet=Inputs, cell=E60:I60, raw=False, n=5
+2026-04-21 15:18:41 INFO Read field: field_code=aft_pp_aa_intra_non_eea_tt, sheet=Inputs, cell=E61:I61, raw=False, n=5
+2026-04-21 15:18:41 INFO Read field: field_code=aft_pp_aa_inter_tt, sheet=Inputs, cell=E62:I62, raw=False, n=5
+2026-04-21 15:18:41 INFO Read field: field_code=aft_pp_aa_dom_uc, sheet=Inputs, cell=R58:U58, raw=False, n=4
+2026-04-21 15:18:41 INFO Read field: field_code=aft_pp_aa_intra_eea_euro_uc, sheet=Inputs, cell=R59:U59, raw=False, n=4
+2026-04-21 15:18:41 INFO Read field: field_code=aft_pp_aa_intra_eea_non_euro_uc, sheet=Inputs, cell=R60:U60, raw=False, n=4
+2026-04-21 15:18:41 INFO Read field: field_code=aft_pp_aa_intra_non_eea_uc, sheet=Inputs, cell=R61:U61, raw=False, n=4
+2026-04-21 15:18:41 INFO Read field: field_code=aft_pp_aa_inter_uc, sheet=Inputs, cell=R62:U62, raw=False, n=4
+2026-04-21 15:18:41 INFO Read field: field_code=aft_fd_la_dom_tt, sheet=Inputs, cell=E72:I72, raw=False, n=5
+2026-04-21 15:18:41 INFO Read field: field_code=aft_fd_la_intra_eea_tt, sheet=Inputs, cell=E73:I73, raw=False, n=5
+2026-04-21 15:18:41 INFO Read field: field_code=aft_fd_la_intra_non_eea_tt, sheet=Inputs, cell=E74:I74, raw=False, n=5
+2026-04-21 15:18:41 INFO Read field: field_code=aft_fd_la_inter_tt, sheet=Inputs, cell=E75:I75, raw=False, n=5
+2026-04-21 15:18:41 INFO Read field: field_code=aft_fd_la_dom_uc, sheet=Inputs, cell=R72:U72, raw=False, n=4
+2026-04-21 15:18:41 INFO Read field: field_code=aft_fd_la_intra_eea_uc, sheet=Inputs, cell=R73:U73, raw=False, n=4
+2026-04-21 15:18:41 INFO Read field: field_code=aft_fd_la_intra_non_eea_uc, sheet=Inputs, cell=R74:U74, raw=False, n=4
+2026-04-21 15:18:41 INFO Read field: field_code=aft_fd_la_inter_uc, sheet=Inputs, cell=R75:U75, raw=False, n=4
+2026-04-21 15:18:41 INFO Output created: outputs/RBI Group.csv
+2026-04-21 15:18:41 INFO Processing completed: status=success
+2026-04-21 15:20:03 INFO Upload started: source=Trading 212.xlsx
+2026-04-21 15:20:03 INFO Upload completed: source=Trading 212.xlsx
+2026-04-21 15:20:03 INFO Template selected: template_code=Pricing, template_version=1.0
+2026-04-21 15:20:03 INFO Processing started: source=Trading 212.xlsx
+2026-04-21 15:20:03 INFO Workbook opened successfully
+2026-04-21 15:20:03 INFO Read field: field_code=client_name, sheet=Intro, cell=C3, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=opportunity_id, sheet=Intro, cell=E2, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=primary_market, sheet=Intro, cell=E3, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=deal_owner_ae, sheet=Intro, cell=G2, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=cluster, sheet=Intro, cell=G3, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=scenario_name, sheet=Intro, cell=I2, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=ci_ref_finance, sheet=Intro, cell=I3, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=executive_summary, sheet=Intro, cell=B5, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=alignment_with_ve_corporate_goals, sheet=Intro, cell=B7, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=win_retain_strategy, sheet=Intro, cell=B9, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=key_benefits, sheet=Intro, cell=B11, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=key_commercial_concerns, sheet=Intro, cell=B13, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=other_factors, sheet=Intro, cell=B15, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=deal_term, sheet=Intro, cell=D18, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=has_existing_vd_portfolio, sheet=Intro, cell=D19, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=existing_vd_portfolio_contract_end_date, sheet=Intro, cell=D20, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=qtr_beginning, sheet=Intro, cell=D21, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=qtr_ending, sheet=Intro, cell=D22, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=break_clause_year, sheet=Intro, cell=D23, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=client_full_name, sheet=Intro, cell=H18, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=client_address, sheet=Intro, cell=H19, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=client_notice_address, sheet=Intro, cell=H20, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=cw_number, sheet=Intro, cell=H21, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=fy_number, sheet=Intro, cell=H22, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=bid_identifier, sheet=Intro, cell=H23, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=has_existing_cia_with_client, sheet=Intro, cell=N18, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=has_pif_submitted, sheet=Intro, cell=N19, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=vdc_name, sheet=Intro, cell=N20, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=existing_oct_l12m_pv_eur, sheet=Intro, cell=N21, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=existing_oct_l12m_txn_count, sheet=Intro, cell=N22, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=existing_aft_l12m_pv_eur, sheet=Intro, cell=N23, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=existing_aft_l12m_txn_count, sheet=Intro, cell=N24, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=origin_market, sheet=Inputs, cell=G3, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=client_ype, sheet=Inputs, cell=G4, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=enabler_name, sheet=Inputs, cell=G5, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=aft_irf, sheet=Inputs, cell=I4, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=oct_irf, sheet=Inputs, cell=I5, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=fx_eur_usd, sheet=Inputs, cell=O1, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=fx_eur_gbp, sheet=Inputs, cell=O3, raw=False, n=1
+2026-04-21 15:20:03 INFO Read field: field_code=domestic_metrics, sheet=Inputs, cell=E9:K9, raw=False, n=7
+2026-04-21 15:20:03 INFO Read field: field_code=intra_eea_metrics, sheet=Inputs, cell=E10:K10, raw=False, n=7
+2026-04-21 15:20:03 INFO Read field: field_code=intra_non_eea_metrics, sheet=Inputs, cell=E11:K11, raw=False, n=7
+2026-04-21 15:20:03 INFO Read field: field_code=inter_metrics, sheet=Inputs, cell=E12:K12, raw=False, n=7
+2026-04-21 15:20:03 INFO Read field: field_code=oct_pp_aa_dom_tt, sheet=Inputs, cell=E28:I28, raw=False, n=5
+2026-04-21 15:20:03 INFO Read field: field_code=oct_pp_aa_intra_eea_euro_tt, sheet=Inputs, cell=E29:I29, raw=False, n=5
+2026-04-21 15:20:03 INFO Read field: field_code=oct_pp_aa_intra_eea_non_euro_tt, sheet=Inputs, cell=E30:I30, raw=False, n=5
+2026-04-21 15:20:03 INFO Read field: field_code=oct_pp_aa_intra_non_eea_tt, sheet=Inputs, cell=E31:I31, raw=False, n=5
+2026-04-21 15:20:03 INFO Read field: field_code=oct_pp_aa_inter_tt, sheet=Inputs, cell=E32:I32, raw=False, n=5
+2026-04-21 15:20:03 INFO Read field: field_code=oct_pp_aa_dom_uc, sheet=Inputs, cell=R28:U28, raw=False, n=4
+2026-04-21 15:20:03 INFO Read field: field_code=oct_pp_aa_intra_eea_euro_uc, sheet=Inputs, cell=R29:U29, raw=False, n=4
+2026-04-21 15:20:03 INFO Read field: field_code=oct_pp_aa_intra_eea_non_euro_uc, sheet=Inputs, cell=R30:U30, raw=False, n=4
+2026-04-21 15:20:03 INFO Read field: field_code=oct_pp_aa_intra_non_eea_uc, sheet=Inputs, cell=R31:U31, raw=False, n=4
+2026-04-21 15:20:03 INFO Read field: field_code=oct_pp_aa_inter_uc, sheet=Inputs, cell=R32:U32, raw=False, n=4
+2026-04-21 15:20:03 INFO Read field: field_code=oct_fd_dom_tt, sheet=Inputs, cell=E43:I43, raw=False, n=5
+2026-04-21 15:20:03 INFO Read field: field_code=oct_fd_intra_eea_euro_tt, sheet=Inputs, cell=E44:I44, raw=False, n=5
+2026-04-21 15:20:03 INFO Read field: field_code=oct_fd_intra_eea_non_euro_tt, sheet=Inputs, cell=E45:I45, raw=False, n=5
+2026-04-21 15:20:03 INFO Read field: field_code=oct_fd_intra_non_eea_tt, sheet=Inputs, cell=E46:I46, raw=False, n=5
+2026-04-21 15:20:03 INFO Read field: field_code=oct_fd_inter_tt, sheet=Inputs, cell=E47:I47, raw=False, n=5
+2026-04-21 15:20:03 INFO Read field: field_code=oct_fd_dom_uc, sheet=Inputs, cell=R43:U43, raw=False, n=4
+2026-04-21 15:20:03 INFO Read field: field_code=oct_fd_intra_eea_euro_uc, sheet=Inputs, cell=R44:U44, raw=False, n=4
+2026-04-21 15:20:03 INFO Read field: field_code=oct_fd_intra_eea_non_euro_uc, sheet=Inputs, cell=R45:U45, raw=False, n=4
+2026-04-21 15:20:03 INFO Read field: field_code=oct_fd_intra_non_eea_uc, sheet=Inputs, cell=R46:U46, raw=False, n=4
+2026-04-21 15:20:03 INFO Read field: field_code=oct_fd_inter_uc, sheet=Inputs, cell=R47:U47, raw=False, n=4
+2026-04-21 15:20:03 INFO Read field: field_code=aft_pp_aa_dom_tt, sheet=Inputs, cell=E58:I58, raw=False, n=5
+2026-04-21 15:20:03 INFO Read field: field_code=aft_pp_aa_intra_eea_euro_tt, sheet=Inputs, cell=E59:I59, raw=False, n=5
+2026-04-21 15:20:03 INFO Read field: field_code=aft_pp_aa_intra_eea_non_euro_tt, sheet=Inputs, cell=E60:I60, raw=False, n=5
+2026-04-21 15:20:03 INFO Read field: field_code=aft_pp_aa_intra_non_eea_tt, sheet=Inputs, cell=E61:I61, raw=False, n=5
+2026-04-21 15:20:03 INFO Read field: field_code=aft_pp_aa_inter_tt, sheet=Inputs, cell=E62:I62, raw=False, n=5
+2026-04-21 15:20:03 INFO Read field: field_code=aft_pp_aa_dom_uc, sheet=Inputs, cell=R58:U58, raw=False, n=4
+2026-04-21 15:20:03 INFO Read field: field_code=aft_pp_aa_intra_eea_euro_uc, sheet=Inputs, cell=R59:U59, raw=False, n=4
+2026-04-21 15:20:03 INFO Read field: field_code=aft_pp_aa_intra_eea_non_euro_uc, sheet=Inputs, cell=R60:U60, raw=False, n=4
+2026-04-21 15:20:03 INFO Read field: field_code=aft_pp_aa_intra_non_eea_uc, sheet=Inputs, cell=R61:U61, raw=False, n=4
+2026-04-21 15:20:03 INFO Read field: field_code=aft_pp_aa_inter_uc, sheet=Inputs, cell=R62:U62, raw=False, n=4
+2026-04-21 15:20:03 INFO Read field: field_code=aft_fd_la_dom_tt, sheet=Inputs, cell=E72:I72, raw=False, n=5
+2026-04-21 15:20:03 INFO Read field: field_code=aft_fd_la_intra_eea_tt, sheet=Inputs, cell=E73:I73, raw=False, n=5
+2026-04-21 15:20:03 INFO Read field: field_code=aft_fd_la_intra_non_eea_tt, sheet=Inputs, cell=E74:I74, raw=False, n=5
+2026-04-21 15:20:03 INFO Read field: field_code=aft_fd_la_inter_tt, sheet=Inputs, cell=E75:I75, raw=False, n=5
+2026-04-21 15:20:03 INFO Read field: field_code=aft_fd_la_dom_uc, sheet=Inputs, cell=R72:U72, raw=False, n=4
+2026-04-21 15:20:03 INFO Read field: field_code=aft_fd_la_intra_eea_uc, sheet=Inputs, cell=R73:U73, raw=False, n=4
+2026-04-21 15:20:03 INFO Read field: field_code=aft_fd_la_intra_non_eea_uc, sheet=Inputs, cell=R74:U74, raw=False, n=4
+2026-04-21 15:20:03 INFO Read field: field_code=aft_fd_la_inter_uc, sheet=Inputs, cell=R75:U75, raw=False, n=4
+2026-04-21 15:20:03 WARNING Validation failed: field_code=oct_pp_aa_dom_tt, rule=number/allow_empty=True, value=', , , , ', label_value='INTRA EEA'
+2026-04-21 15:20:03 WARNING Validation failed: field_code=oct_pp_aa_intra_eea_euro_tt, rule=number/allow_empty=True, value=', , , , ', label_value='INTRA Non-EEA'
+2026-04-21 15:20:03 WARNING Validation failed: field_code=oct_pp_aa_intra_eea_non_euro_tt, rule=number/allow_empty=True, value=', , , , ', label_value='INTER'
+2026-04-21 15:20:03 WARNING Validation failed: field_code=oct_pp_aa_inter_tt, rule=number/allow_empty=True, value='1, 2, 3, 4, 5', label_value='OCT - FD'
+2026-04-21 15:20:03 WARNING Validation failed: field_code=oct_pp_aa_dom_uc, rule=string/allow_empty=True, value=', , , ', label_value='INTRA EEA'
+2026-04-21 15:20:03 WARNING Validation failed: field_code=oct_pp_aa_intra_eea_euro_uc, rule=string/allow_empty=True, value=', , , ', label_value='INTRA Non-EEA'
+2026-04-21 15:20:03 WARNING Validation failed: field_code=oct_pp_aa_intra_eea_non_euro_uc, rule=string/allow_empty=True, value=', , , ', label_value='INTER'
+2026-04-21 15:20:03 WARNING Validation failed: field_code=oct_pp_aa_inter_uc, rule=string/allow_empty=True, value=', , , ', label_value='OCT - FD'
+2026-04-21 15:20:03 WARNING Validation failed: field_code=oct_fd_dom_tt, rule=number/allow_empty=True, value=', , , , ', label_value='INTER'
+2026-04-21 15:20:03 WARNING Validation failed: field_code=oct_fd_intra_eea_non_euro_tt, rule=number/allow_empty=True, value='1, 2, 3, 4, 5', label_value='AFT'
+2026-04-21 15:20:03 WARNING Validation failed: field_code=oct_fd_intra_non_eea_tt, rule=number/allow_empty=True, value='1047200000, 1047200000, 0, 0, 0', label_value='Total PV'
+2026-04-21 15:20:03 WARNING Validation failed: field_code=oct_fd_inter_tt, rule=number/allow_empty=True, value='1047200000, 1047200000, 0, 0, 0', label_value='DOM'
+2026-04-21 15:20:03 WARNING Validation failed: field_code=oct_fd_dom_uc, rule=string/allow_empty=True, value=', , , ', label_value='INTER'
+2026-04-21 15:20:03 WARNING Validation failed: field_code=oct_fd_intra_eea_non_euro_uc, rule=string/allow_empty=True, value=', , , ', label_value='AFT'
+2026-04-21 15:20:03 WARNING Validation failed: field_code=oct_fd_intra_non_eea_uc, rule=string/allow_empty=True, value=', , , ', label_value='Total PV'
+2026-04-21 15:20:03 WARNING Validation failed: field_code=oct_fd_inter_uc, rule=string/allow_empty=True, value=', , , ', label_value='DOM'
+2026-04-21 15:20:03 WARNING Validation failed: field_code=aft_pp_aa_dom_tt, rule=number/allow_empty=True, value='1, 2, 3, 4, 5', label_value='Total'
+2026-04-21 15:20:03 WARNING Validation failed: field_code=aft_pp_aa_intra_eea_euro_tt, rule=number/allow_empty=True, value='1047200000, 1047200000, 0, 0, 0', label_value='Total PV'
+2026-04-21 15:20:03 WARNING Validation failed: field_code=aft_pp_aa_intra_eea_non_euro_tt, rule=number/allow_empty=True, value='1047200000, 1047200000, 0, 0, 0', label_value='DOM'
+2026-04-21 15:20:03 WARNING Validation failed: field_code=aft_pp_aa_intra_non_eea_tt, rule=number/allow_empty=True, value='0, 0, 0, 0, 0', label_value='INTRA EEA'
+2026-04-21 15:20:03 WARNING Validation failed: field_code=aft_pp_aa_inter_tt, rule=number/allow_empty=True, value='0, 0, 0, 0, 0', label_value='INTRA Non-EEA'
+2026-04-21 15:20:03 WARNING Validation failed: field_code=aft_pp_aa_dom_uc, rule=string/allow_empty=True, value=', , , ', label_value='Total'
+2026-04-21 15:20:03 WARNING Validation failed: field_code=aft_pp_aa_intra_eea_euro_uc, rule=string/allow_empty=True, value=', , , ', label_value='Total PV'
+2026-04-21 15:20:03 WARNING Validation failed: field_code=aft_pp_aa_intra_eea_non_euro_uc, rule=string/allow_empty=True, value=', , , ', label_value='DOM'
+2026-04-21 15:20:03 WARNING Validation failed: field_code=aft_pp_aa_intra_non_eea_uc, rule=string/allow_empty=True, value=', , , ', label_value='INTRA EEA'
+2026-04-21 15:20:03 WARNING Validation failed: field_code=aft_pp_aa_inter_uc, rule=string/allow_empty=True, value=', , , ', label_value='INTRA Non-EEA'
+2026-04-21 15:22:16 INFO Upload started: source=Viseca.xlsx
+2026-04-21 15:22:16 INFO Upload completed: source=Viseca.xlsx
+2026-04-21 15:22:16 INFO Template selected: template_code=Pricing, template_version=1.0
+2026-04-21 15:22:16 INFO Processing started: source=Viseca.xlsx
+2026-04-21 15:22:17 INFO Workbook opened successfully
+2026-04-21 15:22:17 INFO Read field: field_code=client_name, sheet=Intro, cell=C3, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=opportunity_id, sheet=Intro, cell=E2, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=primary_market, sheet=Intro, cell=E3, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=deal_owner_ae, sheet=Intro, cell=G2, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=cluster, sheet=Intro, cell=G3, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=scenario_name, sheet=Intro, cell=I2, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=ci_ref_finance, sheet=Intro, cell=I3, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=executive_summary, sheet=Intro, cell=B5, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=alignment_with_ve_corporate_goals, sheet=Intro, cell=B7, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=win_retain_strategy, sheet=Intro, cell=B9, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=key_benefits, sheet=Intro, cell=B11, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=key_commercial_concerns, sheet=Intro, cell=B13, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=other_factors, sheet=Intro, cell=B15, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=deal_term, sheet=Intro, cell=D18, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=has_existing_vd_portfolio, sheet=Intro, cell=D19, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=existing_vd_portfolio_contract_end_date, sheet=Intro, cell=D20, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=qtr_beginning, sheet=Intro, cell=D21, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=qtr_ending, sheet=Intro, cell=D22, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=break_clause_year, sheet=Intro, cell=D23, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=client_full_name, sheet=Intro, cell=H18, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=client_address, sheet=Intro, cell=H19, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=client_notice_address, sheet=Intro, cell=H20, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=cw_number, sheet=Intro, cell=H21, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=fy_number, sheet=Intro, cell=H22, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=bid_identifier, sheet=Intro, cell=H23, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=has_existing_cia_with_client, sheet=Intro, cell=N18, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=has_pif_submitted, sheet=Intro, cell=N19, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=vdc_name, sheet=Intro, cell=N20, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=existing_oct_l12m_pv_eur, sheet=Intro, cell=N21, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=existing_oct_l12m_txn_count, sheet=Intro, cell=N22, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=existing_aft_l12m_pv_eur, sheet=Intro, cell=N23, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=existing_aft_l12m_txn_count, sheet=Intro, cell=N24, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=origin_market, sheet=Inputs, cell=G3, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=client_ype, sheet=Inputs, cell=G4, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=enabler_name, sheet=Inputs, cell=G5, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=aft_irf, sheet=Inputs, cell=I4, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=oct_irf, sheet=Inputs, cell=I5, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=fx_eur_usd, sheet=Inputs, cell=O1, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=fx_eur_gbp, sheet=Inputs, cell=O3, raw=False, n=1
+2026-04-21 15:22:17 INFO Read field: field_code=domestic_metrics, sheet=Inputs, cell=E9:K9, raw=False, n=7
+2026-04-21 15:22:17 INFO Read field: field_code=intra_eea_metrics, sheet=Inputs, cell=E10:K10, raw=False, n=7
+2026-04-21 15:22:17 INFO Read field: field_code=intra_non_eea_metrics, sheet=Inputs, cell=E11:K11, raw=False, n=7
+2026-04-21 15:22:17 INFO Read field: field_code=inter_metrics, sheet=Inputs, cell=E12:K12, raw=False, n=7
+2026-04-21 15:22:17 INFO Read field: field_code=oct_pp_aa_dom_tt, sheet=Inputs, cell=E28:I28, raw=False, n=5
+2026-04-21 15:22:17 INFO Read field: field_code=oct_pp_aa_intra_eea_euro_tt, sheet=Inputs, cell=E29:I29, raw=False, n=5
+2026-04-21 15:22:17 INFO Read field: field_code=oct_pp_aa_intra_eea_non_euro_tt, sheet=Inputs, cell=E30:I30, raw=False, n=5
+2026-04-21 15:22:17 INFO Read field: field_code=oct_pp_aa_intra_non_eea_tt, sheet=Inputs, cell=E31:I31, raw=False, n=5
+2026-04-21 15:22:17 INFO Read field: field_code=oct_pp_aa_inter_tt, sheet=Inputs, cell=E32:I32, raw=False, n=5
+2026-04-21 15:22:17 INFO Read field: field_code=oct_pp_aa_dom_uc, sheet=Inputs, cell=R28:U28, raw=False, n=4
+2026-04-21 15:22:17 INFO Read field: field_code=oct_pp_aa_intra_eea_euro_uc, sheet=Inputs, cell=R29:U29, raw=False, n=4
+2026-04-21 15:22:17 INFO Read field: field_code=oct_pp_aa_intra_eea_non_euro_uc, sheet=Inputs, cell=R30:U30, raw=False, n=4
+2026-04-21 15:22:17 INFO Read field: field_code=oct_pp_aa_intra_non_eea_uc, sheet=Inputs, cell=R31:U31, raw=False, n=4
+2026-04-21 15:22:17 INFO Read field: field_code=oct_pp_aa_inter_uc, sheet=Inputs, cell=R32:U32, raw=False, n=4
+2026-04-21 15:22:17 INFO Read field: field_code=oct_fd_dom_tt, sheet=Inputs, cell=E43:I43, raw=False, n=5
+2026-04-21 15:22:17 INFO Read field: field_code=oct_fd_intra_eea_euro_tt, sheet=Inputs, cell=E44:I44, raw=False, n=5
+2026-04-21 15:22:17 INFO Read field: field_code=oct_fd_intra_eea_non_euro_tt, sheet=Inputs, cell=E45:I45, raw=False, n=5
+2026-04-21 15:22:17 INFO Read field: field_code=oct_fd_intra_non_eea_tt, sheet=Inputs, cell=E46:I46, raw=False, n=5
+2026-04-21 15:22:17 INFO Read field: field_code=oct_fd_inter_tt, sheet=Inputs, cell=E47:I47, raw=False, n=5
+2026-04-21 15:22:17 INFO Read field: field_code=oct_fd_dom_uc, sheet=Inputs, cell=R43:U43, raw=False, n=4
+2026-04-21 15:22:17 INFO Read field: field_code=oct_fd_intra_eea_euro_uc, sheet=Inputs, cell=R44:U44, raw=False, n=4
+2026-04-21 15:22:17 INFO Read field: field_code=oct_fd_intra_eea_non_euro_uc, sheet=Inputs, cell=R45:U45, raw=False, n=4
+2026-04-21 15:22:17 INFO Read field: field_code=oct_fd_intra_non_eea_uc, sheet=Inputs, cell=R46:U46, raw=False, n=4
+2026-04-21 15:22:17 INFO Read field: field_code=oct_fd_inter_uc, sheet=Inputs, cell=R47:U47, raw=False, n=4
+2026-04-21 15:22:17 INFO Read field: field_code=aft_pp_aa_dom_tt, sheet=Inputs, cell=E58:I58, raw=False, n=5
+2026-04-21 15:22:17 INFO Read field: field_code=aft_pp_aa_intra_eea_euro_tt, sheet=Inputs, cell=E59:I59, raw=False, n=5
+2026-04-21 15:22:17 INFO Read field: field_code=aft_pp_aa_intra_eea_non_euro_tt, sheet=Inputs, cell=E60:I60, raw=False, n=5
+2026-04-21 15:22:17 INFO Read field: field_code=aft_pp_aa_intra_non_eea_tt, sheet=Inputs, cell=E61:I61, raw=False, n=5
+2026-04-21 15:22:17 INFO Read field: field_code=aft_pp_aa_inter_tt, sheet=Inputs, cell=E62:I62, raw=False, n=5
+2026-04-21 15:22:17 INFO Read field: field_code=aft_pp_aa_dom_uc, sheet=Inputs, cell=R58:U58, raw=False, n=4
+2026-04-21 15:22:17 INFO Read field: field_code=aft_pp_aa_intra_eea_euro_uc, sheet=Inputs, cell=R59:U59, raw=False, n=4
+2026-04-21 15:22:17 INFO Read field: field_code=aft_pp_aa_intra_eea_non_euro_uc, sheet=Inputs, cell=R60:U60, raw=False, n=4
+2026-04-21 15:22:17 INFO Read field: field_code=aft_pp_aa_intra_non_eea_uc, sheet=Inputs, cell=R61:U61, raw=False, n=4
+2026-04-21 15:22:17 INFO Read field: field_code=aft_pp_aa_inter_uc, sheet=Inputs, cell=R62:U62, raw=False, n=4
+2026-04-21 15:22:17 INFO Read field: field_code=aft_fd_la_dom_tt, sheet=Inputs, cell=E72:I72, raw=False, n=5
+2026-04-21 15:22:17 INFO Read field: field_code=aft_fd_la_intra_eea_tt, sheet=Inputs, cell=E73:I73, raw=False, n=5
+2026-04-21 15:22:17 INFO Read field: field_code=aft_fd_la_intra_non_eea_tt, sheet=Inputs, cell=E74:I74, raw=False, n=5
+2026-04-21 15:22:17 INFO Read field: field_code=aft_fd_la_inter_tt, sheet=Inputs, cell=E75:I75, raw=False, n=5
+2026-04-21 15:22:17 INFO Read field: field_code=aft_fd_la_dom_uc, sheet=Inputs, cell=R72:U72, raw=False, n=4
+2026-04-21 15:22:17 INFO Read field: field_code=aft_fd_la_intra_eea_uc, sheet=Inputs, cell=R73:U73, raw=False, n=4
+2026-04-21 15:22:17 INFO Read field: field_code=aft_fd_la_intra_non_eea_uc, sheet=Inputs, cell=R74:U74, raw=False, n=4
+2026-04-21 15:22:17 INFO Read field: field_code=aft_fd_la_inter_uc, sheet=Inputs, cell=R75:U75, raw=False, n=4
+2026-04-21 15:22:17 INFO Output created: outputs/Viseca.csv
+2026-04-21 15:22:17 INFO Processing completed: status=success
+2026-04-21 16:16:27 INFO Template updated: Pricing_1.0
+2026-04-21 16:40:14 INFO Template updated: Pricing_1.0
+2026-04-21 16:40:43 INFO Template updated: Pricing_1.0
+2026-04-21 16:40:53 INFO Upload started: source=RBI Group.xlsx
+2026-04-21 16:40:53 INFO Upload completed: source=RBI Group.xlsx
+2026-04-21 16:40:53 INFO Template selected: template_code=Pricing, template_version=1.0
+2026-04-21 16:40:53 INFO Processing started: source=RBI Group.xlsx
+2026-04-21 16:40:54 INFO Workbook opened successfully
+2026-04-21 16:40:54 INFO Read field: field_code=client_name, sheet=Intro, cell=C3, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=opportunity_id, sheet=Intro, cell=E2, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=primary_market, sheet=Intro, cell=E3, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=deal_owner_ae, sheet=Intro, cell=G2, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=cluster, sheet=Intro, cell=G3, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=scenario_name, sheet=Intro, cell=I2, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=ci_ref_finance, sheet=Intro, cell=I3, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=executive_summary, sheet=Intro, cell=B5, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=alignment_with_ve_corporate_goals, sheet=Intro, cell=B7, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=win_retain_strategy, sheet=Intro, cell=B9, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=key_benefits, sheet=Intro, cell=B11, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=key_commercial_concerns, sheet=Intro, cell=B13, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=other_factors, sheet=Intro, cell=B15, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=deal_term, sheet=Intro, cell=D18, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=has_existing_vd_portfolio, sheet=Intro, cell=D19, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=existing_vd_portfolio_contract_end_date, sheet=Intro, cell=D20, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=qtr_beginning, sheet=Intro, cell=D21, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=qtr_ending, sheet=Intro, cell=D22, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=break_clause_year, sheet=Intro, cell=D23, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=client_full_name, sheet=Intro, cell=H18, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=client_address, sheet=Intro, cell=H19, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=client_notice_address, sheet=Intro, cell=H20, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=cw_number, sheet=Intro, cell=H21, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=fy_number, sheet=Intro, cell=H22, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=bid_identifier, sheet=Intro, cell=H23, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=has_existing_cia_with_client, sheet=Intro, cell=N18, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=has_pif_submitted, sheet=Intro, cell=N19, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=vdc_name, sheet=Intro, cell=N20, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=existing_oct_l12m_pv_eur, sheet=Intro, cell=N21, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=existing_oct_l12m_txn_count, sheet=Intro, cell=N22, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=existing_aft_l12m_pv_eur, sheet=Intro, cell=N23, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=existing_aft_l12m_txn_count, sheet=Intro, cell=N24, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=origin_market, sheet=Inputs, cell=G3, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=client_ype, sheet=Inputs, cell=G4, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=enabler_name, sheet=Inputs, cell=G5, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=aft_irf, sheet=Inputs, cell=I4, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=oct_irf, sheet=Inputs, cell=I5, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=fx_eur_usd, sheet=Inputs, cell=O1, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=fx_eur_gbp, sheet=Inputs, cell=O3, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=domestic_metrics, sheet=Inputs, cell=E9:K9, raw=False, n=7
+2026-04-21 16:40:54 INFO Read field: field_code=intra_eea_metrics, sheet=Inputs, cell=E10:K10, raw=False, n=7
+2026-04-21 16:40:54 INFO Read field: field_code=intra_non_eea_metrics, sheet=Inputs, cell=E11:K11, raw=False, n=7
+2026-04-21 16:40:54 INFO Read field: field_code=inter_metrics, sheet=Inputs, cell=E12:K12, raw=False, n=7
+2026-04-21 16:40:54 INFO Read field: field_code=oct_pp_aa_dom_tt, sheet=Inputs, cell=E28:I28, raw=False, n=5
+2026-04-21 16:40:54 INFO Read field: field_code=oct_pp_aa_intra_eea_euro_tt, sheet=Inputs, cell=E29:I29, raw=False, n=5
+2026-04-21 16:40:54 INFO Read field: field_code=oct_pp_aa_intra_eea_non_euro_tt, sheet=Inputs, cell=E30:I30, raw=False, n=5
+2026-04-21 16:40:54 INFO Read field: field_code=oct_pp_aa_intra_non_eea_tt, sheet=Inputs, cell=E31:I31, raw=False, n=5
+2026-04-21 16:40:54 INFO Read field: field_code=oct_pp_aa_inter_tt, sheet=Inputs, cell=E32:I32, raw=False, n=5
+2026-04-21 16:40:54 INFO Read field: field_code=oct_pp_aa_dom_uc, sheet=Inputs, cell=R28:U28, raw=False, n=4
+2026-04-21 16:40:54 INFO Read field: field_code=oct_pp_aa_intra_eea_euro_uc, sheet=Inputs, cell=R29:U29, raw=False, n=4
+2026-04-21 16:40:54 INFO Read field: field_code=oct_pp_aa_intra_eea_non_euro_uc, sheet=Inputs, cell=R30:U30, raw=False, n=4
+2026-04-21 16:40:54 INFO Read field: field_code=oct_pp_aa_intra_non_eea_uc, sheet=Inputs, cell=R31:U31, raw=False, n=4
+2026-04-21 16:40:54 INFO Read field: field_code=oct_pp_aa_inter_uc, sheet=Inputs, cell=R32:U32, raw=False, n=4
+2026-04-21 16:40:54 INFO Read field: field_code=oct_fd_dom_tt, sheet=Inputs, cell=E43:I43, raw=False, n=5
+2026-04-21 16:40:54 INFO Read field: field_code=oct_fd_intra_eea_euro_tt, sheet=Inputs, cell=E44:I44, raw=False, n=5
+2026-04-21 16:40:54 INFO Read field: field_code=oct_fd_intra_eea_non_euro_tt, sheet=Inputs, cell=E45:I45, raw=False, n=5
+2026-04-21 16:40:54 INFO Read field: field_code=oct_fd_intra_non_eea_tt, sheet=Inputs, cell=E46:I46, raw=False, n=5
+2026-04-21 16:40:54 INFO Read field: field_code=oct_fd_inter_tt, sheet=Inputs, cell=E47:I47, raw=False, n=5
+2026-04-21 16:40:54 INFO Read field: field_code=oct_fd_dom_uc, sheet=Inputs, cell=R43:U43, raw=False, n=4
+2026-04-21 16:40:54 INFO Read field: field_code=oct_fd_intra_eea_euro_uc, sheet=Inputs, cell=R44:U44, raw=False, n=4
+2026-04-21 16:40:54 INFO Read field: field_code=oct_fd_intra_eea_non_euro_uc, sheet=Inputs, cell=R45:U45, raw=False, n=4
+2026-04-21 16:40:54 INFO Read field: field_code=oct_fd_intra_non_eea_uc, sheet=Inputs, cell=R46:U46, raw=False, n=4
+2026-04-21 16:40:54 INFO Read field: field_code=oct_fd_inter_uc, sheet=Inputs, cell=R47:U47, raw=False, n=4
+2026-04-21 16:40:54 INFO Read field: field_code=aft_pp_aa_dom_tt, sheet=Inputs, cell=E58:I58, raw=False, n=5
+2026-04-21 16:40:54 INFO Read field: field_code=aft_pp_aa_intra_eea_euro_tt, sheet=Inputs, cell=E59:I59, raw=False, n=5
+2026-04-21 16:40:54 INFO Read field: field_code=aft_pp_aa_intra_eea_non_euro_tt, sheet=Inputs, cell=E60:I60, raw=False, n=5
+2026-04-21 16:40:54 INFO Read field: field_code=aft_pp_aa_intra_non_eea_tt, sheet=Inputs, cell=E61:I61, raw=False, n=5
+2026-04-21 16:40:54 INFO Read field: field_code=aft_pp_aa_inter_tt, sheet=Inputs, cell=E62:I62, raw=False, n=5
+2026-04-21 16:40:54 INFO Read field: field_code=aft_pp_aa_dom_uc, sheet=Inputs, cell=R58:U58, raw=False, n=4
+2026-04-21 16:40:54 INFO Read field: field_code=aft_pp_aa_intra_eea_euro_uc, sheet=Inputs, cell=R59:U59, raw=False, n=4
+2026-04-21 16:40:54 INFO Read field: field_code=aft_pp_aa_intra_eea_non_euro_uc, sheet=Inputs, cell=R60:U60, raw=False, n=4
+2026-04-21 16:40:54 INFO Read field: field_code=aft_pp_aa_intra_non_eea_uc, sheet=Inputs, cell=R61:U61, raw=False, n=4
+2026-04-21 16:40:54 INFO Read field: field_code=aft_pp_aa_inter_uc, sheet=Inputs, cell=R62:U62, raw=False, n=4
+2026-04-21 16:40:54 INFO Read field: field_code=aft_fd_la_dom_tt, sheet=Inputs, cell=E72:I72, raw=False, n=5
+2026-04-21 16:40:54 INFO Read field: field_code=aft_fd_la_intra_eea_tt, sheet=Inputs, cell=E73:I73, raw=False, n=5
+2026-04-21 16:40:54 INFO Read field: field_code=aft_fd_la_intra_non_eea_tt, sheet=Inputs, cell=E74:I74, raw=False, n=5
+2026-04-21 16:40:54 INFO Read field: field_code=aft_fd_la_inter_tt, sheet=Inputs, cell=E75:I75, raw=False, n=5
+2026-04-21 16:40:54 INFO Read field: field_code=aft_fd_la_dom_uc, sheet=Inputs, cell=R72:U72, raw=False, n=4
+2026-04-21 16:40:54 INFO Read field: field_code=aft_fd_la_intra_eea_uc, sheet=Inputs, cell=R73:U73, raw=False, n=4
+2026-04-21 16:40:54 INFO Read field: field_code=aft_fd_la_intra_non_eea_uc, sheet=Inputs, cell=R74:U74, raw=False, n=4
+2026-04-21 16:40:54 INFO Read field: field_code=aft_fd_la_inter_uc, sheet=Inputs, cell=R75:U75, raw=False, n=4
+2026-04-21 16:40:54 INFO Read field: field_code=discount_option_type, sheet=P&L, cell=F2, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=discount_option_pct, sheet=P&L, cell=G2, raw=False, n=1
+2026-04-21 16:40:54 INFO Read field: field_code=upfront_cash_earned_out, sheet=P&L, cell=G34:K34, raw=False, n=5
+2026-04-21 16:40:54 INFO Read field: field_code=upfront_vik_gross_including_vat_earned_out, sheet=P&L, cell=G35:K35, raw=False, n=5
+2026-04-21 16:40:54 INFO Read field: field_code=fixed_support_earned_out, sheet=P&L, cell=G36:K36, raw=False, n=5
+2026-04-21 16:40:54 INFO Read field: field_code=vik_support_gross_including_vat_earned_out, sheet=P&L, cell=G37:K37, raw=False, n=5
+2026-04-21 16:40:54 INFO Read field: field_code=split_over_ride_pct, sheet=P&L, cell=I79:I87, raw=False, n=9
+2026-04-21 16:40:54 INFO Output created: outputs/RBI Group.csv
+2026-04-21 16:40:54 INFO Processing completed: status=success
+2026-04-21 16:41:08 INFO Upload started: source=Viseca.xlsx
+2026-04-21 16:41:08 INFO Upload completed: source=Viseca.xlsx
+2026-04-21 16:41:08 INFO Template selected: template_code=Pricing, template_version=1.0
+2026-04-21 16:41:08 INFO Processing started: source=Viseca.xlsx
+2026-04-21 16:41:09 INFO Workbook opened successfully
+2026-04-21 16:41:09 INFO Read field: field_code=client_name, sheet=Intro, cell=C3, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=opportunity_id, sheet=Intro, cell=E2, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=primary_market, sheet=Intro, cell=E3, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=deal_owner_ae, sheet=Intro, cell=G2, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=cluster, sheet=Intro, cell=G3, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=scenario_name, sheet=Intro, cell=I2, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=ci_ref_finance, sheet=Intro, cell=I3, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=executive_summary, sheet=Intro, cell=B5, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=alignment_with_ve_corporate_goals, sheet=Intro, cell=B7, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=win_retain_strategy, sheet=Intro, cell=B9, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=key_benefits, sheet=Intro, cell=B11, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=key_commercial_concerns, sheet=Intro, cell=B13, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=other_factors, sheet=Intro, cell=B15, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=deal_term, sheet=Intro, cell=D18, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=has_existing_vd_portfolio, sheet=Intro, cell=D19, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=existing_vd_portfolio_contract_end_date, sheet=Intro, cell=D20, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=qtr_beginning, sheet=Intro, cell=D21, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=qtr_ending, sheet=Intro, cell=D22, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=break_clause_year, sheet=Intro, cell=D23, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=client_full_name, sheet=Intro, cell=H18, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=client_address, sheet=Intro, cell=H19, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=client_notice_address, sheet=Intro, cell=H20, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=cw_number, sheet=Intro, cell=H21, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=fy_number, sheet=Intro, cell=H22, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=bid_identifier, sheet=Intro, cell=H23, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=has_existing_cia_with_client, sheet=Intro, cell=N18, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=has_pif_submitted, sheet=Intro, cell=N19, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=vdc_name, sheet=Intro, cell=N20, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=existing_oct_l12m_pv_eur, sheet=Intro, cell=N21, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=existing_oct_l12m_txn_count, sheet=Intro, cell=N22, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=existing_aft_l12m_pv_eur, sheet=Intro, cell=N23, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=existing_aft_l12m_txn_count, sheet=Intro, cell=N24, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=origin_market, sheet=Inputs, cell=G3, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=client_ype, sheet=Inputs, cell=G4, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=enabler_name, sheet=Inputs, cell=G5, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=aft_irf, sheet=Inputs, cell=I4, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=oct_irf, sheet=Inputs, cell=I5, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=fx_eur_usd, sheet=Inputs, cell=O1, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=fx_eur_gbp, sheet=Inputs, cell=O3, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=domestic_metrics, sheet=Inputs, cell=E9:K9, raw=False, n=7
+2026-04-21 16:41:09 INFO Read field: field_code=intra_eea_metrics, sheet=Inputs, cell=E10:K10, raw=False, n=7
+2026-04-21 16:41:09 INFO Read field: field_code=intra_non_eea_metrics, sheet=Inputs, cell=E11:K11, raw=False, n=7
+2026-04-21 16:41:09 INFO Read field: field_code=inter_metrics, sheet=Inputs, cell=E12:K12, raw=False, n=7
+2026-04-21 16:41:09 INFO Read field: field_code=oct_pp_aa_dom_tt, sheet=Inputs, cell=E28:I28, raw=False, n=5
+2026-04-21 16:41:09 INFO Read field: field_code=oct_pp_aa_intra_eea_euro_tt, sheet=Inputs, cell=E29:I29, raw=False, n=5
+2026-04-21 16:41:09 INFO Read field: field_code=oct_pp_aa_intra_eea_non_euro_tt, sheet=Inputs, cell=E30:I30, raw=False, n=5
+2026-04-21 16:41:09 INFO Read field: field_code=oct_pp_aa_intra_non_eea_tt, sheet=Inputs, cell=E31:I31, raw=False, n=5
+2026-04-21 16:41:09 INFO Read field: field_code=oct_pp_aa_inter_tt, sheet=Inputs, cell=E32:I32, raw=False, n=5
+2026-04-21 16:41:09 INFO Read field: field_code=oct_pp_aa_dom_uc, sheet=Inputs, cell=R28:U28, raw=False, n=4
+2026-04-21 16:41:09 INFO Read field: field_code=oct_pp_aa_intra_eea_euro_uc, sheet=Inputs, cell=R29:U29, raw=False, n=4
+2026-04-21 16:41:09 INFO Read field: field_code=oct_pp_aa_intra_eea_non_euro_uc, sheet=Inputs, cell=R30:U30, raw=False, n=4
+2026-04-21 16:41:09 INFO Read field: field_code=oct_pp_aa_intra_non_eea_uc, sheet=Inputs, cell=R31:U31, raw=False, n=4
+2026-04-21 16:41:09 INFO Read field: field_code=oct_pp_aa_inter_uc, sheet=Inputs, cell=R32:U32, raw=False, n=4
+2026-04-21 16:41:09 INFO Read field: field_code=oct_fd_dom_tt, sheet=Inputs, cell=E43:I43, raw=False, n=5
+2026-04-21 16:41:09 INFO Read field: field_code=oct_fd_intra_eea_euro_tt, sheet=Inputs, cell=E44:I44, raw=False, n=5
+2026-04-21 16:41:09 INFO Read field: field_code=oct_fd_intra_eea_non_euro_tt, sheet=Inputs, cell=E45:I45, raw=False, n=5
+2026-04-21 16:41:09 INFO Read field: field_code=oct_fd_intra_non_eea_tt, sheet=Inputs, cell=E46:I46, raw=False, n=5
+2026-04-21 16:41:09 INFO Read field: field_code=oct_fd_inter_tt, sheet=Inputs, cell=E47:I47, raw=False, n=5
+2026-04-21 16:41:09 INFO Read field: field_code=oct_fd_dom_uc, sheet=Inputs, cell=R43:U43, raw=False, n=4
+2026-04-21 16:41:09 INFO Read field: field_code=oct_fd_intra_eea_euro_uc, sheet=Inputs, cell=R44:U44, raw=False, n=4
+2026-04-21 16:41:09 INFO Read field: field_code=oct_fd_intra_eea_non_euro_uc, sheet=Inputs, cell=R45:U45, raw=False, n=4
+2026-04-21 16:41:09 INFO Read field: field_code=oct_fd_intra_non_eea_uc, sheet=Inputs, cell=R46:U46, raw=False, n=4
+2026-04-21 16:41:09 INFO Read field: field_code=oct_fd_inter_uc, sheet=Inputs, cell=R47:U47, raw=False, n=4
+2026-04-21 16:41:09 INFO Read field: field_code=aft_pp_aa_dom_tt, sheet=Inputs, cell=E58:I58, raw=False, n=5
+2026-04-21 16:41:09 INFO Read field: field_code=aft_pp_aa_intra_eea_euro_tt, sheet=Inputs, cell=E59:I59, raw=False, n=5
+2026-04-21 16:41:09 INFO Read field: field_code=aft_pp_aa_intra_eea_non_euro_tt, sheet=Inputs, cell=E60:I60, raw=False, n=5
+2026-04-21 16:41:09 INFO Read field: field_code=aft_pp_aa_intra_non_eea_tt, sheet=Inputs, cell=E61:I61, raw=False, n=5
+2026-04-21 16:41:09 INFO Read field: field_code=aft_pp_aa_inter_tt, sheet=Inputs, cell=E62:I62, raw=False, n=5
+2026-04-21 16:41:09 INFO Read field: field_code=aft_pp_aa_dom_uc, sheet=Inputs, cell=R58:U58, raw=False, n=4
+2026-04-21 16:41:09 INFO Read field: field_code=aft_pp_aa_intra_eea_euro_uc, sheet=Inputs, cell=R59:U59, raw=False, n=4
+2026-04-21 16:41:09 INFO Read field: field_code=aft_pp_aa_intra_eea_non_euro_uc, sheet=Inputs, cell=R60:U60, raw=False, n=4
+2026-04-21 16:41:09 INFO Read field: field_code=aft_pp_aa_intra_non_eea_uc, sheet=Inputs, cell=R61:U61, raw=False, n=4
+2026-04-21 16:41:09 INFO Read field: field_code=aft_pp_aa_inter_uc, sheet=Inputs, cell=R62:U62, raw=False, n=4
+2026-04-21 16:41:09 INFO Read field: field_code=aft_fd_la_dom_tt, sheet=Inputs, cell=E72:I72, raw=False, n=5
+2026-04-21 16:41:09 INFO Read field: field_code=aft_fd_la_intra_eea_tt, sheet=Inputs, cell=E73:I73, raw=False, n=5
+2026-04-21 16:41:09 INFO Read field: field_code=aft_fd_la_intra_non_eea_tt, sheet=Inputs, cell=E74:I74, raw=False, n=5
+2026-04-21 16:41:09 INFO Read field: field_code=aft_fd_la_inter_tt, sheet=Inputs, cell=E75:I75, raw=False, n=5
+2026-04-21 16:41:09 INFO Read field: field_code=aft_fd_la_dom_uc, sheet=Inputs, cell=R72:U72, raw=False, n=4
+2026-04-21 16:41:09 INFO Read field: field_code=aft_fd_la_intra_eea_uc, sheet=Inputs, cell=R73:U73, raw=False, n=4
+2026-04-21 16:41:09 INFO Read field: field_code=aft_fd_la_intra_non_eea_uc, sheet=Inputs, cell=R74:U74, raw=False, n=4
+2026-04-21 16:41:09 INFO Read field: field_code=aft_fd_la_inter_uc, sheet=Inputs, cell=R75:U75, raw=False, n=4
+2026-04-21 16:41:09 INFO Read field: field_code=discount_option_type, sheet=P&L, cell=F2, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=discount_option_pct, sheet=P&L, cell=G2, raw=False, n=1
+2026-04-21 16:41:09 INFO Read field: field_code=upfront_cash_earned_out, sheet=P&L, cell=G34:K34, raw=False, n=5
+2026-04-21 16:41:09 INFO Read field: field_code=upfront_vik_gross_including_vat_earned_out, sheet=P&L, cell=G35:K35, raw=False, n=5
+2026-04-21 16:41:09 INFO Read field: field_code=fixed_support_earned_out, sheet=P&L, cell=G36:K36, raw=False, n=5
+2026-04-21 16:41:09 INFO Read field: field_code=vik_support_gross_including_vat_earned_out, sheet=P&L, cell=G37:K37, raw=False, n=5
+2026-04-21 16:41:09 INFO Read field: field_code=split_over_ride_pct, sheet=P&L, cell=I79:I87, raw=False, n=9
+2026-04-21 16:41:09 INFO Output created: outputs/Viseca.csv
+2026-04-21 16:41:09 INFO Processing completed: status=success
+2026-04-21 16:41:20 INFO Upload started: source=Trading 212.xlsx
+2026-04-21 16:41:20 INFO Upload completed: source=Trading 212.xlsx
+2026-04-21 16:41:20 INFO Template selected: template_code=Pricing, template_version=1.0
+2026-04-21 16:41:20 INFO Processing started: source=Trading 212.xlsx
+2026-04-21 16:41:20 INFO Workbook opened successfully
+2026-04-21 16:41:20 INFO Read field: field_code=client_name, sheet=Intro, cell=C3, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=opportunity_id, sheet=Intro, cell=E2, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=primary_market, sheet=Intro, cell=E3, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=deal_owner_ae, sheet=Intro, cell=G2, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=cluster, sheet=Intro, cell=G3, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=scenario_name, sheet=Intro, cell=I2, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=ci_ref_finance, sheet=Intro, cell=I3, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=executive_summary, sheet=Intro, cell=B5, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=alignment_with_ve_corporate_goals, sheet=Intro, cell=B7, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=win_retain_strategy, sheet=Intro, cell=B9, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=key_benefits, sheet=Intro, cell=B11, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=key_commercial_concerns, sheet=Intro, cell=B13, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=other_factors, sheet=Intro, cell=B15, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=deal_term, sheet=Intro, cell=D18, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=has_existing_vd_portfolio, sheet=Intro, cell=D19, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=existing_vd_portfolio_contract_end_date, sheet=Intro, cell=D20, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=qtr_beginning, sheet=Intro, cell=D21, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=qtr_ending, sheet=Intro, cell=D22, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=break_clause_year, sheet=Intro, cell=D23, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=client_full_name, sheet=Intro, cell=H18, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=client_address, sheet=Intro, cell=H19, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=client_notice_address, sheet=Intro, cell=H20, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=cw_number, sheet=Intro, cell=H21, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=fy_number, sheet=Intro, cell=H22, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=bid_identifier, sheet=Intro, cell=H23, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=has_existing_cia_with_client, sheet=Intro, cell=N18, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=has_pif_submitted, sheet=Intro, cell=N19, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=vdc_name, sheet=Intro, cell=N20, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=existing_oct_l12m_pv_eur, sheet=Intro, cell=N21, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=existing_oct_l12m_txn_count, sheet=Intro, cell=N22, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=existing_aft_l12m_pv_eur, sheet=Intro, cell=N23, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=existing_aft_l12m_txn_count, sheet=Intro, cell=N24, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=origin_market, sheet=Inputs, cell=G3, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=client_ype, sheet=Inputs, cell=G4, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=enabler_name, sheet=Inputs, cell=G5, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=aft_irf, sheet=Inputs, cell=I4, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=oct_irf, sheet=Inputs, cell=I5, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=fx_eur_usd, sheet=Inputs, cell=O1, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=fx_eur_gbp, sheet=Inputs, cell=O3, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=domestic_metrics, sheet=Inputs, cell=E9:K9, raw=False, n=7
+2026-04-21 16:41:20 INFO Read field: field_code=intra_eea_metrics, sheet=Inputs, cell=E10:K10, raw=False, n=7
+2026-04-21 16:41:20 INFO Read field: field_code=intra_non_eea_metrics, sheet=Inputs, cell=E11:K11, raw=False, n=7
+2026-04-21 16:41:20 INFO Read field: field_code=inter_metrics, sheet=Inputs, cell=E12:K12, raw=False, n=7
+2026-04-21 16:41:20 INFO Read field: field_code=oct_pp_aa_dom_tt, sheet=Inputs, cell=E28:I28, raw=False, n=5
+2026-04-21 16:41:20 INFO Read field: field_code=oct_pp_aa_intra_eea_euro_tt, sheet=Inputs, cell=E29:I29, raw=False, n=5
+2026-04-21 16:41:20 INFO Read field: field_code=oct_pp_aa_intra_eea_non_euro_tt, sheet=Inputs, cell=E30:I30, raw=False, n=5
+2026-04-21 16:41:20 INFO Read field: field_code=oct_pp_aa_intra_non_eea_tt, sheet=Inputs, cell=E31:I31, raw=False, n=5
+2026-04-21 16:41:20 INFO Read field: field_code=oct_pp_aa_inter_tt, sheet=Inputs, cell=E32:I32, raw=False, n=5
+2026-04-21 16:41:20 INFO Read field: field_code=oct_pp_aa_dom_uc, sheet=Inputs, cell=R28:U28, raw=False, n=4
+2026-04-21 16:41:20 INFO Read field: field_code=oct_pp_aa_intra_eea_euro_uc, sheet=Inputs, cell=R29:U29, raw=False, n=4
+2026-04-21 16:41:20 INFO Read field: field_code=oct_pp_aa_intra_eea_non_euro_uc, sheet=Inputs, cell=R30:U30, raw=False, n=4
+2026-04-21 16:41:20 INFO Read field: field_code=oct_pp_aa_intra_non_eea_uc, sheet=Inputs, cell=R31:U31, raw=False, n=4
+2026-04-21 16:41:20 INFO Read field: field_code=oct_pp_aa_inter_uc, sheet=Inputs, cell=R32:U32, raw=False, n=4
+2026-04-21 16:41:20 INFO Read field: field_code=oct_fd_dom_tt, sheet=Inputs, cell=E43:I43, raw=False, n=5
+2026-04-21 16:41:20 INFO Read field: field_code=oct_fd_intra_eea_euro_tt, sheet=Inputs, cell=E44:I44, raw=False, n=5
+2026-04-21 16:41:20 INFO Read field: field_code=oct_fd_intra_eea_non_euro_tt, sheet=Inputs, cell=E45:I45, raw=False, n=5
+2026-04-21 16:41:20 INFO Read field: field_code=oct_fd_intra_non_eea_tt, sheet=Inputs, cell=E46:I46, raw=False, n=5
+2026-04-21 16:41:20 INFO Read field: field_code=oct_fd_inter_tt, sheet=Inputs, cell=E47:I47, raw=False, n=5
+2026-04-21 16:41:20 INFO Read field: field_code=oct_fd_dom_uc, sheet=Inputs, cell=R43:U43, raw=False, n=4
+2026-04-21 16:41:20 INFO Read field: field_code=oct_fd_intra_eea_euro_uc, sheet=Inputs, cell=R44:U44, raw=False, n=4
+2026-04-21 16:41:20 INFO Read field: field_code=oct_fd_intra_eea_non_euro_uc, sheet=Inputs, cell=R45:U45, raw=False, n=4
+2026-04-21 16:41:20 INFO Read field: field_code=oct_fd_intra_non_eea_uc, sheet=Inputs, cell=R46:U46, raw=False, n=4
+2026-04-21 16:41:20 INFO Read field: field_code=oct_fd_inter_uc, sheet=Inputs, cell=R47:U47, raw=False, n=4
+2026-04-21 16:41:20 INFO Read field: field_code=aft_pp_aa_dom_tt, sheet=Inputs, cell=E58:I58, raw=False, n=5
+2026-04-21 16:41:20 INFO Read field: field_code=aft_pp_aa_intra_eea_euro_tt, sheet=Inputs, cell=E59:I59, raw=False, n=5
+2026-04-21 16:41:20 INFO Read field: field_code=aft_pp_aa_intra_eea_non_euro_tt, sheet=Inputs, cell=E60:I60, raw=False, n=5
+2026-04-21 16:41:20 INFO Read field: field_code=aft_pp_aa_intra_non_eea_tt, sheet=Inputs, cell=E61:I61, raw=False, n=5
+2026-04-21 16:41:20 INFO Read field: field_code=aft_pp_aa_inter_tt, sheet=Inputs, cell=E62:I62, raw=False, n=5
+2026-04-21 16:41:20 INFO Read field: field_code=aft_pp_aa_dom_uc, sheet=Inputs, cell=R58:U58, raw=False, n=4
+2026-04-21 16:41:20 INFO Read field: field_code=aft_pp_aa_intra_eea_euro_uc, sheet=Inputs, cell=R59:U59, raw=False, n=4
+2026-04-21 16:41:20 INFO Read field: field_code=aft_pp_aa_intra_eea_non_euro_uc, sheet=Inputs, cell=R60:U60, raw=False, n=4
+2026-04-21 16:41:20 INFO Read field: field_code=aft_pp_aa_intra_non_eea_uc, sheet=Inputs, cell=R61:U61, raw=False, n=4
+2026-04-21 16:41:20 INFO Read field: field_code=aft_pp_aa_inter_uc, sheet=Inputs, cell=R62:U62, raw=False, n=4
+2026-04-21 16:41:20 INFO Read field: field_code=aft_fd_la_dom_tt, sheet=Inputs, cell=E72:I72, raw=False, n=5
+2026-04-21 16:41:20 INFO Read field: field_code=aft_fd_la_intra_eea_tt, sheet=Inputs, cell=E73:I73, raw=False, n=5
+2026-04-21 16:41:20 INFO Read field: field_code=aft_fd_la_intra_non_eea_tt, sheet=Inputs, cell=E74:I74, raw=False, n=5
+2026-04-21 16:41:20 INFO Read field: field_code=aft_fd_la_inter_tt, sheet=Inputs, cell=E75:I75, raw=False, n=5
+2026-04-21 16:41:20 INFO Read field: field_code=aft_fd_la_dom_uc, sheet=Inputs, cell=R72:U72, raw=False, n=4
+2026-04-21 16:41:20 INFO Read field: field_code=aft_fd_la_intra_eea_uc, sheet=Inputs, cell=R73:U73, raw=False, n=4
+2026-04-21 16:41:20 INFO Read field: field_code=aft_fd_la_intra_non_eea_uc, sheet=Inputs, cell=R74:U74, raw=False, n=4
+2026-04-21 16:41:20 INFO Read field: field_code=aft_fd_la_inter_uc, sheet=Inputs, cell=R75:U75, raw=False, n=4
+2026-04-21 16:41:20 INFO Read field: field_code=discount_option_type, sheet=P&L, cell=F2, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=discount_option_pct, sheet=P&L, cell=G2, raw=False, n=1
+2026-04-21 16:41:20 INFO Read field: field_code=upfront_cash_earned_out, sheet=P&L, cell=G34:K34, raw=False, n=5
+2026-04-21 16:41:20 INFO Read field: field_code=upfront_vik_gross_including_vat_earned_out, sheet=P&L, cell=G35:K35, raw=False, n=5
+2026-04-21 16:41:20 INFO Read field: field_code=fixed_support_earned_out, sheet=P&L, cell=G36:K36, raw=False, n=5
+2026-04-21 16:41:20 INFO Read field: field_code=vik_support_gross_including_vat_earned_out, sheet=P&L, cell=G37:K37, raw=False, n=5
+2026-04-21 16:41:20 INFO Read field: field_code=split_over_ride_pct, sheet=P&L, cell=I79:I87, raw=False, n=9
+2026-04-21 16:41:20 WARNING Validation failed: field_code=oct_pp_aa_dom_tt, rule=number/allow_empty=True, value=', , , , ', label_value='INTRA EEA'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=oct_pp_aa_intra_eea_euro_tt, rule=number/allow_empty=True, value=', , , , ', label_value='INTRA Non-EEA'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=oct_pp_aa_intra_eea_non_euro_tt, rule=number/allow_empty=True, value=', , , , ', label_value='INTER'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=oct_pp_aa_inter_tt, rule=number/allow_empty=True, value='1, 2, 3, 4, 5', label_value='OCT - FD'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=oct_pp_aa_dom_uc, rule=string/allow_empty=True, value=', , , ', label_value='INTRA EEA'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=oct_pp_aa_intra_eea_euro_uc, rule=string/allow_empty=True, value=', , , ', label_value='INTRA Non-EEA'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=oct_pp_aa_intra_eea_non_euro_uc, rule=string/allow_empty=True, value=', , , ', label_value='INTER'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=oct_pp_aa_inter_uc, rule=string/allow_empty=True, value=', , , ', label_value='OCT - FD'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=oct_fd_dom_tt, rule=number/allow_empty=True, value=', , , , ', label_value='INTER'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=oct_fd_intra_eea_non_euro_tt, rule=number/allow_empty=True, value='1, 2, 3, 4, 5', label_value='AFT'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=oct_fd_intra_non_eea_tt, rule=number/allow_empty=True, value='1047200000, 1047200000, 0, 0, 0', label_value='Total PV'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=oct_fd_inter_tt, rule=number/allow_empty=True, value='1047200000, 1047200000, 0, 0, 0', label_value='DOM'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=oct_fd_dom_uc, rule=string/allow_empty=True, value=', , , ', label_value='INTER'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=oct_fd_intra_eea_non_euro_uc, rule=string/allow_empty=True, value=', , , ', label_value='AFT'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=oct_fd_intra_non_eea_uc, rule=string/allow_empty=True, value=', , , ', label_value='Total PV'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=oct_fd_inter_uc, rule=string/allow_empty=True, value=', , , ', label_value='DOM'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=aft_pp_aa_dom_tt, rule=number/allow_empty=True, value='1, 2, 3, 4, 5', label_value='Total'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=aft_pp_aa_intra_eea_euro_tt, rule=number/allow_empty=True, value='1047200000, 1047200000, 0, 0, 0', label_value='Total PV'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=aft_pp_aa_intra_eea_non_euro_tt, rule=number/allow_empty=True, value='1047200000, 1047200000, 0, 0, 0', label_value='DOM'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=aft_pp_aa_intra_non_eea_tt, rule=number/allow_empty=True, value='0, 0, 0, 0, 0', label_value='INTRA EEA'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=aft_pp_aa_inter_tt, rule=number/allow_empty=True, value='0, 0, 0, 0, 0', label_value='INTRA Non-EEA'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=aft_pp_aa_dom_uc, rule=string/allow_empty=True, value=', , , ', label_value='Total'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=aft_pp_aa_intra_eea_euro_uc, rule=string/allow_empty=True, value=', , , ', label_value='Total PV'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=aft_pp_aa_intra_eea_non_euro_uc, rule=string/allow_empty=True, value=', , , ', label_value='DOM'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=aft_pp_aa_intra_non_eea_uc, rule=string/allow_empty=True, value=', , , ', label_value='INTRA EEA'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=aft_pp_aa_inter_uc, rule=string/allow_empty=True, value=', , , ', label_value='INTRA Non-EEA'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=upfront_cash_earned_out, rule=number/allow_empty=True, value=', , , , ', label_value='Upfront (Max $250k incl VAT) - earned out'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=upfront_vik_gross_including_vat_earned_out, rule=number/allow_empty=True, value=', , , , ', label_value='Fixed Support - earned out'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=fixed_support_earned_out, rule=number/allow_empty=True, value=', , , , ', label_value='VIK Support (Gross, including VAT) - earned out'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=vik_support_gross_including_vat_earned_out, rule=number/allow_empty=True, value='0, 0, 0, 0, 0', label_value='Volume Support (milestone based)'
+2026-04-21 16:41:20 WARNING Validation failed: field_code=split_over_ride_pct, rule=number/allow_empty=True, value='0, 0, 0, 0, 0, 0, 0, 0, ', label_value=0
+2026-04-21 16:43:55 INFO Template saved as new: Pricing_vMar25 (from Pricing_1.0)
