@@ -66,6 +66,20 @@ def _validate_date(value: Any) -> str | None:
     )
 
 
+def _validate_label(field: FieldModel, label_value: Any) -> str | None:
+    """Label rule: empty label in file → valid. Mismatch → invalid."""
+    fn = field.field_name.strip()
+    fnc = field.field_name_cell.strip()
+    if not fnc or not fn or label_value is None:
+        return None
+    actual = str(label_value).strip()
+    if not actual:
+        return None
+    if actual == fn:
+        return None
+    return f"Label mismatch at {fnc}: expected '{fn}', got '{actual}'"
+
+
 def validate_fields(
     fields: list[FieldModel],
     extracted: dict[str, Any],
@@ -76,7 +90,9 @@ def validate_fields(
         if not field.active:
             continue
         raw = extracted.get(field.field_code, {})
-        # raw may be a dict with {"value": ..., "error": ...} or a plain value
+        # raw may be a dict with {"value": ..., "values": [...], "error": ..., "label_value": ...} or a plain value
+        label_value = None
+        values_list: list | None = None
         if isinstance(raw, dict):
             read_error = raw.get("error")
             if read_error:
@@ -87,14 +103,39 @@ def validate_fields(
                 )
                 continue
             value = raw.get("value")
+            label_value = raw.get("label_value")
+            values_list = raw.get("values")
         else:
             value = raw
 
-        err = _validate_field(field, value)
-        if err:
-            errors[field.field_code] = err
+        # Multi-cell reads: validate each cell individually so a comma-joined
+        # string like "208, , 205, , 0.5" doesn't fail the scalar regex.
+        if values_list is not None and len(values_list) > 1:
+            value_err = None
+            for v in values_list:
+                e = _validate_field(field, v)
+                if e:
+                    value_err = e
+                    break
+        else:
+            value_err = _validate_field(field, value)
+        label_err = _validate_label(field, label_value)
+
+        combined: str | None
+        if value_err and label_err:
+            combined = f"{label_err}; {value_err}"
+        elif value_err:
+            combined = value_err
+        elif label_err:
+            combined = label_err
+        else:
+            combined = None
+
+        if combined:
+            errors[field.field_code] = combined
             logger.warning(
                 f"Validation failed: field_code={field.field_code}, "
-                f"rule={field.value_type}/allow_empty={field.allow_empty}, value={value!r}"
+                f"rule={field.value_type}/allow_empty={field.allow_empty}, "
+                f"value={value!r}, label_value={label_value!r}"
             )
     return errors

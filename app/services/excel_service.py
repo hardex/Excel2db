@@ -34,7 +34,8 @@ def read_workbook_fields(file_path: str, fields: list[FieldModel]) -> dict[str, 
     """
     active_fields = [f for f in fields if f.active]
     needs_raw = any(f.raw_cell_value for f in active_fields)
-    needs_calc = any(not f.raw_cell_value for f in active_fields)
+    needs_labels = any(f.field_name_cell.strip() and f.field_name.strip() for f in active_fields)
+    needs_calc = any(not f.raw_cell_value for f in active_fields) or needs_labels
 
     wb_raw = openpyxl.load_workbook(file_path, data_only=False) if needs_raw else None
     wb_calc = openpyxl.load_workbook(file_path, data_only=True) if needs_calc else None
@@ -50,7 +51,9 @@ def read_workbook_fields(file_path: str, fields: list[FieldModel]) -> dict[str, 
         if sheet_name not in wb.sheetnames:
             results[field.field_code] = {
                 "value": None,
+                "values": [],
                 "error": f"Sheet '{sheet_name}' not found",
+                "label_value": None,
             }
             logger.warning(
                 f"Read field: field_code={field.field_code}, sheet={sheet_name}, "
@@ -61,15 +64,30 @@ def read_workbook_fields(file_path: str, fields: list[FieldModel]) -> dict[str, 
         ws = wb[sheet_name]
         try:
             values = _read_cell_spec(ws, cell_addr)
+            values = [_apply_date_placeholder(v, field.value_type) for v in values]
             value = _collapse_values(values) if values else None
-            value = _apply_date_placeholder(value, field.value_type)
-            results[field.field_code] = {"value": value, "error": None}
+            result = {"value": value, "values": values, "error": None, "label_value": None}
+
+            fnc = field.field_name_cell.strip()
+            fn = field.field_name.strip()
+            if fnc and fn and wb_calc is not None and sheet_name in wb_calc.sheetnames:
+                try:
+                    label_values = _read_cell_spec(wb_calc[sheet_name], fnc)
+                    if label_values:
+                        result["label_value"] = _collapse_values(label_values)
+                except Exception as lexc:
+                    logger.warning(
+                        f"Label read failed: field_code={field.field_code}, "
+                        f"field_name_cell={fnc} — {lexc}"
+                    )
+
+            results[field.field_code] = result
             logger.info(
                 f"Read field: field_code={field.field_code}, sheet={sheet_name}, "
                 f"cell={cell_addr}, raw={field.raw_cell_value}, n={len(values)}"
             )
         except Exception as exc:
-            results[field.field_code] = {"value": None, "error": str(exc)}
+            results[field.field_code] = {"value": None, "values": [], "error": str(exc), "label_value": None}
             logger.warning(
                 f"Read field: field_code={field.field_code}, sheet={sheet_name}, "
                 f"cell={cell_addr} — error: {exc}"
@@ -130,22 +148,23 @@ def read_single_cell(file_path: str, sheet_name: str, cell_addr: str, raw: bool 
     try:
         wb = openpyxl.load_workbook(file_path, data_only=not raw)
     except Exception as exc:
-        return {"value": None, "error": f"Cannot open workbook: {exc}"}
+        return {"value": None, "values": [], "error": f"Cannot open workbook: {exc}"}
 
     if sheet_name not in wb.sheetnames:
         wb.close()
-        return {"value": None, "error": f"Sheet '{sheet_name}' not found. Available: {', '.join(wb.sheetnames)}"}
+        return {"value": None, "values": [], "error": f"Sheet '{sheet_name}' not found. Available: {', '.join(wb.sheetnames)}"}
 
     ws = wb[sheet_name]
     try:
         values = _read_cell_spec(ws, cell_addr)
+        values = [_apply_date_placeholder(v, value_type) for v in values]
         wb.close()
         if not values:
-            return {"value": None, "error": "No cells read"}
-        return {"value": _apply_date_placeholder(_collapse_values(values), value_type), "error": None}
+            return {"value": None, "values": [], "error": "No cells read"}
+        return {"value": _collapse_values(values), "values": values, "error": None}
     except Exception as exc:
         wb.close()
-        return {"value": None, "error": str(exc)}
+        return {"value": None, "values": [], "error": str(exc)}
 
 
 def get_sheet_names(file_path: str) -> list[str]:
