@@ -51,15 +51,29 @@
                value="{{ template.description if template else '' }}"
                placeholder="Optional description" />
       </div>
+      <div class="form-group form-group--full" style="display: grid; grid-template-columns: 10rem 7rem 1fr; gap: 0.5rem 0.75rem; align-items: end;">
+        <label for="version_cell_sheet" style="grid-column: 1; margin: 0; font-size: 0.85rem;">Sheet</label>
+        <label for="version_cell" style="grid-column: 2; margin: 0; font-size: 0.85rem;">Cell</label>
+        <label for="model_version" style="grid-column: 3; margin: 0; font-size: 0.85rem;">Model Version</label>
+        <input type="text" id="version_cell_sheet" name="version_cell_sheet" style="grid-column: 1;"
+               value="{{ template.version_cell_sheet if template else '' }}"
+               placeholder="blank = first sheet" />
+        <input type="text" id="version_cell" name="version_cell" style="grid-column: 2;"
+               value="{{ template.version_cell if template else '' }}"
+               placeholder="e.g. C1" />
+        <input type="text" id="model_version" name="model_version" style="grid-column: 3;"
+               value="{{ template.model_version if template else '' }}"
+               placeholder="e.g. vJun24 eff 01/07/2024 (blank = use Version)" />
+      </div>
       <div class="form-group--full" style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
-        <label for="af_test_file" style="white-space: nowrap; margin: 0;">Once using Test File (.xlsx)</label>
-        <input type="file" id="af_test_file" name="test_file" accept=".xlsx" style="width: auto;" />
+        <label for="af_test_file" style="white-space: nowrap; margin: 0;">Once using Test File (.xlsx/.xlsm)</label>
+        <input type="file" id="af_test_file" name="test_file" accept=".xlsx,.xlsm" style="width: auto;" />
       </div>
       <div class="form-group form-group--full">
         <label for="test_file_path">Full PATH of the test file stored in the template :</label>
         <input type="text" id="test_file_path" name="test_file_path"
                value="{{ template.test_file_path if template and template.test_file_path else '' }}"
-               placeholder="Full path to .xlsx file, e.g. /Users/name/Documents/file.xlsx" />
+               placeholder="Full path to .xlsx/.xlsm file, e.g. /Users/name/Documents/file.xlsx" />
         {% if template and template.test_file_path %}
         <span class="hint">
           {% if test_file_available %}
@@ -165,7 +179,10 @@
       <div class="form-group--full" style="display: flex; flex-direction: row; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
         <button type="button" class="btn btn--primary" id="field-form-btn" onclick="submitFieldForm()">+ Add Field</button>
         <button type="button" class="btn btn--secondary" id="field-form-cancel" onclick="cancelEdit()" style="display:none;">Cancel</button>
+        <button type="button" class="btn btn--secondary" id="field-form-prev" onclick="editPrevField()" style="display:none;" title="Load previous field for editing without saving current changes">← Previous Field</button>
+        <button type="button" class="btn btn--secondary" id="field-form-next" onclick="editNextField()" style="display:none;" title="Load next field for editing without saving current changes">Next Field →</button>
         <button type="button" class="btn btn--secondary" onclick="checkCell()">Check</button>
+        <button type="button" class="btn btn--danger" id="field-form-delete" onclick="deleteEditingField()" style="display:none;" title="Delete this field">Delete</button>
         <span id="add-field-error" class="field-error" style="display:none; margin-left: 0.5rem;"></span>
       </div>
 
@@ -205,6 +222,9 @@ const addErrEl       = document.getElementById('add-field-error');
 const formTitle      = document.getElementById('field-form-title');
 const formBtn        = document.getElementById('field-form-btn');
 const formCancel     = document.getElementById('field-form-cancel');
+const formPrev       = document.getElementById('field-form-prev');
+const formNext       = document.getElementById('field-form-next');
+const formDelete     = document.getElementById('field-form-delete');
 const formSection    = document.getElementById('field-form-section');
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -223,6 +243,9 @@ function setAddMode() {
   formTitle.textContent = 'Add Field';
   formBtn.textContent   = '+ Add Field';
   formCancel.style.display = 'none';
+  formPrev.style.display = 'none';
+  formNext.style.display = 'none';
+  formDelete.style.display = 'none';
   formSection.classList.remove('editing-mode');
   // un-highlight all rows
   tbody.querySelectorAll('tr').forEach(tr => tr.classList.remove('row-editing'));
@@ -233,6 +256,11 @@ function setEditMode(index) {
   formTitle.textContent = 'Edit Field';
   formBtn.textContent   = 'Save Field';
   formCancel.style.display = '';
+  formPrev.style.display = '';
+  formNext.style.display = '';
+  formDelete.style.display = '';
+  formPrev.disabled = (index <= 0);
+  formNext.disabled = (index >= fields.length - 1);
   formSection.classList.add('editing-mode');
   // highlight edited row
   tbody.querySelectorAll('tr').forEach((tr, i) => {
@@ -396,6 +424,31 @@ function cancelEdit() {
   clearAddForm();
 }
 
+// ── Next Field → load next row into editor WITHOUT saving current changes ────
+function editNextField() {
+  if (editingIndex === null) return;
+  const next = editingIndex + 1;
+  if (next >= fields.length) return;
+  startEditField(next);
+}
+
+// ── Previous Field → load previous row into editor WITHOUT saving ────────────
+function editPrevField() {
+  if (editingIndex === null) return;
+  const prev = editingIndex - 1;
+  if (prev < 0) return;
+  startEditField(prev);
+}
+
+// ── Delete currently-edited field (with confirmation) ────────────────────────
+function deleteEditingField() {
+  if (editingIndex === null) return;
+  const f = fields[editingIndex];
+  const name = f.field_code || `field #${editingIndex + 1}`;
+  if (!confirm(`Delete field "${name}"?`)) return;
+  removeField(editingIndex);
+}
+
 // ── Submit (add or edit) ──────────────────────────────────────────────────────
 function submitFieldForm() {
   const field_code       = document.getElementById('af_field_code').value.trim();
@@ -427,14 +480,22 @@ function submitFieldForm() {
   const fieldObj = { field_code, field_name, field_name_cell, sheet, cell, value_type, allow_empty, active, raw_cell_value, description, ai_prompt };
 
   if (editingIndex !== null) {
-    // ── Edit mode: update in place ──
+    // ── Edit mode: update in place and stay on the same field ──
     fields[editingIndex] = fieldObj;
-    setAddMode();
-  } else {
-    // ── Add mode: append ──
-    fields.push(fieldObj);
+    renderTable();
+    setEditMode(editingIndex);
+    // Clear Check-cell result and surface a save confirmation on the status line.
+    const resultEl = document.getElementById('af_check_result');
+    resultEl.value = '';
+    resultEl.classList.remove('check-ok', 'check-err');
+    const validEl = document.getElementById('af_check_validation');
+    validEl.style.display = '';
+    validEl.textContent = 'Field Saved.';
+    validEl.className = 'check-validation check-validation--ok';
+    return;
   }
-
+  // ── Add mode: append ──
+  fields.push(fieldObj);
   renderTable();
   clearAddForm();
   document.getElementById('af_field_code').focus();

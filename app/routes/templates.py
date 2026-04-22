@@ -36,6 +36,21 @@ UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
 # not contain path separators, NUL, or newlines.
 _INVALID_NAME_RE = re.compile(r"[\\/\x00\r\n]")
 
+# Extensions openpyxl can read. xlsm is the same Open-XML container as xlsx
+# plus a macro stream that is ignored on read.
+EXCEL_EXTS = (".xlsx", ".xlsm")
+
+
+def _is_excel_filename(name: str) -> bool:
+    return bool(name) and name.lower().endswith(EXCEL_EXTS)
+
+
+def _excel_ext(name: str) -> str:
+    """Return the lowercase Excel extension of `name` (xlsx or xlsm),
+    defaulting to .xlsx when the caller forgot to validate first."""
+    suffix = Path(name or "").suffix.lower()
+    return suffix if suffix in EXCEL_EXTS else ".xlsx"
+
 
 def _validate_template_identifiers(code: str, version: str) -> str | None:
     """Return a user-facing error message, or None if valid."""
@@ -147,8 +162,9 @@ async def template_new_submit(request: Request):
 
     # Save uploaded test file if provided
     test_file = form_dict.get("test_file")
-    if test_file and hasattr(test_file, "filename") and test_file.filename and test_file.filename.endswith(".xlsx"):
-        saved_path = UPLOADS_DIR / f"test_{template_code}_{template_version}.xlsx"
+    if test_file and hasattr(test_file, "filename") and _is_excel_filename(test_file.filename or ""):
+        ext = _excel_ext(test_file.filename)
+        saved_path = UPLOADS_DIR / f"test_{template_code}_{template_version}{ext}"
         content = await test_file.read()
         with open(saved_path, "wb") as f_out:
             f_out.write(content)
@@ -164,6 +180,9 @@ async def template_new_submit(request: Request):
         description=str(form_dict.get("description", "")).strip(),
         is_default=is_default,
         test_file_path=test_file_path,
+        version_cell_sheet=str(form_dict.get("version_cell_sheet", "")).strip(),
+        version_cell=str(form_dict.get("version_cell", "")).strip(),
+        model_version=str(form_dict.get("model_version", "")).strip(),
         fields=fields,
     )
 
@@ -247,8 +266,9 @@ async def template_edit_submit(request: Request, code: str, version: str):
 
     # Save uploaded test file if provided
     test_file = form_dict.get("test_file")
-    if test_file and hasattr(test_file, "filename") and test_file.filename and test_file.filename.endswith(".xlsx"):
-        saved_path = UPLOADS_DIR / f"test_{new_code}_{new_version}.xlsx"
+    if test_file and hasattr(test_file, "filename") and _is_excel_filename(test_file.filename or ""):
+        ext = _excel_ext(test_file.filename)
+        saved_path = UPLOADS_DIR / f"test_{new_code}_{new_version}{ext}"
         content = await test_file.read()
         with open(saved_path, "wb") as f_out:
             f_out.write(content)
@@ -260,6 +280,9 @@ async def template_edit_submit(request: Request, code: str, version: str):
         description=str(form_dict.get("description", "")).strip(),
         is_default=is_default,
         test_file_path=test_file_path,
+        version_cell_sheet=str(form_dict.get("version_cell_sheet", "")).strip(),
+        version_cell=str(form_dict.get("version_cell", "")).strip(),
+        model_version=str(form_dict.get("model_version", "")).strip(),
         fields=fields,
     )
 
@@ -313,8 +336,8 @@ async def test_cell(
     template_version: str = Form(""),
 ):
     """Read a single cell from an uploaded test file and redirect back to the editor."""
-    if not file.filename or not file.filename.endswith(".xlsx"):
-        msg = "Only .xlsx files are accepted for cell testing"
+    if not _is_excel_filename(file.filename or ""):
+        msg = "Only .xlsx/.xlsm files are accepted for cell testing"
         if template_code and template_version:
             return _redirect(
                 f"/templates/{template_code}/{template_version}/edit",
@@ -359,12 +382,13 @@ async def upload_test_file(
     template_version: str = Form(""),
 ):
     """AJAX endpoint: upload test file and return its saved path."""
-    if not file.filename or not file.filename.endswith(".xlsx"):
-        return JSONResponse({"ok": False, "error": "Only .xlsx files are accepted"})
+    if not _is_excel_filename(file.filename or ""):
+        return JSONResponse({"ok": False, "error": "Only .xlsx/.xlsm files are accepted"})
 
     code = template_code.strip() or "unsaved"
     ver = template_version.strip() or "draft"
-    saved_path = UPLOADS_DIR / f"test_{code}_{ver}.xlsx"
+    ext = _excel_ext(file.filename)
+    saved_path = UPLOADS_DIR / f"test_{code}_{ver}{ext}"
     content = await file.read()
     with open(saved_path, "wb") as f_out:
         f_out.write(content)
@@ -400,14 +424,16 @@ async def check_cell(
     """
     import uuid
     from app.services.validation_service import _validate_field
+    from app.services import _load_workbook, read_cells_from_workbook
     from app.models.schemas import FieldModel
 
     try:
         temp_path = None
         file_path = None
 
-        if file and file.filename and file.filename.endswith(".xlsx"):
-            temp_path = UPLOADS_DIR / f"_check_{uuid.uuid4().hex}.xlsx"
+        if file and _is_excel_filename(file.filename or ""):
+            ext = _excel_ext(file.filename)
+            temp_path = UPLOADS_DIR / f"_check_{uuid.uuid4().hex}{ext}"
             with open(temp_path, "wb") as f_out:
                 content = await file.read()
                 f_out.write(content)
@@ -415,49 +441,68 @@ async def check_cell(
         elif stored_test_file and Path(stored_test_file).exists():
             file_path = stored_test_file
         else:
-            return JSONResponse({"ok": False, "error": "Select or enter a valid .xlsx test file path"})
+            return JSONResponse({"ok": False, "error": "Select or enter a valid .xlsx/.xlsm test file path"})
 
         is_raw = raw in ("true", "on", "1")
         sheet_s = sheet.strip()
 
-        # --- Label check (Field Name vs Field Name Cell) -------------------------
-        label_check = None
-        fnc = field_name_cell.strip()
-        fn = field_name.strip()
-        if fnc:
-            label_res = read_single_cell(file_path, sheet_s, fnc, raw=False)
-            if label_res["error"]:
-                label_check = {
-                    "cell": fnc,
-                    "value": None,
-                    "expected": fn,
-                    "ok": False,
-                    "error": label_res["error"],
-                }
-            else:
-                actual = label_res["value"]
-                actual_s = "" if actual is None else str(actual).strip()
-                # Empty label in file is always valid.
-                # Invalid only when actual_s is non-empty AND doesn't match the template's Field Name.
-                if not actual_s:
-                    matches = True
-                    err = None
-                elif not fn:
-                    matches = False
-                    err = "Field Name is empty in template — cannot compare."
+        # Open workbooks once per request. The label always uses calculated
+        # (data_only) values; the value cell may need raw formula text when
+        # raw_cell_value is True — reuse the calc workbook for both otherwise.
+        wb_calc = _load_workbook(file_path, data_only=True)
+        wb_raw = _load_workbook(file_path, data_only=False) if is_raw else None
+        try:
+            # --- Label check (Field Name vs Field Name Cell) ---------------------
+            label_check = None
+            fnc = field_name_cell.strip()
+            fn = field_name.strip()
+            if fnc:
+                label_res = read_cells_from_workbook(wb_calc, sheet_s, fnc)
+                if label_res["error"]:
+                    label_check = {
+                        "cell": fnc,
+                        "value": None,
+                        "expected": fn,
+                        "ok": False,
+                        "error": label_res["error"],
+                    }
                 else:
-                    matches = (actual_s == fn)
-                    err = None if matches else f"Label at {fnc} is '{actual_s}', expected '{fn}'."
-                label_check = {
-                    "cell": fnc,
-                    "value": actual_s if actual_s else "(empty)",
-                    "expected": fn,
-                    "ok": matches,
-                    "error": err,
-                }
+                    actual = label_res["value"]
+                    actual_s = "" if actual is None else str(actual).strip()
+                    # Empty label in file is always valid.
+                    # Invalid only when actual_s is non-empty AND doesn't match the template's Field Name.
+                    if not actual_s:
+                        matches = True
+                        err = None
+                    elif not fn:
+                        matches = False
+                        err = "Field Name is empty in template — cannot compare."
+                    else:
+                        matches = (actual_s == fn)
+                        err = None if matches else f"Label at {fnc} is '{actual_s}', expected '{fn}'."
+                    label_check = {
+                        "cell": fnc,
+                        "value": actual_s if actual_s else "(empty)",
+                        "expected": fn,
+                        "ok": matches,
+                        "error": err,
+                    }
 
-        # --- Value cell read + type validation -----------------------------------
-        value_res = read_single_cell(file_path, sheet_s, cell.strip(), raw=is_raw, value_type=value_type.strip())
+            # --- Value cell read + type validation -------------------------------
+            wb_for_value = wb_raw if is_raw else wb_calc
+            value_res = read_cells_from_workbook(
+                wb_for_value, sheet_s, cell.strip(), value_type=value_type.strip()
+            )
+        finally:
+            try:
+                wb_calc.close()
+            except Exception:
+                pass
+            if wb_raw is not None:
+                try:
+                    wb_raw.close()
+                except Exception:
+                    pass
 
         if temp_path:
             try:

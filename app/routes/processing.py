@@ -1,7 +1,7 @@
 import json
 import urllib.parse
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -19,6 +19,8 @@ from app.services import (
     generate_output,
     get_output_path,
     get_logger,
+    detect_template_for_file,
+    get_model_fields_for_template,
 )
 
 router = APIRouter(prefix="/process", tags=["processing"])
@@ -31,6 +33,14 @@ UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
 # In-memory session store
 SESSIONS: dict[str, dict] = {}
 SESSION_COOKIE = "excel2db_session"
+
+# Extensions openpyxl can read — xlsm is the same Open-XML container as xlsx
+# plus a macro stream that we ignore on read.
+EXCEL_EXTS = (".xlsx", ".xlsm")
+
+
+def _is_excel_filename(name: str) -> bool:
+    return bool(name) and name.lower().endswith(EXCEL_EXTS)
 
 
 # ─── Helpers ────────────────────────────────────────────────────────────────
@@ -62,19 +72,38 @@ def _redirect(url: str, msg: str = "", msg_type: str = "success") -> RedirectRes
     return RedirectResponse(url=url, status_code=303)
 
 
-def _build_final_values(session: dict) -> dict[str, Any]:
-    """Merge extracted values with corrections."""
+def _build_final_values(session: dict, template) -> dict[str, Any]:
+    """Merge extracted values with corrections, emitting every field_code the
+    canonical Model knows about. Fields that this template version does not
+    contain are emitted with a None value so downstream schema stays stable.
+
+    Three metadata fields are prepended to every output:
+      - processing_timestamp: UTC ISO-8601 Z
+      - file_name: source workbook filename
+      - model_version: template.model_version (fallback template_version)
+    They take precedence over any canonical field_code with the same name."""
     extracted = session.get("extracted", {})
     corrections = session.get("corrections", {})
-    result: dict[str, Any] = {}
-    for field_code, raw in extracted.items():
-        if isinstance(raw, dict):
-            value = raw.get("value")
+    canonical = get_model_fields_for_template(template)
+
+    metadata: dict[str, Any] = {
+        "processing_timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "file_name": session.get("source_filename", ""),
+        "model_version": (template.model_version or template.template_version or "").strip(),
+    }
+
+    result: dict[str, Any] = dict(metadata)
+    for fc in canonical:
+        if fc in metadata:
+            continue
+        if fc in corrections:
+            result[fc] = corrections[fc]
+            continue
+        if fc in extracted:
+            raw = extracted[fc]
+            result[fc] = raw.get("value") if isinstance(raw, dict) else raw
         else:
-            value = raw
-        if field_code in corrections:
-            value = corrections[field_code]
-        result[field_code] = value
+            result[fc] = None
     return result
 
 
@@ -100,7 +129,7 @@ async def process_page(request: Request):
 
 @router.post("/list-files")
 async def list_folder_files(request: Request):
-    """AJAX endpoint: list .xlsx files in a given folder."""
+    """AJAX endpoint: list Excel files (.xlsx/.xlsm) in a given folder."""
     data = await request.json()
     folder = data.get("path", "").strip()
     if not folder:
@@ -111,7 +140,7 @@ async def list_folder_files(request: Request):
     if not p.is_dir():
         return JSONResponse({"ok": False, "error": "Path is not a folder"})
     files = sorted(
-        [f.name for f in p.iterdir() if f.is_file() and f.suffix.lower() == ".xlsx"],
+        [f.name for f in p.iterdir() if f.is_file() and f.suffix.lower() in EXCEL_EXTS],
         key=str.lower,
     )
     return JSONResponse({"ok": True, "files": files, "folder": str(p.resolve())})
@@ -122,7 +151,7 @@ async def start_processing(
     request: Request,
     file: UploadFile = File(None),
     template_code: str = Form(...),
-    template_version: str = Form(...),
+    template_version: str = Form(""),
     selected_file_path: str = Form(""),
     output_format: str = Form("json"),
 ):
@@ -133,13 +162,13 @@ async def start_processing(
     # Option 1: file selected from folder listing
     if selected_file_path.strip():
         p = Path(selected_file_path.strip())
-        if not p.exists() or not p.suffix.lower() == ".xlsx":
-            return _redirect("/process", "Selected file not found or not .xlsx", "error")
+        if not p.exists() or p.suffix.lower() not in EXCEL_EXTS:
+            return _redirect("/process", "Selected file not found or not .xlsx/.xlsm", "error")
         file_path = str(p)
         source_filename = p.name
         logger.info(f"File from folder: source={source_filename}")
     # Option 2: uploaded file
-    elif file and file.filename and file.filename.endswith(".xlsx"):
+    elif file and _is_excel_filename(file.filename or ""):
         source_filename = file.filename
         logger.info(f"Upload started: source={source_filename}")
         dest = UPLOADS_DIR / source_filename
@@ -149,11 +178,36 @@ async def start_processing(
         logger.info(f"Upload completed: source={source_filename}")
         file_path = str(dest)
     else:
-        return _redirect("/process", "Please select an Excel file (.xlsx)", "error")
+        return _redirect("/process", "Please select an Excel file (.xlsx or .xlsm)", "error")
 
-    tmpl = get_template(template_code, template_version)
-    if not tmpl:
-        return _redirect("/process", f"Template {template_code} {template_version} not found", "error")
+    # Auto-detect from the version cell when requested
+    if template_code == "__auto__":
+        tmpl, info = detect_template_for_file(file_path)
+        if not tmpl:
+            # Clean up any uploaded copy before bouncing back
+            try:
+                if dest:
+                    dest.unlink()
+            except Exception:
+                pass
+            reason = info.get("error") or "Could not auto-detect template."
+            attempts = "; ".join(
+                f"{c['code']}/{c['version']} @ {c['sheet']}!{c['cell']}: "
+                f"expected '{c['expected']}', got '{c['actual']}'"
+                for c in info.get("candidates", [])
+            )
+            msg = reason + (f" Tried: {attempts}" if attempts else "")
+            return _redirect("/process", msg, "error")
+        template_code = tmpl.template_code
+        template_version = tmpl.template_version
+        logger.info(
+            f"Auto-detected template: template_code={template_code}, "
+            f"template_version={template_version}"
+        )
+    else:
+        tmpl = get_template(template_code, template_version)
+        if not tmpl:
+            return _redirect("/process", f"Template {template_code} {template_version} not found", "error")
 
     logger.info(f"Template selected: template_code={template_code}, template_version={template_version}")
     logger.info(f"Processing started: source={source_filename}")
@@ -193,7 +247,7 @@ async def start_processing(
         return resp
 
     # All valid — generate output
-    final_values = _build_final_values(session)
+    final_values = _build_final_values(session, tmpl)
     output_path = generate_output(source_filename, final_values, fmt)
     session["output_path"] = output_path
     logger.info("Processing completed: status=success")
@@ -328,7 +382,7 @@ async def submit_corrections(request: Request):
         return resp
 
     # All valid — generate output
-    final_values = _build_final_values(session)
+    final_values = _build_final_values(session, tmpl)
     source_filename = session["source_filename"]
     fmt = session.get("output_format", "json")
     output_path = generate_output(source_filename, final_values, fmt)

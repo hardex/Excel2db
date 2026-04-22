@@ -317,6 +317,20 @@ input[readonly] {
 }
 
 .badge--success { background: #d1fae5; color: #065f46; }
+.badge--muted { background: #f1f5f9; color: #6b7280; }
+
+/* Compact variant — used on the Model view. Uses higher specificity
+   (table.data-table--compact) so it beats mobile overrides further down. */
+table.data-table--compact { font-size: 0.72rem; }
+table.data-table--compact th { font-size: 0.65rem; }
+table.data-table--compact td,
+table.data-table--compact th { padding: 0.35rem 0.55rem; }
+table.data-table--compact code { font-size: 0.72rem; }
+
+/* Keep all "Defined In" badges on a single line. */
+.versions-cell { white-space: nowrap; }
+.versions-cell .badge { margin-right: 0.25rem; }
+.versions-cell .badge:last-child { margin-right: 0; }
 
 /* ─── Fields Table (template editor) ────────────────────────────────────── */
 .fields-table-wrap {

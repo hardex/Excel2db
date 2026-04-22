@@ -7,11 +7,19 @@ from .template_service import (
     delete_template,
     set_default_template,
     template_exists,
+    detect_template_for_file,
 )
-from .excel_service import read_workbook_fields, read_single_cell, get_sheet_names
+from .excel_service import read_workbook_fields, read_single_cell, read_cells_from_workbook, get_sheet_names, _load_workbook
 from .validation_service import validate_fields
 from .output_service import generate_output, get_output_path
 from .export_service import template_to_stage2, export_to_file
+from .model_service import (
+    load_model,
+    save_model,
+    list_models,
+    ensure_model_has_fields,
+    get_model_fields_for_template,
+)
 
 __all__ = [
     "get_logger",
@@ -23,12 +31,19 @@ __all__ = [
     "delete_template",
     "set_default_template",
     "template_exists",
+    "detect_template_for_file",
     "read_workbook_fields",
     "read_single_cell",
+    "read_cells_from_workbook",
     "get_sheet_names",
     "validate_fields",
     "generate_output",
     "get_output_path",
     "template_to_stage2",
     "export_to_file",
+    "load_model",
+    "save_model",
+    "list_models",
+    "ensure_model_has_fields",
+    "get_model_fields_for_template",
 ]
