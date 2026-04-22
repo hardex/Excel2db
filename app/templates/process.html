@@ -11,24 +11,23 @@
     <input type="hidden" id="selected_file_path" name="selected_file_path" value="" />
     <div class="form-row" style="flex-wrap: wrap;">
       <div class="form-group">
-        <label for="file">Upload Excel File (.xlsx)</label>
-        <input type="file" id="file" name="file" accept=".xlsx" />
+        <label for="file">Upload Excel File (.xlsx / .xlsm)</label>
+        <input type="file" id="file" name="file" accept=".xlsx,.xlsm" />
       </div>
       <div class="form-group">
         <label for="template_select">Template</label>
         {% if all_templates %}
         <select id="template_select" name="template_code" onchange="syncVersion(this)">
+          <option value="__auto__" data-version="" selected>Auto-detect from file</option>
           {% for tmpl in all_templates %}
           <option value="{{ tmpl.template_code }}"
-                  data-version="{{ tmpl.template_version }}"
-                  {% if default_template and tmpl.template_code == default_template.template_code and tmpl.template_version == default_template.template_version %}selected{% endif %}>
+                  data-version="{{ tmpl.template_version }}">
             {{ tmpl.template_code }} {{ tmpl.template_version }}
             {% if tmpl.is_default %}(default){% endif %}
           </option>
           {% endfor %}
         </select>
-        <input type="hidden" id="template_version_hidden" name="template_version"
-               value="{{ default_template.template_version if default_template else '' }}" />
+        <input type="hidden" id="template_version_hidden" name="template_version" value="" />
         {% else %}
         <p class="hint">No templates available. <a href="/templates/new">Create one first</a>.</p>
         {% endif %}
@@ -104,7 +103,7 @@ document.getElementById('folder_picker').addEventListener('change', function() {
 
   if (!this.files.length) return;
 
-  // Filter .xlsx files and store File objects
+  // Filter Excel files (.xlsx/.xlsm) and store File objects
   browserFiles = {};
   const xlsxFiles = [];
   let folderName = '';
@@ -114,7 +113,8 @@ document.getElementById('folder_picker').addEventListener('change', function() {
     if (!folderName && f.webkitRelativePath) {
       folderName = f.webkitRelativePath.split('/')[0];
     }
-    if (f.name.toLowerCase().endsWith('.xlsx')) {
+    const n = f.name.toLowerCase();
+    if (n.endsWith('.xlsx') || n.endsWith('.xlsm')) {
       xlsxFiles.push(f);
       browserFiles[f.name] = f;
     }
@@ -126,7 +126,7 @@ document.getElementById('folder_picker').addEventListener('change', function() {
   wrap.style.display = '';
 
   if (xlsxFiles.length === 0) {
-    list.innerHTML = '<option disabled>No .xlsx files in this folder</option>';
+    list.innerHTML = '<option disabled>No Excel files in this folder</option>';
     resizeFileList();
     return;
   }

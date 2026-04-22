@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
-from app.routes import templates, processing, logs, validation
+from app.routes import templates, processing, logs, validation, models
 
 app = FastAPI(title="Excel2DB")
 
@@ -12,6 +12,7 @@ app.include_router(templates.router)
 app.include_router(processing.router)
 app.include_router(logs.router)
 app.include_router(validation.router)
+app.include_router(models.router)
 
 
 @app.get("/")

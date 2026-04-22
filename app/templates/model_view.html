@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Model {{ model_code }} — Excel2DB{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Model: <code>{{ model_code }}</code></h1>
+  <div class="actions">
+    <a href="/models" class="btn btn--secondary btn--sm">← All Models</a>
+    {% if model and removed_count %}
+    <form method="post"
+          action="/models/{{ model_code }}/prune-removed"
+          style="display:inline"
+          onsubmit="return confirm('Permanently remove {{ removed_count }} field(s) that no current template of this model still defines? Output files generated after this will no longer include them.');">
+      <button type="submit" class="btn btn--danger btn--sm">
+        Remove {{ removed_count }} removed field{{ 's' if removed_count != 1 else '' }}
+      </button>
+    </form>
+    {% endif %}
+  </div>
+</div>
+
+{% if not model %}
+<div class="empty-state">
+  <p>Model <code>{{ model_code }}</code> not found.</p>
+</div>
+{% else %}
+<p class="help-text">
+  {{ rows | length }} canonical field{{ 's' if rows | length != 1 else '' }}.
+  "Defined in" lists every current template version that still contains the
+  field. A <em>— (removed)</em> badge means the field used to exist but no
+  current template defines it; it is still emitted in output as an empty
+  value to keep the schema stable.
+</p>
+
+<table class="data-table data-table--compact">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Field Code</th>
+      <th>Field Name</th>
+      <th>Defined In</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <td>{{ loop.index }}</td>
+      <td><code>{{ row.field_code }}</code></td>
+      <td>{{ row.field_name }}</td>
+      <td class="versions-cell">
+        {% if row.versions %}
+          {% for v in row.versions %}<span class="badge">{{ v }}</span>{% if not loop.last %} {% endif %}{% endfor %}
+        {% else %}
+          <span class="badge badge--muted">— (removed)</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Models — Excel2DB{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Data Models</h1>
+</div>
+
+<p class="help-text">
+  A Model is the canonical union of every <code>field_code</code> that has ever
+  appeared across the templates sharing a <code>template_code</code>. Fields
+  are added automatically when you save a template and never removed, so
+  output always has a stable schema across versions.
+</p>
+
+{% if models %}
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Model Code</th>
+      <th>Canonical Fields</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for m in models %}
+    <tr>
+      <td><code>{{ m.model_code }}</code></td>
+      <td>{{ m.field_codes | length }}</td>
+      <td class="actions">
+        <a href="/models/{{ m.model_code }}"
+           class="btn btn--secondary btn--sm">View</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<div class="empty-state">
+  <p>No models yet. Create or save a template to auto-build one.</p>
+</div>
+{% endif %}
+{% endblock %}

@@ -2,8 +2,11 @@
   "template_code": "Pricing",
   "template_version": "vMar25",
   "description": "test",
-  "is_default": true,
+  "is_default": false,
   "test_file_path": "/Users/oleksandr/Documents/dev/ai/excel_pipeline/Excel2db/uploads/test_Pricing_1.0.xlsx",
+  "version_cell_sheet": "Intro",
+  "version_cell": "C1",
+  "model_version": "vMar25",
   "fields": [
     {
       "field_code": "client_name",
@@ -1068,7 +1071,7 @@
       "allow_empty": true,
       "active": true,
       "raw_cell_value": false,
-      "description": "Option 1: Flat % discount on all core OCT fees (AFTs excluded), Max 35%. For small deals cap at 25%\r\nOption 2: Tiered XB Discount on XB OCTs only (refer to tiering Table) - standard tier table\r\nOption 3: Tiered % Discount on All OCTs, tiering by DOM/Intra and XB",
+      "description": "Option 1: Flat % discount on all core OCT fees (AFTs excluded), Max 35%. For small deals cap at 25%, Option 2: Tiered XB Discount on XB OCTs only (refer to tiering Table) - standard tier table, Option 3: Tiered % Discount on All OCTs, tiering by DOM/Intra and XB",
       "ai_prompt": "Verify that the field \"Discount Option Type\" is present, and that the value read from F2 is a valid string."
     },
     {

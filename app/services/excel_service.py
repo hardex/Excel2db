@@ -1,6 +1,11 @@
 import re
 
 import openpyxl
+from openpyxl.utils.cell import (
+    column_index_from_string,
+    coordinate_from_string,
+    range_boundaries,
+)
 from typing import Any
 
 from app.models.schemas import FieldModel
@@ -14,6 +19,17 @@ def _normalize_value(v):
     if isinstance(v, str):
         return _NEWLINE_RE.sub(" ", v)
     return v
+
+
+def _load_workbook(file_path: str, *, data_only: bool):
+    """Load a workbook in the fastest mode compatible with our read needs.
+
+    `read_only=True` streams the file instead of building a full object tree —
+    skips styles, merged regions, conditional formatting, and (critically for
+    .xlsm) the vbaProject part. Typically 10–50× faster on large pricing
+    workbooks; we never mutate or inspect styling, so the trade-off is pure
+    win. `keep_vba=False` (default) further avoids VBA binary parsing."""
+    return openpyxl.load_workbook(file_path, data_only=data_only, read_only=True)
 
 
 def _apply_date_placeholder(value, value_type: str):
@@ -37,8 +53,8 @@ def read_workbook_fields(file_path: str, fields: list[FieldModel]) -> dict[str, 
     needs_labels = any(f.field_name_cell.strip() and f.field_name.strip() for f in active_fields)
     needs_calc = any(not f.raw_cell_value for f in active_fields) or needs_labels
 
-    wb_raw = openpyxl.load_workbook(file_path, data_only=False) if needs_raw else None
-    wb_calc = openpyxl.load_workbook(file_path, data_only=True) if needs_calc else None
+    wb_raw = _load_workbook(file_path, data_only=False) if needs_raw else None
+    wb_calc = _load_workbook(file_path, data_only=True) if needs_calc else None
     logger.info("Workbook opened successfully")
 
     results: dict[str, dict] = {}
@@ -104,22 +120,30 @@ def _read_cell_spec(ws, spec: str) -> list:
     """Read values matching a cell spec that may contain commas and ranges.
 
     Examples of accepted specs: "A1", "A1:B5", "A1, B5:C10, D2".
+
+    Uses iter_rows / ws.cell(...) so it works in both normal and read_only
+    worksheet modes — in read-only mode, `ws["A1:B5"]` returns a generator,
+    not a tuple-of-tuples, which would break the prior isinstance(..., tuple)
+    path.
     """
     values: list = []
     for part in spec.split(","):
         p = part.strip()
         if not p:
             continue
-        target = ws[p]
-        if isinstance(target, tuple):  # range of rows
-            for row in target:
-                if isinstance(row, tuple):
-                    for c in row:
-                        values.append(_normalize_value(c.value))
-                else:
-                    values.append(_normalize_value(row.value))
+        if ":" in p:
+            min_col, min_row, max_col, max_row = range_boundaries(p)
+            for row in ws.iter_rows(
+                min_row=min_row, max_row=max_row,
+                min_col=min_col, max_col=max_col,
+                values_only=True,
+            ):
+                for v in row:
+                    values.append(_normalize_value(v))
         else:
-            values.append(_normalize_value(target.value))
+            col_letter, row_num = coordinate_from_string(p)
+            col = column_index_from_string(col_letter)
+            values.append(_normalize_value(ws.cell(row=row_num, column=col).value))
     return values
 
 
@@ -134,6 +158,24 @@ def _collapse_values(values: list):
     return ", ".join("" if v is None else str(v) for v in values)
 
 
+def read_cells_from_workbook(wb, sheet_name: str, cell_addr: str, value_type: str = "") -> dict:
+    """Read a cell spec from an already-open workbook. Used by callers that
+    need to perform multiple reads against the same file without paying the
+    `load_workbook` cost twice (e.g. the Check button reads both a label cell
+    and a value cell)."""
+    if sheet_name not in wb.sheetnames:
+        return {"value": None, "values": [], "error": f"Sheet '{sheet_name}' not found. Available: {', '.join(wb.sheetnames)}"}
+    ws = wb[sheet_name]
+    try:
+        values = _read_cell_spec(ws, cell_addr)
+        values = [_apply_date_placeholder(v, value_type) for v in values]
+        if not values:
+            return {"value": None, "values": [], "error": "No cells read"}
+        return {"value": _collapse_values(values), "values": values, "error": None}
+    except Exception as exc:
+        return {"value": None, "values": [], "error": str(exc)}
+
+
 def read_single_cell(file_path: str, sheet_name: str, cell_addr: str, raw: bool = True, value_type: str = "") -> dict:
     """Read value(s) from a workbook (used by Test Cell feature).
 
@@ -146,7 +188,7 @@ def read_single_cell(file_path: str, sheet_name: str, cell_addr: str, raw: bool 
             placeholder as empty (None).
     """
     try:
-        wb = openpyxl.load_workbook(file_path, data_only=not raw)
+        wb = _load_workbook(file_path, data_only=not raw)
     except Exception as exc:
         return {"value": None, "values": [], "error": f"Cannot open workbook: {exc}"}
 
@@ -170,7 +212,7 @@ def read_single_cell(file_path: str, sheet_name: str, cell_addr: str, raw: bool 
 def get_sheet_names(file_path: str) -> list[str]:
     """Return list of sheet names from a workbook."""
     try:
-        wb = openpyxl.load_workbook(file_path, data_only=False, read_only=True)
+        wb = _load_workbook(file_path, data_only=False)
         names = list(wb.sheetnames)
         wb.close()
         return names
