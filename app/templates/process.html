@@ -41,29 +41,118 @@
       </div>
       {% if all_templates %}
       <div class="form-group" style="align-self: flex-end;">
-        <button type="submit" class="btn btn--primary">Start Processing</button>
+        <button type="submit" class="btn btn--primary" id="single-submit-btn">Start Processing</button>
       </div>
       {% endif %}
     </div>
 
+    <!-- Single-file progress bar (shown after submit) -->
+    <div id="single-progress" style="display:none; margin-top: 0.75rem;">
+      <div style="display:flex; align-items:center; gap: 0.75rem;">
+        <div style="flex:1; background:#e5e7eb; border-radius:99px; height:8px; overflow:hidden;">
+          <div id="single-progress-bar" style="width:100%; height:100%; background:#2563eb; border-radius:99px; animation: progress-pulse 1.4s ease-in-out infinite;"></div>
+        </div>
+        <span id="single-progress-text" style="font-size:0.85rem; color:#6b7280; white-space:nowrap;">Processing…</span>
+      </div>
+    </div>
+
+    <!-- Folder picker section -->
     <div style="margin-top: 1rem; border-top: 1px solid #e5e7eb; padding-top: 1rem;">
       <div class="form-row" style="flex-wrap: wrap; align-items: flex-end;">
         <div class="form-group" style="flex: 1; min-width: 300px;">
           <label>Or choose from folder</label>
-          <div style="display: flex; gap: 0.5rem;">
-            <button type="button" class="btn btn--secondary" onclick="browseFolder()">Browse...</button>
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <button type="button" class="btn btn--secondary" onclick="browseFolder()">Browse…</button>
             <input type="file" id="folder_picker" webkitdirectory directory multiple style="display: none;" />
+            <span id="folder-files-count" class="hint"></span>
           </div>
         </div>
       </div>
+
       <div id="folder-files-wrap" style="display: none; margin-top: 0.5rem;">
-        <label>Excel files <span id="folder-files-count" class="hint"></span></label>
-        <select id="folder-files-list" size="2" style="width: 100%; font-family: monospace; overflow-y: auto; min-height: 66px;">
-        </select>
+        <!-- Controls -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem; flex-wrap:wrap; gap:0.4rem;">
+          <div style="display:flex; gap:0.4rem;">
+            <button type="button" class="btn btn--secondary btn--sm" onclick="selectAll()">Select All</button>
+            <button type="button" class="btn btn--secondary btn--sm" onclick="selectNone()">None</button>
+          </div>
+          <button type="button" class="btn btn--primary btn--sm" id="batch-btn" onclick="startBatch()">▶ Process Selected</button>
+        </div>
+
+        <!-- File table -->
+        <div id="folder-table-wrap" style="overflow-y:auto; border:1px solid #e2e8f0; border-radius:6px;">
+          <table style="width:100%; border-collapse:collapse; font-size:0.83rem; font-family: monospace;">
+            <thead>
+              <tr style="background:#f1f5f9; position:sticky; top:0; z-index:1;">
+                <th style="padding:0.3rem 0.5rem; width:2rem; text-align:center;">
+                  <input type="checkbox" id="check-all" onchange="toggleAll(this)" title="Select all" />
+                </th>
+                <th style="padding:0.3rem 0.6rem; text-align:left; font-weight:600; color:#374151;">File Name</th>
+                <th style="padding:0.3rem 0.6rem; width:9rem; text-align:left; font-weight:600; color:#374151;">Status</th>
+              </tr>
+            </thead>
+            <tbody id="folder-files-tbody"></tbody>
+          </table>
+        </div>
       </div>
     </div>
   </form>
 </section>
+
+<!-- Batch progress section -->
+<section class="form-section" id="batch-section" style="display:none;">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+    <h2 style="margin:0;">Batch Processing</h2>
+    <span id="batch-summary" class="hint"></span>
+  </div>
+
+  <!-- Overall progress bar -->
+  <div style="margin-bottom:1rem;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.3rem;">
+      <span id="batch-progress-text" style="font-size:0.85rem; color:#6b7280;"></span>
+    </div>
+    <div style="background:#e5e7eb; border-radius:99px; height:10px; overflow:hidden;">
+      <div id="batch-progress-bar" style="width:0%; height:100%; background:#2563eb; border-radius:99px; transition:width 0.3s ease;"></div>
+    </div>
+  </div>
+
+  <!-- Per-file results table -->
+  <div style="overflow-x:auto; border:1px solid #e2e8f0; border-radius:6px;">
+    <table class="data-table data-table--compact" id="batch-results-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>File</th>
+          <th>Template</th>
+          <th>Status</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody id="batch-results-tbody"></tbody>
+    </table>
+  </div>
+</section>
+
+<style>
+@keyframes progress-pulse {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+.status-badge {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border-radius: 99px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.status-badge--wait    { background:#f1f5f9; color:#6b7280; }
+.status-badge--running { background:#eff6ff; color:#1d4ed8; }
+.status-badge--ok      { background:#d1fae5; color:#065f46; }
+.status-badge--warn    { background:#fef9c3; color:#854d0e; }
+.status-badge--err     { background:#fee2e2; color:#991b1b; }
+</style>
 
 <script>
 function syncVersion(select) {
@@ -71,113 +160,256 @@ function syncVersion(select) {
   document.getElementById('template_version_hidden').value = opt.dataset.version || '';
 }
 
-// Store File objects from browser folder picker, keyed by filename
-let browserFiles = {};
+// ── Single-file form submit: show progress bar ────────────────────────────
+document.getElementById('processForm').addEventListener('submit', function(e) {
+  const hasUpload = document.getElementById('file').files.length > 0;
+  const hasPath   = document.getElementById('selected_file_path').value.trim() !== '';
+  if (!hasUpload && !hasPath) {
+    e.preventDefault();
+    alert('Please upload a file or select one from the folder list.');
+    return;
+  }
+  const btn = document.getElementById('single-submit-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Processing…'; }
+  document.getElementById('single-progress').style.display = '';
+});
 
-// ── Resize the file list based on content and viewport ───────────────────────
-function resizeFileList() {
-  const list = document.getElementById('folder-files-list');
-  const fileCount = list.options.length;
-  if (fileCount === 0) return;
+// ── Browser folder picker state ───────────────────────────────────────────
+let browserFiles = {};   // filename → File object
 
-  const rowHeight = 22; // approximate px per option row
-  const minHeight = 3 * rowHeight;
-  const contentHeight = fileCount * rowHeight;
-
-  // available space: from list top to bottom of viewport, with padding
-  const listRect = list.getBoundingClientRect();
-  const availableHeight = window.innerHeight - listRect.top - 40;
-
-  list.style.height = Math.max(minHeight, Math.min(contentHeight, availableHeight)) + 'px';
-}
-
-// ── Browse folder via native dialog ──────────────────────────────────────────
 function browseFolder() {
   document.getElementById('folder_picker').click();
 }
 
 document.getElementById('folder_picker').addEventListener('change', function() {
-  const wrap = document.getElementById('folder-files-wrap');
-  const list = document.getElementById('folder-files-list');
+  const wrap  = document.getElementById('folder-files-wrap');
+  const tbody = document.getElementById('folder-files-tbody');
   const count = document.getElementById('folder-files-count');
 
   if (!this.files.length) return;
 
-  // Filter Excel files (.xlsx/.xlsm) and store File objects
   browserFiles = {};
   const xlsxFiles = [];
-  let folderName = '';
-
   for (const f of this.files) {
-    // webkitRelativePath is like "FolderName/subfolder/file.xlsx"
-    if (!folderName && f.webkitRelativePath) {
-      folderName = f.webkitRelativePath.split('/')[0];
-    }
     const n = f.name.toLowerCase();
     if (n.endsWith('.xlsx') || n.endsWith('.xlsm')) {
       xlsxFiles.push(f);
       browserFiles[f.name] = f;
     }
   }
-
   xlsxFiles.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
 
-  count.textContent = '(' + xlsxFiles.length + ' found)';
+  count.textContent = xlsxFiles.length + ' Excel file' + (xlsxFiles.length !== 1 ? 's' : '') + ' found';
   wrap.style.display = '';
 
+  tbody.innerHTML = '';
   if (xlsxFiles.length === 0) {
-    list.innerHTML = '<option disabled>No Excel files in this folder</option>';
-    resizeFileList();
-    return;
+    tbody.innerHTML = '<tr><td colspan="3" style="padding:0.5rem; color:#6b7280; font-family:sans-serif;">No Excel files found.</td></tr>';
+  } else {
+    xlsxFiles.forEach(f => {
+      const tr = document.createElement('tr');
+      tr.id = 'file-row-' + CSS.escape(f.name);
+      tr.innerHTML = `
+        <td style="padding:0.2rem 0.5rem; text-align:center;">
+          <input type="checkbox" class="file-check" value="${escHtml(f.name)}" checked />
+        </td>
+        <td style="padding:0.2rem 0.6rem; cursor:pointer;" onclick="pickSingle('${escJs(f.name)}')" title="Click to select for single processing">
+          ${escHtml(f.name)}
+        </td>
+        <td style="padding:0.2rem 0.6rem;" id="status-${CSS.escape(f.name)}">
+          <span class="status-badge status-badge--wait">—</span>
+        </td>`;
+      tbody.appendChild(tr);
+    });
   }
 
-  list.innerHTML = '';
-  xlsxFiles.forEach(f => {
-    const opt = document.createElement('option');
-    opt.value = f.name;
-    opt.textContent = f.name;
-    list.appendChild(opt);
-  });
-  resizeFileList();
+  document.getElementById('check-all').checked = true;
+  resizeFileTable();
+  // Reset batch section
+  document.getElementById('batch-section').style.display = 'none';
 });
 
-// ── File selection from list ─────────────────────────────────────────────────
-document.getElementById('folder-files-list').addEventListener('change', function() {
-  const selected = this.value;
-  if (!selected) return;
+// ── Table height sizing ───────────────────────────────────────────────────
+function resizeFileTable() {
+  const wrap = document.getElementById('folder-table-wrap');
+  if (!wrap) return;
+  const rect = wrap.getBoundingClientRect();
+  const available = window.innerHeight - rect.top - 48;
+  wrap.style.height = Math.max(120, Math.min(available, Object.keys(browserFiles).length * 30 + 40)) + 'px';
+}
+window.addEventListener('resize', resizeFileTable);
 
-  if (browserFiles[selected]) {
-    const dt = new DataTransfer();
-    dt.items.add(browserFiles[selected]);
-    document.getElementById('file').files = dt.files;
-    document.getElementById('selected_file_path').value = '';
-  }
-});
+// ── Select / deselect helpers ─────────────────────────────────────────────
+function toggleAll(cb) {
+  document.querySelectorAll('.file-check').forEach(c => c.checked = cb.checked);
+}
+function selectAll()  { document.querySelectorAll('.file-check').forEach(c => c.checked = true);  document.getElementById('check-all').checked = true; }
+function selectNone() { document.querySelectorAll('.file-check').forEach(c => c.checked = false); document.getElementById('check-all').checked = false; }
 
-// When a file is uploaded directly, clear the folder selection
+// ── Click filename → set as single-process target ────────────────────────
+function pickSingle(filename) {
+  const f = browserFiles[filename];
+  if (!f) return;
+  const dt = new DataTransfer();
+  dt.items.add(f);
+  document.getElementById('file').files = dt.files;
+  document.getElementById('selected_file_path').value = '';
+}
+
+// When a file is uploaded directly, clear folder selection highlight
 document.getElementById('file').addEventListener('change', function() {
   if (this.files.length) {
     document.getElementById('selected_file_path').value = '';
-    const list = document.getElementById('folder-files-list');
-    list.selectedIndex = -1;
   }
 });
 
-// Validate before submit: must have either upload or folder selection
-document.getElementById('processForm').addEventListener('submit', function(e) {
-  const hasUpload = document.getElementById('file').files.length > 0;
-  const hasSelected = document.getElementById('selected_file_path').value.trim() !== '';
-  if (!hasUpload && !hasSelected) {
-    e.preventDefault();
-    alert('Please upload a file or select one from the folder list.');
-  }
-});
+// ── Batch processing ──────────────────────────────────────────────────────
+async function startBatch() {
+  const checked = [...document.querySelectorAll('.file-check:checked')].map(c => c.value);
+  if (checked.length === 0) { alert('Select at least one file.'); return; }
 
-// Recalculate list height on window resize
-window.addEventListener('resize', function() {
-  if (document.getElementById('folder-files-wrap').style.display !== 'none') {
-    resizeFileList();
+  const templateCode    = document.getElementById('template_select').value;
+  const templateVersion = document.getElementById('template_version_hidden').value;
+  const outputFormat    = document.getElementById('output_format').value;
+
+  // Prepare batch UI
+  const section    = document.getElementById('batch-section');
+  const tbody      = document.getElementById('batch-results-tbody');
+  const progressBar  = document.getElementById('batch-progress-bar');
+  const progressText = document.getElementById('batch-progress-text');
+  const summary      = document.getElementById('batch-summary');
+
+  section.style.display = '';
+  tbody.innerHTML = '';
+  progressBar.style.width = '0%';
+  summary.textContent = '';
+  document.getElementById('batch-btn').disabled = true;
+
+  // Build result rows
+  checked.forEach((name, i) => {
+    const tr = document.createElement('tr');
+    tr.id = 'batch-row-' + i;
+    tr.innerHTML = `
+      <td>${i + 1}</td>
+      <td style="font-family:monospace; font-size:0.8rem;">${escHtml(name)}</td>
+      <td id="batch-tmpl-${i}">—</td>
+      <td><span class="status-badge status-badge--wait" id="batch-status-${i}">Waiting</span></td>
+      <td id="batch-detail-${i}" style="font-size:0.78rem; color:#6b7280;"></td>`;
+    tbody.appendChild(tr);
+  });
+
+  section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  let done = 0, okCount = 0, warnCount = 0, errCount = 0;
+  const collectedRows = [];           // {filename, values} for successful files
+  const templateCodeCounts = {};      // detected template_code → count
+
+  for (let i = 0; i < checked.length; i++) {
+    const name = checked[i];
+    const f = browserFiles[name];
+
+    // Mark running
+    setBadge(i, 'running', 'Processing…');
+    setFileStatus(name, 'running', 'Processing…');
+    progressText.textContent = `Processing ${i + 1} of ${checked.length}: ${name}`;
+
+    let result;
+    try {
+      const fd = new FormData();
+      fd.append('file', f);
+      fd.append('template_code', templateCode);
+      fd.append('template_version', templateVersion);
+      fd.append('output_format', outputFormat);
+
+      const resp = await fetch('/process/batch-file', { method: 'POST', body: fd });
+      result = await resp.json();
+    } catch (e) {
+      result = { ok: false, error: e.message || 'Network error' };
+    }
+
+    done++;
+    progressBar.style.width = Math.round(done / checked.length * 100) + '%';
+
+    if (result.ok) {
+      okCount++;
+      setBadge(i, 'ok', '✓ Done');
+      setFileStatus(name, 'ok', '✓ Done');
+      document.getElementById(`batch-tmpl-${i}`).textContent = result.template || '';
+      document.getElementById(`batch-detail-${i}`).textContent = 'Extracted';
+      collectedRows.push({ filename: name, values: result.values || {} });
+      const tc = result.template_code || '';
+      if (tc) templateCodeCounts[tc] = (templateCodeCounts[tc] || 0) + 1;
+    } else if (result.validation_errors) {
+      warnCount++;
+      setBadge(i, 'warn', `⚠ ${result.error_count} error${result.error_count !== 1 ? 's' : ''}`);
+      setFileStatus(name, 'warn', '⚠ Validation');
+      document.getElementById(`batch-tmpl-${i}`).textContent = result.template || '';
+      const errs = (result.errors || []).map(e => `${e.field}: ${e.error}`).join(' | ');
+      document.getElementById(`batch-detail-${i}`).textContent = errs;
+    } else {
+      errCount++;
+      setBadge(i, 'err', '✗ Failed');
+      setFileStatus(name, 'err', '✗ Failed');
+      document.getElementById(`batch-detail-${i}`).textContent = result.error || 'Unknown error';
+    }
   }
-});
+
+  // Write the single combined CSV
+  let combinedPath = '';
+  if (collectedRows.length > 0) {
+    // Pick the dominant detected template_code, or fall back to the form value
+    let combinedCode = templateCode;
+    if (combinedCode === '__auto__') {
+      const sorted = Object.entries(templateCodeCounts).sort((a, b) => b[1] - a[1]);
+      combinedCode = sorted.length ? sorted[0][0] : 'batch';
+    }
+    progressText.textContent = `Writing combined CSV (${collectedRows.length} rows)…`;
+    try {
+      const resp = await fetch('/process/batch-write', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ template_code: combinedCode, rows: collectedRows }),
+      });
+      const data = await resp.json();
+      if (data.ok) {
+        combinedPath = data.output_path;
+      } else {
+        progressText.textContent = 'Combined write failed: ' + (data.error || 'unknown');
+      }
+    } catch (e) {
+      progressText.textContent = 'Combined write failed: ' + (e.message || 'request error');
+    }
+  }
+
+  if (combinedPath) {
+    progressText.innerHTML = 'Finished. Combined output: <code>' + escHtml(combinedPath) + '</code>';
+  } else {
+    progressText.textContent = collectedRows.length === 0
+      ? 'Finished. No rows written (all files failed or had validation errors).'
+      : (progressText.textContent || 'Finished.');
+  }
+  summary.textContent = `${okCount} succeeded · ${warnCount} with validation errors · ${errCount} failed`;
+  document.getElementById('batch-btn').disabled = false;
+}
+
+function setBadge(rowIndex, type, text) {
+  const el = document.getElementById(`batch-status-${rowIndex}`);
+  if (!el) return;
+  el.className = `status-badge status-badge--${type}`;
+  el.textContent = text;
+}
+
+function setFileStatus(filename, type, text) {
+  const el = document.getElementById('status-' + CSS.escape(filename));
+  if (!el) return;
+  el.innerHTML = `<span class="status-badge status-badge--${type}">${escHtml(text)}</span>`;
+}
+
+function escHtml(s) {
+  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escJs(s) {
+  return String(s ?? '').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+}
 </script>
 {% endblock %}

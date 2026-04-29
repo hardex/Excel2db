@@ -1,8 +1,10 @@
+import csv
+import io
 import urllib.parse
 from collections import OrderedDict
 
 from fastapi import APIRouter, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
 
 from app.services import list_models, list_templates, load_model, save_model
@@ -14,9 +16,11 @@ templates_engine = Jinja2Templates(directory="app/templates")
 def _resolve_field_usage(model_code: str):
     """For a given model_code, return:
       - field_names: {field_code: first-found field_name from current templates}
+      - field_types: {field_code: first-found value_type from current templates}
       - field_versions: {field_code: [template_version, ...] that still define it}
     Only templates with matching template_code contribute."""
     field_names: dict[str, str] = {}
+    field_types: dict[str, str] = {}
     field_versions: OrderedDict[str, list[str]] = OrderedDict()
     for tmpl in list_templates():
         if tmpl.template_code != model_code:
@@ -24,8 +28,9 @@ def _resolve_field_usage(model_code: str):
         for f in tmpl.fields:
             if f.field_code not in field_names:
                 field_names[f.field_code] = f.field_name
+                field_types[f.field_code] = f.value_type
             field_versions.setdefault(f.field_code, []).append(tmpl.template_version)
-    return field_names, field_versions
+    return field_names, field_types, field_versions
 
 
 @router.get("", response_class=HTMLResponse)
@@ -58,7 +63,7 @@ async def model_detail(request: Request, model_code: str):
             },
         )
 
-    field_names, field_versions = _resolve_field_usage(model_code)
+    field_names, field_types, field_versions = _resolve_field_usage(model_code)
     rows = []
     removed_count = 0
     for fc in model.field_codes:
@@ -69,6 +74,7 @@ async def model_detail(request: Request, model_code: str):
             {
                 "field_code": fc,
                 "field_name": field_names.get(fc, ""),
+                "value_type": field_types.get(fc, ""),
                 "versions": versions,
             }
         )
@@ -84,6 +90,35 @@ async def model_detail(request: Request, model_code: str):
             "msg": msg,
             "msg_type": msg_type,
         },
+    )
+
+
+@router.get("/{model_code}/download-csv")
+async def download_model_csv(model_code: str):
+    model = load_model(model_code)
+    field_names, field_types, field_versions = _resolve_field_usage(model_code)
+
+    buf = io.StringIO()
+    writer = csv.writer(buf)
+    writer.writerow(["#", "Field Code", "Field Name", "Type", "Defined In"])
+
+    field_codes = model.field_codes if model else list(field_names.keys())
+    for i, fc in enumerate(field_codes, start=1):
+        versions = field_versions.get(fc, [])
+        writer.writerow([
+            i,
+            fc,
+            field_names.get(fc, ""),
+            field_types.get(fc, ""),
+            ", ".join(versions) if versions else "(removed)",
+        ])
+
+    buf.seek(0)
+    filename = f"{model_code}_fields.csv"
+    return StreamingResponse(
+        iter([buf.getvalue()]),
+        media_type="text/csv",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
     )
 
 

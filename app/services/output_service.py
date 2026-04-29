@@ -2,6 +2,8 @@ import csv
 import io
 import json
 import os
+import re
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -11,6 +13,39 @@ logger = get_logger()
 
 OUTPUTS_DIR = Path("outputs")
 OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
+
+
+def _csv_safe(val: Any) -> str:
+    if val is None:
+        return ""
+    return str(val).replace("\n", " ").replace("\r", " ")
+
+
+def generate_combined_csv(template_code: str, rows: list[dict[str, Any]]) -> str:
+    """Write a single CSV combining one row per source file.
+
+    Header is the union of keys across all rows, preserving first-seen order.
+    Filename is <template_code>_<YYYYMMDD_HHMMSS>.csv. Returns the file path."""
+    keys: list[str] = []
+    seen: set[str] = set()
+    for row in rows:
+        for k in row.keys():
+            if k not in seen:
+                seen.add(k)
+                keys.append(k)
+
+    safe_code = re.sub(r"[^A-Za-z0-9_.-]+", "_", template_code) or "batch"
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    output_path = OUTPUTS_DIR / f"{safe_code}_{timestamp}.csv"
+
+    with open(output_path, "w", encoding="utf-8", newline="") as f:
+        writer = csv.writer(f, delimiter=",")
+        writer.writerow(keys)
+        for row in rows:
+            writer.writerow([_csv_safe(row.get(k)) for k in keys])
+
+    logger.info(f"Combined CSV created: {output_path} ({len(rows)} rows, {len(keys)} columns)")
+    return str(output_path)
 
 
 def generate_output(source_filename: str, field_values: dict[str, Any], output_format: str = "json") -> str:

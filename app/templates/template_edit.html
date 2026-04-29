@@ -87,37 +87,6 @@
     </div>
   </section>
 
-  <!-- Fields Table (above Add Field) -->
-  <section class="form-section">
-    <h2>Fields</h2>
-    <div id="hidden-fields-container"></div>
-
-    <div class="fields-table-wrap">
-    <table class="fields-table" id="fields-table">
-      <thead>
-        <tr>
-          <th style="width: 1.5rem;" title="Drag to reorder"></th>
-          <th>#</th>
-          <th>Field Code</th>
-          <th>Field Name</th>
-          <th>Field Name Cell</th>
-          <th>Sheet</th>
-          <th>Value Cell</th>
-          <th>Type</th>
-          <th>Allow Empty</th>
-          <th>Active</th>
-          <th>Raw</th>
-          <th>Description</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="fields-tbody">
-      </tbody>
-    </table>
-    </div>
-    <p id="no-fields-msg" class="hint">No fields yet. Use the form below to add one.</p>
-  </section>
-
   <!-- Add / Edit Field Form -->
   <section class="form-section" id="field-form-section">
     <h2 id="field-form-title">Add Field</h2>
@@ -207,6 +176,37 @@
     </span>
     {% endif %}
   </div>
+
+  <!-- Fields Table (below Save / Cancel) -->
+  <section class="form-section fields-section-wide">
+    <h2>Fields</h2>
+    <div id="hidden-fields-container"></div>
+
+    <div class="fields-table-wrap">
+    <table class="fields-table" id="fields-table">
+      <thead>
+        <tr>
+          <th style="width:1.5rem" title="Drag to reorder"></th>
+          <th style="width:2.5rem">#</th>
+          <th style="width:12rem">Field Code</th>
+          <th style="width:1.75rem">Field Name</th>
+          <th style="width:7rem">Field Name Cell</th>
+          <th style="width:5rem">Sheet</th>
+          <th style="width:7rem">Value Cell</th>
+          <th style="width:5rem">Type</th>
+          <th style="width:5rem">Allow Empty</th>
+          <th style="width:3.5rem">Active</th>
+          <th style="width:3rem">Raw</th>
+          <th style="width:12rem">Description</th>
+          <th style="width:5rem"></th>
+        </tr>
+      </thead>
+      <tbody id="fields-tbody">
+      </tbody>
+    </table>
+    </div>
+    <p id="no-fields-msg" class="hint">No fields yet. Use the form above to add one.</p>
+  </section>
 </form>
 
 <script>
@@ -359,8 +359,8 @@ function renderTable() {
     tr.innerHTML = `
       <td class="drag-handle" title="Drag to reorder" style="cursor: grab; text-align: center; color: #9ca3af; user-select: none;">⋮⋮</td>
       <td>${i + 1}</td>
-      <td><code>${esc(f.field_code)}</code></td>
-      <td>${esc(f.field_name)}</td>
+      <td title="${esc(f.field_code)}"><code>${esc(f.field_code)}</code></td>
+      <td title="${esc(f.field_name)}">${esc(f.field_name)}</td>
       <td>${esc(f.field_name_cell)}</td>
       <td>${esc(f.sheet)}</td>
       <td>${esc(f.cell)}</td>
@@ -414,7 +414,9 @@ function startEditField(index) {
   document.getElementById('af_check_result').classList.remove('check-ok', 'check-err');
   showAddError('');
   setEditMode(index);
-  formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // Scroll the highlighted row into view within the table's own scroll container
+  const editingRow = tbody.querySelector('tr.row-editing');
+  if (editingRow) editingRow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   document.getElementById('af_field_code').focus();
 }
 
@@ -768,5 +770,93 @@ function regenerateAiPrompt() {
 
 // ── Initial render ────────────────────────────────────────────────────────────
 renderTable();
+
+// ── Widen fields section to full viewport width ───────────────────────────────
+function widenFieldsSection() {
+  const section = document.querySelector('.fields-section-wide');
+  if (!section) return;
+  const vw   = document.documentElement.clientWidth;
+  const left = section.getBoundingClientRect().left;
+  section.style.width        = vw + 'px';
+  section.style.marginLeft   = (-left) + 'px';
+  section.style.paddingLeft  = '1rem';
+  section.style.paddingRight = '1rem';
+  section.style.boxSizing    = 'border-box';
+  // Table height: fixed fraction of viewport so it's tall regardless of scroll position
+  const wrap = document.querySelector('.fields-table-wrap');
+  if (wrap) wrap.style.height = Math.round(window.innerHeight * 0.75) + 'px';
+}
+
+widenFieldsSection();
+window.addEventListener('resize', widenFieldsSection);
+
+// ── Column resize handles (via <col> elements — works with table-layout:fixed) ──
+// ── Column resize (pointer events + setPointerCapture — bulletproof) ─────────
+(function() {
+  const table = document.getElementById('fields-table');
+  if (!table) return;
+  const thead = table.querySelector('thead');
+  const EDGE  = 8;
+
+  let dragging = false;
+  let dragTh   = null;
+  let startX   = 0;
+  let startW   = 0;
+  let captureId = null;
+
+  function hitTest(clientX) {
+    const ths = thead.querySelectorAll('th');
+    for (const th of ths) {
+      const r = th.getBoundingClientRect();
+      if (clientX >= r.right - EDGE && clientX <= r.right + 3) return th;
+    }
+    return null;
+  }
+
+  thead.addEventListener('pointermove', e => {
+    if (dragging && dragTh) {
+      const w = Math.max(20, startW + e.clientX - startX);
+      dragTh.style.width = w + 'px';
+    } else {
+      thead.style.cursor = hitTest(e.clientX) ? 'col-resize' : '';
+    }
+  });
+
+  thead.addEventListener('pointerleave', () => {
+    if (!dragging) thead.style.cursor = '';
+  });
+
+  thead.addEventListener('pointerdown', e => {
+    const th = hitTest(e.clientX);
+    if (!th) return;
+    e.preventDefault();
+    e.stopPropagation();
+    dragging = true;
+    dragTh   = th;
+    startX   = e.clientX;
+    startW   = th.getBoundingClientRect().width;
+    captureId = e.pointerId;
+    try { thead.setPointerCapture(e.pointerId); } catch (_) {}
+    document.body.style.cursor     = 'col-resize';
+    document.body.style.userSelect = 'none';
+  });
+
+  function endDrag(e) {
+    if (!dragging) return;
+    dragging = false;
+    dragTh   = null;
+    if (captureId != null) {
+      try { thead.releasePointerCapture(captureId); } catch (_) {}
+      captureId = null;
+    }
+    document.body.style.cursor     = '';
+    document.body.style.userSelect = '';
+    thead.style.cursor = '';
+  }
+
+  thead.addEventListener('pointerup',     endDrag);
+  thead.addEventListener('pointercancel', endDrag);
+  window.addEventListener('pointerup',    endDrag);
+})();
 </script>
 {% endblock %}

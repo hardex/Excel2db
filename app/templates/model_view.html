@@ -6,6 +6,9 @@
   <h1>Model: <code>{{ model_code }}</code></h1>
   <div class="actions">
     <a href="/models" class="btn btn--secondary btn--sm">← All Models</a>
+    {% if model %}
+    <a href="/models/{{ model_code }}/download-csv" class="btn btn--secondary btn--sm">⬇ Download CSV</a>
+    {% endif %}
     {% if model and removed_count %}
     <form method="post"
           action="/models/{{ model_code }}/prune-removed"
@@ -38,6 +41,7 @@
       <th>#</th>
       <th>Field Code</th>
       <th>Field Name</th>
+      <th>Type</th>
       <th>Defined In</th>
     </tr>
   </thead>
@@ -47,6 +51,7 @@
       <td>{{ loop.index }}</td>
       <td><code>{{ row.field_code }}</code></td>
       <td>{{ row.field_name }}</td>
+      <td>{{ row.value_type }}</td>
       <td class="versions-cell">
         {% if row.versions %}
           {% for v in row.versions %}<span class="badge">{{ v }}</span>{% if not loop.last %} {% endif %}{% endfor %}

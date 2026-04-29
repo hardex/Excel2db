@@ -17,6 +17,7 @@ from app.services import (
     read_workbook_fields,
     validate_fields,
     generate_output,
+    generate_combined_csv,
     get_output_path,
     get_logger,
     detect_template_for_file,
@@ -41,6 +42,19 @@ EXCEL_EXTS = (".xlsx", ".xlsm")
 
 def _is_excel_filename(name: str) -> bool:
     return bool(name) and name.lower().endswith(EXCEL_EXTS)
+
+
+def _jsonsafe_values(values: dict[str, Any]) -> dict[str, Any]:
+    """Coerce values that JSONResponse can't natively serialize (datetime,
+    Decimal, etc.) to strings, matching how generate_output writes them.
+    Native JSON types (str, int, float, bool, None) pass through unchanged."""
+    safe: dict[str, Any] = {}
+    for k, v in values.items():
+        if v is None or isinstance(v, (str, int, float, bool)):
+            safe[k] = v
+        else:
+            safe[k] = str(v)
+    return safe
 
 
 # ─── Helpers ────────────────────────────────────────────────────────────────
@@ -255,6 +269,119 @@ async def start_processing(
     resp = RedirectResponse(url="/process/result", status_code=303)
     _set_session(resp, session)
     return resp
+
+
+@router.post("/batch-file")
+async def batch_process_file(
+    file: UploadFile = File(None),
+    template_code: str = Form(...),
+    template_version: str = Form(""),
+    output_format: str = Form("csv"),
+):
+    """Extract one file in batch mode. Returns the per-file row without
+    writing any output — the frontend collects rows and POSTs them to
+    /batch-write to produce one combined CSV."""
+    dest = None
+    source_filename = None
+
+    if not (file and _is_excel_filename(file.filename or "")):
+        return JSONResponse({"ok": False, "error": "Invalid or missing file"})
+
+    source_filename = file.filename
+    dest = UPLOADS_DIR / source_filename
+    content = await file.read()
+    with open(dest, "wb") as f_out:
+        f_out.write(content)
+    file_path = str(dest)
+
+    try:
+        if template_code == "__auto__":
+            tmpl, info = detect_template_for_file(file_path)
+            if not tmpl:
+                reason = info.get("error") or "Could not auto-detect template."
+                return JSONResponse({"ok": False, "error": reason, "filename": source_filename})
+        else:
+            tmpl = get_template(template_code, template_version)
+            if not tmpl:
+                return JSONResponse({"ok": False, "error": "Template not found", "filename": source_filename})
+
+        active_fields = [f for f in tmpl.fields if f.active]
+        try:
+            extracted = read_workbook_fields(file_path, active_fields)
+        except Exception as exc:
+            logger.error(f"Batch read error: {source_filename}: {exc}")
+            return JSONResponse({"ok": False, "error": str(exc), "filename": source_filename})
+
+        errors = validate_fields(active_fields, extracted)
+        template_label = f"{tmpl.template_code} {tmpl.template_version}"
+
+        if errors:
+            return JSONResponse({
+                "ok": False,
+                "validation_errors": True,
+                "error_count": len(errors),
+                "errors": [{"field": fc, "error": msg} for fc, msg in errors.items()],
+                "filename": source_filename,
+                "template": template_label,
+                "template_code": tmpl.template_code,
+                "template_version": tmpl.template_version,
+            })
+
+        session = {
+            "source_filename": source_filename,
+            "template_code": tmpl.template_code,
+            "template_version": tmpl.template_version,
+            "extracted": extracted,
+            "corrections": {},
+        }
+        final_values = _build_final_values(session, tmpl)
+        logger.info(f"Batch file extracted: {source_filename}")
+
+        return JSONResponse({
+            "ok": True,
+            "filename": source_filename,
+            "template": template_label,
+            "template_code": tmpl.template_code,
+            "template_version": tmpl.template_version,
+            "values": _jsonsafe_values(final_values),
+        })
+    finally:
+        try:
+            if dest:
+                dest.unlink()
+        except Exception:
+            pass
+
+
+@router.post("/batch-write")
+async def batch_write_combined(request: Request):
+    """Write a single CSV combining the rows produced by /batch-file calls.
+
+    Body: {"template_code": str, "rows": [{"values": {field_code: value, ...}}, ...]}.
+    Header is the union of keys across rows, preserving first-seen order.
+    Filename: <template_code>_<YYYYMMDD_HHMMSS>.csv."""
+    data = await request.json()
+    template_code = (data.get("template_code") or "").strip()
+    raw_rows = data.get("rows") or []
+    if not template_code:
+        return JSONResponse({"ok": False, "error": "template_code is required"})
+    if not raw_rows:
+        return JSONResponse({"ok": False, "error": "No rows to write"})
+
+    rows: list[dict[str, Any]] = []
+    for r in raw_rows:
+        values = r.get("values") if isinstance(r, dict) else None
+        if isinstance(values, dict):
+            rows.append(values)
+    if not rows:
+        return JSONResponse({"ok": False, "error": "No valid rows"})
+
+    output_path = generate_combined_csv(template_code, rows)
+    return JSONResponse({
+        "ok": True,
+        "output_path": output_path,
+        "row_count": len(rows),
+    })
 
 
 @router.get("/correct", response_class=HTMLResponse)

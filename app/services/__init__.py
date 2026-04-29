@@ -11,7 +11,7 @@ from .template_service import (
 )
 from .excel_service import read_workbook_fields, read_single_cell, read_cells_from_workbook, get_sheet_names, _load_workbook
 from .validation_service import validate_fields
-from .output_service import generate_output, get_output_path
+from .output_service import generate_output, get_output_path, generate_combined_csv
 from .export_service import template_to_stage2, export_to_file
 from .model_service import (
     load_model,
@@ -39,6 +39,7 @@ __all__ = [
     "validate_fields",
     "generate_output",
     "get_output_path",
+    "generate_combined_csv",
     "template_to_stage2",
     "export_to_file",
     "load_model",

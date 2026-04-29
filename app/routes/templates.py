@@ -136,7 +136,7 @@ async def template_new_form(request: Request):
 
 @router.post("/new")
 async def template_new_submit(request: Request):
-    form = await request.form()
+    form = await request.form(max_fields=100000)
     form_dict = dict(form)
 
     template_code = str(form_dict.get("template_code", "")).strip()
@@ -230,7 +230,7 @@ async def template_edit_submit(request: Request, code: str, version: str):
     if not existing:
         return _redirect("/templates", f"Template {code}_{version} not found", "error")
 
-    form = await request.form()
+    form = await request.form(max_fields=100000)
     form_dict = dict(form)
 
     new_code = str(form_dict.get("template_code", code)).strip()
