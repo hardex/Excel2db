@@ -7,6 +7,51 @@
   <a href="/templates/new" class="btn btn--primary">+ New Template</a>
 </div>
 
+{% if bundles %}
+<section class="form-section" style="margin-bottom: 1rem;">
+  <h2 style="margin-top: 0;">Stage 2 Bundles</h2>
+  <p class="hint" style="margin-top: 0;">
+    One zip per <code>template_code</code> containing every version mapping +
+    its canonical model. Install on the Stage 2 server with
+    <code>python -m excel_processor.mappings_cli install &lt;bundle.zip&gt;</code>.
+  </p>
+  <table class="data-table" style="width: auto; min-width: 28rem;">
+    <thead>
+      <tr>
+        <th>Template Code</th>
+        <th>Versions</th>
+        <th>Canonical</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for b in bundles %}
+      <tr>
+        <td><code>{{ b.template_code }}</code></td>
+        <td>{{ b.version_count }}</td>
+        <td>
+          {% if b.canonical_present %}
+            <span class="badge badge--success">present</span>
+          {% else %}
+            <span class="badge" style="background:#fee2e2; color:#991b1b;">missing</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if b.canonical_present %}
+          <a href="/templates/bundle/{{ b.template_code }}"
+             class="btn btn--primary btn--sm"
+             title="Download zip bundle (versions + canonical)">Export bundle</a>
+          {% else %}
+          <span class="hint">canonical missing — open any version to seed it</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endif %}
+
 {% if templates %}
 <table class="data-table">
   <thead>

@@ -1,4 +1,4 @@
-"""Export Excel2db templates to Stage 2 mapping format for ed_py_ai processor."""
+"""Export Excel2db templates to Stage 2 mapping format for excel_processor."""
 
 import json
 from pathlib import Path

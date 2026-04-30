@@ -1,10 +1,13 @@
+import io
 import re
 import urllib.parse
 import json
+import zipfile
+from datetime import datetime
 from pathlib import Path
 
 from fastapi import APIRouter, Form, Request, UploadFile, File
-from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, Response
 from fastapi.templating import Jinja2Templates
 
 from app.models.schemas import FieldModel, TemplateModel
@@ -101,6 +104,22 @@ def _parse_fields_from_form(form: dict) -> list[FieldModel]:
 @router.get("", response_class=HTMLResponse)
 async def template_list(request: Request):
     all_templates = list_templates()
+
+    # One bundle per unique template_code; mark whether its canonical exists.
+    seen: set[str] = set()
+    bundles: list[dict] = []
+    for tmpl in all_templates:
+        if tmpl.template_code in seen:
+            continue
+        seen.add(tmpl.template_code)
+        canonical_path = MAPPINGS_DIR / "models" / f"{tmpl.template_code}.json"
+        version_count = sum(1 for t in all_templates if t.template_code == tmpl.template_code)
+        bundles.append({
+            "template_code": tmpl.template_code,
+            "version_count": version_count,
+            "canonical_present": canonical_path.exists(),
+        })
+
     msg = request.query_params.get("msg", "")
     msg_type = request.query_params.get("msg_type", "success")
     return templates_engine.TemplateResponse(
@@ -108,6 +127,7 @@ async def template_list(request: Request):
         "template_list.html",
         {
             "templates": all_templates,
+            "bundles": bundles,
             "msg": msg,
             "msg_type": msg_type,
         },
@@ -578,7 +598,7 @@ async def export_stage2(code: str, version: str):
 
 @router.post("/{code}/{version}/export-to-processor")
 async def export_to_processor(request: Request, code: str, version: str):
-    """Export mapping directly to the ed_py_ai processor mappings folder."""
+    """Export mapping directly to the excel_processor mappings folder."""
     tmpl = get_template(code, version)
     if not tmpl:
         return JSONResponse({"ok": False, "error": f"Template {code}_{version} not found"})
@@ -587,10 +607,10 @@ async def export_to_processor(request: Request, code: str, version: str):
     target_folder = data.get("target_folder", "")
 
     if not target_folder:
-        # Default: try to find ed_py_ai relative to this project
+        # Default: try to find excel_processor relative to this project
         for candidate in [
-            Path(__file__).resolve().parent.parent.parent.parent / "ed_py_ai" / "excel_processor" / "mappings",
-            Path.home() / "Documents" / "dev" / "ai" / "ed_py_ai" / "excel_processor" / "mappings",
+            Path(__file__).resolve().parent.parent.parent.parent / "excel_processor" / "excel_processor" / "mappings",
+            Path.home() / "Documents" / "dev" / "ai" / "excel_processor" / "excel_processor" / "mappings",
         ]:
             if candidate.parent.exists():
                 target_folder = str(candidate)
@@ -604,6 +624,52 @@ async def export_to_processor(request: Request, code: str, version: str):
     export_to_file(tmpl, str(export_path))
 
     return JSONResponse({"ok": True, "path": str(export_path)})
+
+
+MAPPINGS_DIR = Path("mappings")
+
+
+@router.get("/bundle/{template_code}")
+async def export_bundle(template_code: str):
+    """Build a zip containing every ``<template_code>_*.json`` plus the
+    canonical ``models/<template_code>.json``. Stage 2's
+    ``mappings_cli install`` consumes this directly.
+    """
+    if _INVALID_NAME_RE.search(template_code):
+        return _redirect("/templates", "Invalid template code", "error")
+
+    template_files = sorted(MAPPINGS_DIR.glob(f"{template_code}_*.json"))
+    canonical_file = MAPPINGS_DIR / "models" / f"{template_code}.json"
+
+    if not template_files:
+        return _redirect(
+            "/templates",
+            f"No template files found for template_code={template_code}",
+            "error",
+        )
+    if not canonical_file.exists():
+        return _redirect(
+            "/templates",
+            f"Canonical model models/{template_code}.json missing — cannot bundle",
+            "error",
+        )
+
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
+        for path in template_files:
+            zf.write(path, arcname=path.name)
+        zf.write(canonical_file, arcname=f"models/{canonical_file.name}")
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    bundle_name = f"{template_code}_bundle_{timestamp}.zip"
+    logger.info(
+        f"Bundle exported: template_code={template_code} files={len(template_files)+1} → {bundle_name}"
+    )
+    return Response(
+        content=buf.getvalue(),
+        media_type="application/zip",
+        headers={"Content-Disposition": f"attachment; filename={bundle_name}"},
+    )
 
 
 @router.post("/{code}/{version}/import-feedback")
