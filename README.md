@@ -1,15 +1,26 @@
-# Excel2DB - Project Guide
+# Excel2db
 
-## What is this?
+Local web app for creating and editing Excel-mapping rules (Stage 1 of a two-stage Excel-to-CSV pipeline). No database, no auth — file-based storage only. The companion Stage 2 batch processor lives in [`excel_processor`](https://github.com/hardex/excel_processor).
 
-Local web app for extracting data from `.xlsx` files using configurable template mappings. No database, no auth — file-based storage only.
+## Quick start
 
-## Tech Stack
+```bash
+git clone https://github.com/hardex/Excel2db.git
+cd Excel2db
+python3 -m venv .venv
+source .venv/bin/activate           # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+# → http://127.0.0.1:8000
+```
+
+Requires Python 3.12+.
+
+## Tech stack
 
 - **Backend**: Python 3.12, FastAPI, Pydantic
 - **Excel**: openpyxl
 - **Frontend**: Jinja2 server-rendered HTML, vanilla JS, vanilla CSS
-- **Run**: `uvicorn app.main:app --reload` from project root
 
 ## Project Structure
 
